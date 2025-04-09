@@ -195,9 +195,9 @@ const Home = () => {
               width: '250px',
               height: '250px',
               borderRadius: (() => {
-                if ((alpha >= 50 && alpha <= 90) || 
-                    (alpha >= 270 && alpha <= 310)) {
-                  return '50%';
+                if ((alpha >= 40 && alpha <= 90) || 
+                    (alpha >= 270 && alpha <= 320)) {
+                  return '999px';
                 }
                 return '0px';
               })()
@@ -209,13 +209,16 @@ const Home = () => {
           <button 
             onTouchStart={(e) => {
               e.preventDefault();
-              handleStart();
+              if (startButtonOpacity === 1) {
+                handleStart();
+              }
             }}
             className="start-button rounded-full w-48 bg-black px-6 py-4 text-xl font-bold text-white shadow-2xl"
             style={{ 
               WebkitTapHighlightColor: 'transparent',
               opacity: startButtonOpacity,
-              transition: 'opacity 2s ease-in'
+              transition: 'opacity 2s ease-in',
+              pointerEvents: startButtonOpacity === 1 ? 'auto' : 'none'
             }}
           >
             {data.home1.startButton}
