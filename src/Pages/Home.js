@@ -107,37 +107,36 @@ const Home = () => {
   const [smoothAlpha, setSmoothAlpha] = useState(alpha);
   const prevAlphaRef = useRef(alpha);
   const alphaBuffer = useRef([]);
-  const BUFFER_SIZE = 5; // 버퍼 사이즈 (필요에 따라 조절 가능)
-  const EASING_FACTOR = 0.08; // 이징 팩터 (값이 클수록 더 빠르게 회전)
+  const BUFFER_SIZE = 3;
+  const EASING_FACTOR = 0.15;
+  const THROTTLE_TIME = 16;
+
+  const lastUpdateTime = useRef(0);
 
   useEffect(() => {
     let animationFrameId;
     const updateAngle = () => {
       const prev = prevAlphaRef.current;
       
-      // 버퍼에 현재 알파값 추가
       alphaBuffer.current.push(alpha);
       if (alphaBuffer.current.length > BUFFER_SIZE) {
         alphaBuffer.current.shift();
       }
       
-      // 버퍼의 평균값 계산
-      const avgAlpha = alphaBuffer.current.reduce((a, b) => a + b, 0) / alphaBuffer.current.length;
+      const sortedValues = [...alphaBuffer.current].sort((a, b) => a - b);
+      const medianAlpha = sortedValues[Math.floor(sortedValues.length / 2)];
       
-      let delta = avgAlpha - prev;
+      let delta = medianAlpha - prev;
 
-      // 360도 회전시 최적 경로 계산
       if (delta > 180) delta -= 360;
       if (delta < -180) delta += 360;
 
-      // 부드러운 이징 적용
       const eased = prev + delta * EASING_FACTOR;
-      
-      // 결과값 정규화 (0-360도 범위 유지)
       const normalized = ((eased % 360) + 360) % 360;
+      const roundedValue = Math.round(normalized * 100) / 100;
       
-      prevAlphaRef.current = normalized;
-      setSmoothAlpha(normalized);
+      prevAlphaRef.current = roundedValue;
+      setSmoothAlpha(roundedValue);
 
       animationFrameId = requestAnimationFrame(updateAngle);
     };
@@ -153,20 +152,27 @@ const Home = () => {
     );
   };
 
-  useEffect(() => {
-    const handleOrientation = (event) => {
-      setAlpha(prevAlpha => {
-        const newAlpha = event.alpha || 0;
-        // 각도 변화가 너무 작은 경우 무시 (노이즈 제거)
-        if (Math.abs(newAlpha - prevAlpha) < 0.5) {
-          return prevAlpha;
-        }
-        // 10도 단위로 반올림하는 대신 실제 값 사용
-        return newAlpha;
-      });
-      setGamma(event.gamma || 0);
-    };
+  const handleOrientation = (event) => {
+    const now = Date.now();
+    
+    if (now - lastUpdateTime.current < THROTTLE_TIME) {
+      return;
+    }
+    
+    lastUpdateTime.current = now;
+    
+    setAlpha(prevAlpha => {
+      const newAlpha = event.alpha || 0;
+      const threshold = 0.2;
+      if (Math.abs(newAlpha - prevAlpha) < threshold) {
+        return prevAlpha;
+      }
+      return newAlpha;
+    });
+    setGamma(event.gamma || 0);
+  };
 
+  useEffect(() => {
     window.addEventListener('deviceorientation', handleOrientation);
     return () => window.removeEventListener('deviceorientation', handleOrientation);
   }, []);
@@ -211,7 +217,7 @@ const Home = () => {
     localStorage.setItem('language', lang);
   };
 
-  const oppositeAlpha = (alpha + 180) % 360; // 반대편 각도 계산
+  const oppositeAlpha = (alpha + 180) % 360;
 
   return (
     <Layout>
@@ -247,17 +253,22 @@ const Home = () => {
         <div className="fixed inset-0 flex items-center justify-center z-0">
           <div className="bg-key-gradient shadow-lg"
             style={{
-              transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.5s ease",
+              transition: "transform 0.2s linear, border-radius 0.3s ease",
               transform: `rotate(${smoothAlpha - 90}deg)`,
               width: '250px',
               height: '250px',
-              borderRadius: (alpha >= 0 && alpha <= 10) || 
-                           (oppositeAlpha >= 0 && oppositeAlpha <= 10)
-                           ? '5px' 
-                           : (alpha >= 10 && alpha <= 20) || 
-                             (oppositeAlpha >= 10 && oppositeAlpha <= 20)
-                             ? '10px'
-                           : '0px'
+              backfaceVisibility: 'hidden',
+              borderRadius: (() => {
+                if (smoothAlpha >= 50 && smoothAlpha <= 90) {
+                  const progress = (smoothAlpha - 50) / 40;
+                  return `${progress * 50}%`;
+                }
+                else if (smoothAlpha >= 270 && smoothAlpha <= 310) {
+                  const progress = (smoothAlpha - 270) / 40;
+                  return `${progress * 50}%`;
+                }
+                return '0px';
+              })()
             }}
           />
         </div>
