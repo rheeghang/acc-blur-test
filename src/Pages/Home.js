@@ -106,20 +106,38 @@ const Home = () => {
   
   const [smoothAlpha, setSmoothAlpha] = useState(alpha);
   const prevAlphaRef = useRef(alpha);
+  const alphaBuffer = useRef([]);
+  const BUFFER_SIZE = 5; // 버퍼 사이즈 (필요에 따라 조절 가능)
+  const EASING_FACTOR = 0.08; // 이징 팩터 (값이 클수록 더 빠르게 회전)
 
   useEffect(() => {
     let animationFrameId;
     const updateAngle = () => {
       const prev = prevAlphaRef.current;
-      let delta = alpha - prev;
+      
+      // 버퍼에 현재 알파값 추가
+      alphaBuffer.current.push(alpha);
+      if (alphaBuffer.current.length > BUFFER_SIZE) {
+        alphaBuffer.current.shift();
+      }
+      
+      // 버퍼의 평균값 계산
+      const avgAlpha = alphaBuffer.current.reduce((a, b) => a + b, 0) / alphaBuffer.current.length;
+      
+      let delta = avgAlpha - prev;
 
-      // Normalize to shortest path
+      // 360도 회전시 최적 경로 계산
       if (delta > 180) delta -= 360;
       if (delta < -180) delta += 360;
 
-      const eased = prev + delta * 0.05; // adjust 0.05 for speed
-      prevAlphaRef.current = eased;
-      setSmoothAlpha(eased);
+      // 부드러운 이징 적용
+      const eased = prev + delta * EASING_FACTOR;
+      
+      // 결과값 정규화 (0-360도 범위 유지)
+      const normalized = ((eased % 360) + 360) % 360;
+      
+      prevAlphaRef.current = normalized;
+      setSmoothAlpha(normalized);
 
       animationFrameId = requestAnimationFrame(updateAngle);
     };
@@ -139,7 +157,12 @@ const Home = () => {
     const handleOrientation = (event) => {
       setAlpha(prevAlpha => {
         const newAlpha = event.alpha || 0;
-        return Math.round(newAlpha / 10) * 10;
+        // 각도 변화가 너무 작은 경우 무시 (노이즈 제거)
+        if (Math.abs(newAlpha - prevAlpha) < 0.5) {
+          return prevAlpha;
+        }
+        // 10도 단위로 반올림하는 대신 실제 값 사용
+        return newAlpha;
       });
       setGamma(event.gamma || 0);
     };
@@ -224,7 +247,7 @@ const Home = () => {
         <div className="fixed inset-0 flex items-center justify-center z-0">
           <div className="bg-key-gradient shadow-lg"
             style={{
-              transition: "all 0.5s ease",
+              transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.5s ease",
               transform: `rotate(${smoothAlpha - 90}deg)`,
               width: '250px',
               height: '250px',
