@@ -9,6 +9,8 @@ import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
 import MenuIcon from '../components/MenuIcon';
 import Menu from '../components/Menu';
+import { useReader } from '../contexts/ReaderContext';
+import Guide from '../components/Guide';
 
 const Tutorial = () => {
   const { step: stepParam } = useParams();
@@ -30,6 +32,8 @@ const Tutorial = () => {
   const { showGuideMessage } = useGuide();
   const { language } = useLanguage();
   const data = language === 'ko' ? koData : enData;
+  const { readGuidance, readPageContent, isReaderEnabled } = useReader();
+  const [showGuide, setShowGuide] = useState(true);
 
   // 현재 설정 가져오기
   const currentConfig = pageConfig.tutorial[tutorialStep];
@@ -51,10 +55,26 @@ const Tutorial = () => {
   }, [tutorialStep]);
 
   useEffect(() => {
-    if (blurAmount === 0) {
-      console.log("✅ 언락 조건 충족! blur = 0");
+    if (isReaderEnabled) {
+      readGuidance('tutorial', 'navigation');
     }
-  }, [blurAmount]);
+  }, []);
+
+  useEffect(() => {
+    if (blurAmount === 0) {
+      if (isReaderEnabled) {
+        // 페이지 컨텐츠 읽기
+        readPageContent('tutorial', `step${tutorialStep}`);
+        
+        // 다음 단계 안내
+        if (tutorialStep === 4) {
+          readGuidance('tutorial', 'completion');
+        } else {
+          readGuidance('tutorial', 'next');
+        }
+      }
+    }
+  }, [blurAmount, tutorialStep]);
 
   useEffect(() => {
     const handleOrientation = (event) => {
@@ -83,6 +103,14 @@ const Tutorial = () => {
       window.onshake = originalShakeEvent;
     };
   }, [tutorialStep]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowGuide(false);
+    }, 3500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleDoubleTap = (() => {
     let lastTap = 0;
@@ -176,6 +204,12 @@ const Tutorial = () => {
         onTouchStart={handleDoubleTap}
         style={{ WebkitTapHighlightColor: 'transparent' }}
       >
+        <Guide 
+          show={showGuide} 
+          language={language}
+          fullscreen={true}
+        />
+
         <div className="fixed top-2 left-0 right-0 text-center z-10">
           {(tutorialStep === 1 || tutorialStep === 2 || tutorialStep === 3 || tutorialStep === 4) && (
             <p className="text-xl font-bold text-white">{Math.round(currentAlpha)}°</p>

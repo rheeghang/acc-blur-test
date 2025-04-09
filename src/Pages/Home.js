@@ -4,6 +4,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Layout } from '../components/Layout';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
+import { useReader } from '../contexts/ReaderContext';
+import { useBlur } from '../contexts/BlurContext';
 
 const Modal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
@@ -92,6 +94,13 @@ const LanguageSelector = ({ language, onLanguageChange }) => {
   );
 };
 
+const isIOS = () => {
+  return (
+    ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) ||
+    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+  );
+};
+
 const Home = () => {
   const [alpha, setAlpha] = useState(0);
   const [gamma, setGamma] = useState(0);
@@ -103,6 +112,16 @@ const Home = () => {
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
   const gradientRatio = Math.min(100, Math.max(0, ((gamma + 90) / 180) * 100));
+  const { 
+    isReaderEnabled, 
+    speak, 
+    stop,
+    readerSettings,
+    updateSettings,
+    readPageContent,
+    readGuidance
+  } = useReader();
+  const { currentAlpha } = useBlur();
 
   const handleOrientation = (event) => {
     setAlpha(event.alpha || 0);
@@ -145,6 +164,18 @@ const Home = () => {
     img.src = '/title.png';
   }, []);
 
+  useEffect(() => {
+    // 페이지 진입시
+    readGuidance('home', 'enter');
+  }, []);
+
+  useEffect(() => {
+    // 시작 버튼이 나타나고(opacity가 1) 특정 각도 범위에 들어왔을 때
+    if (startButtonOpacity === 1) {
+      readGuidance('home', 'start');
+    }
+  }, [startButtonOpacity]);
+
   const handleStart = () => {
     navigate('/tutorial/step/1');
   };
@@ -155,6 +186,13 @@ const Home = () => {
   };
 
   const oppositeAlpha = (alpha + 180) % 360;
+
+  // 예시: 버튼 클릭시 텍스트 읽기
+  const handleButtonClick = () => {
+    if (isReaderEnabled) {
+      speak("버튼이 클릭되었습니다.");
+    }
+  };
 
   return (
     <Layout>
@@ -191,12 +229,12 @@ const Home = () => {
           <div className="bg-key-gradient shadow-lg"
             style={{
               transition: "transform 0.05s linear, border-radius 0s linear",
-              transform: `rotate(${alpha - 90}deg)`,
+              transform: `rotate(${currentAlpha - 90}deg)`,
               width: '250px',
               height: '250px',
               borderRadius: (() => {
-                if ((alpha >= 40 && alpha <= 90) || 
-                    (alpha >= 270 && alpha <= 320)) {
+                if ((currentAlpha >= 40 && currentAlpha <= 90) || 
+                    (currentAlpha >= 270 && currentAlpha <= 320)) {
                   return '999px';
                 }
                 return '0px';

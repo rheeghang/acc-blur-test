@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Layout } from '../components/Layout';
@@ -6,6 +6,7 @@ import MenuIcon from '../components/MenuIcon';
 import Menu from '../components/Menu';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
+import { useReader } from '../contexts/ReaderContext';
 
 const About = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -13,6 +14,7 @@ const About = () => {
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
   const { title, subtitle, body } = data.about;
+  const { isReaderEnabled, readGuidance } = useReader();
 
   const handlePageChange = (newPage) => {
     setShowMenu(false);
@@ -25,6 +27,34 @@ const About = () => {
       navigate(`/artwork/${newPage}`);
     }
   };
+
+  useEffect(() => {
+    if (isReaderEnabled) {
+      const readSequentially = async () => {
+        // 첫 번째 안내 메시지
+        await new Promise(resolve => {
+          const utterance = new SpeechSynthesisUtterance("우리의 몸에는 타인이 깃든다, 전시 소개 페이지입니다.");
+          utterance.onend = resolve;
+          utterance.lang = language === 'ko' ? 'ko-KR' : 'en-US';
+          window.speechSynthesis.speak(utterance);
+        });
+
+        // 타이틀과 본문 읽기
+        await new Promise(resolve => {
+          const titleAndBody = `${data.about.title}. ${data.about.body}`;
+          const utterance = new SpeechSynthesisUtterance(titleAndBody);
+          utterance.onend = resolve;
+          utterance.lang = language === 'ko' ? 'ko-KR' : 'en-US';
+          window.speechSynthesis.speak(utterance);
+        });
+
+        // 모든 텍스트를 다 읽은 후 메뉴 안내
+        readGuidance('tutorial', 'completion');
+      };
+
+      readSequentially();
+    }
+  }, []); // 페이지 진입시 한 번만 실행
 
   return (
     <Layout>
