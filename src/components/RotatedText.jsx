@@ -254,8 +254,6 @@ const RotatedText = ({
             marginRight: 'auto',
             display: 'block'
           }}
-          role="article"
-          aria-label="전시회 설명 텍스트"
         >
           {/* 스크린 리더용 숨겨진 텍스트 */}
           <div className="sr-only" tabIndex="0">
