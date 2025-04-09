@@ -103,72 +103,9 @@ const Home = () => {
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
   const gradientRatio = Math.min(100, Math.max(0, ((gamma + 90) / 180) * 100));
-  
-  const [smoothAlpha, setSmoothAlpha] = useState(alpha);
-  const prevAlphaRef = useRef(alpha);
-  const alphaBuffer = useRef([]);
-  const BUFFER_SIZE = 3;
-  const EASING_FACTOR = 0.15;
-  const THROTTLE_TIME = 16;
-
-  const lastUpdateTime = useRef(0);
-
-  useEffect(() => {
-    let animationFrameId;
-    const updateAngle = () => {
-      const prev = prevAlphaRef.current;
-      
-      alphaBuffer.current.push(alpha);
-      if (alphaBuffer.current.length > BUFFER_SIZE) {
-        alphaBuffer.current.shift();
-      }
-      
-      const sortedValues = [...alphaBuffer.current].sort((a, b) => a - b);
-      const medianAlpha = sortedValues[Math.floor(sortedValues.length / 2)];
-      
-      let delta = medianAlpha - prev;
-
-      if (delta > 180) delta -= 360;
-      if (delta < -180) delta += 360;
-
-      const eased = prev + delta * EASING_FACTOR;
-      const normalized = ((eased % 360) + 360) % 360;
-      const roundedValue = Math.round(normalized * 100) / 100;
-      
-      prevAlphaRef.current = roundedValue;
-      setSmoothAlpha(roundedValue);
-
-      animationFrameId = requestAnimationFrame(updateAngle);
-    };
-
-    animationFrameId = requestAnimationFrame(updateAngle);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [alpha]);
-
-  const isIOS = () => {
-    return (
-      ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) ||
-      (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-    );
-  };
 
   const handleOrientation = (event) => {
-    const now = Date.now();
-    
-    if (now - lastUpdateTime.current < THROTTLE_TIME) {
-      return;
-    }
-    
-    lastUpdateTime.current = now;
-    
-    setAlpha(prevAlpha => {
-      const newAlpha = event.alpha || 0;
-      const threshold = 0.2;
-      if (Math.abs(newAlpha - prevAlpha) < threshold) {
-        return prevAlpha;
-      }
-      return newAlpha;
-    });
+    setAlpha(event.alpha || 0);
     setGamma(event.gamma || 0);
   };
 
@@ -222,10 +159,10 @@ const Home = () => {
   return (
     <Layout>
       <div 
-            className="container h-full overflow-y-auto overflow-x-hidden flex flex-col p-10 text-black leading-relaxed z-10"
-            style={{
-              background: `linear-gradient(to left, #FFEA7B ${gradientRatio - 15}%, #FACFB9 ${gradientRatio + 15}%)`
-            }}>
+        className="container h-full overflow-y-auto overflow-x-hidden flex flex-col p-10 text-black leading-relaxed z-10"
+        style={{
+          background: `linear-gradient(to left, #FFEA7B ${gradientRatio - 15}%, #FACFB9 ${gradientRatio + 15}%)`
+        }}>
       <div className="min-h-screen p-4 relative flex flex-col">
         <Modal 
           isOpen={showModal}
@@ -253,19 +190,14 @@ const Home = () => {
         <div className="fixed inset-0 flex items-center justify-center z-0">
           <div className="bg-key-gradient shadow-lg"
             style={{
-              transition: "transform 0.2s linear, border-radius 0.3s ease",
-              transform: `rotate(${smoothAlpha - 90}deg)`,
+              transition: "transform 0.05s linear",
+              transform: `rotate(${alpha - 90}deg)`,
               width: '250px',
               height: '250px',
-              backfaceVisibility: 'hidden',
               borderRadius: (() => {
-                if (smoothAlpha >= 50 && smoothAlpha <= 90) {
-                  const progress = (smoothAlpha - 50) / 40;
-                  return `${progress * 50}%`;
-                }
-                else if (smoothAlpha >= 270 && smoothAlpha <= 310) {
-                  const progress = (smoothAlpha - 270) / 40;
-                  return `${progress * 50}%`;
+                if ((alpha >= 50 && alpha <= 90) || 
+                    (alpha >= 270 && alpha <= 310)) {
+                  return '50%';
                 }
                 return '0px';
               })()
