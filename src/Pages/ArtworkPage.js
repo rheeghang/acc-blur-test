@@ -157,7 +157,10 @@ const ArtworkPage = () => {
           </button>
         </div>
 
-        <div className="outer-container absolute w-[120%] h-[150vh] flex items-center justify-center"
+        <div 
+          className="outer-container absolute w-[120%] h-[150vh] flex items-center justify-center"
+          role="presentation"
+          aria-hidden="true"
           style={{
             transform: `rotate(${config.rotationAngle}deg)`,
             top: pageNumber === '3' ? '40%' : '50%',
