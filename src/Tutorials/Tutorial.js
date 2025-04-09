@@ -54,8 +54,23 @@ const Tutorial = () => {
     }
   }, [tutorialStep]);
 
+  // 컴포넌트 마운트 시 전체 상태 확인
   useEffect(() => {
-    console.log("🎯 Reader 상태:", { isReaderEnabled });
+    console.log("📱 Tutorial 컴포넌트 마운트");
+    console.log("📱 Reader 초기 상태:", {
+      isReaderEnabled,
+      readGuidance: !!readGuidance,
+      readPageContent: !!readPageContent,
+    });
+    console.log("📱 기타 상태:", {
+      tutorialStep,
+      blurAmount,
+      language,
+    });
+  }, []); // 마운트 시에만 실행
+
+  useEffect(() => {
+    console.log("🎯 Reader 상태 변경:", { isReaderEnabled });
   }, [isReaderEnabled]);
 
   useEffect(() => {
