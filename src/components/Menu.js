@@ -57,7 +57,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
 
         <div className="px-4 py-2 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <span className="text-base">
+            <span className="text-black">
               {language === 'ko' 
                 ? (isOrientationMode ? '각도 모드' : '각도해제 모드')
                 : (isOrientationMode ? 'Angle Mode' : 'Angle Off')
