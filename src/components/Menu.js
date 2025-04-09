@@ -13,14 +13,14 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   const data = language === 'ko' ? koData : enData;
   
   const menuItems = [
-    { id: 'artwork1', label: data.page1.title, pageNumber: 1, bgClass: 'bg-page1-text', textClass: 'text-page1-bg' },
-    { id: 'artwork2', label: data.page2.title, pageNumber: 2, bgClass: 'bg-page2-text', textClass: 'text-page2-bg' },
-    { id: 'artwork3', label: data.page3.title, pageNumber: 3, bgClass: 'bg-page3-text', textClass: 'text-page3-bg' },
-    { id: 'artwork4', label: data.page4.title, pageNumber: 4, bgClass: 'bg-page4-text', textClass: 'text-page4-bg' },
-    { id: 'artwork5', label: data.page5.title, pageNumber: 5, bgClass: 'bg-page5-text', textClass: 'text-page5-bg' },
-    { id: 'artwork6', label: data.page6.title, pageNumber: 6, bgClass: 'bg-page6-text', textClass: 'text-page6-bg' },
-    { id: 'artwork7', label: data.page7.title, pageNumber: 7, bgClass: 'bg-page7-text', textClass: 'text-page7-bg' },
-    { id: 'artwork8', label: data.page8.title, pageNumber: 8, bgClass: 'bg-page8-text', textClass: 'text-page8-bg' },
+    { id: 'artwork1', label: data.page1.title, pageNumber: 1, bgClass: 'bg-page1-bg', textClass: 'text-page1-text' },
+    { id: 'artwork2', label: data.page2.title, pageNumber: 2, bgClass: 'bg-page2-bg', textClass: 'text-page2-text' },
+    { id: 'artwork3', label: data.page3.title, pageNumber: 3, bgClass: 'bg-page3-bg', textClass: 'text-page3-text' },
+    { id: 'artwork4', label: data.page4.title, pageNumber: 4, bgClass: 'bg-page4-bg', textClass: 'text-page4-text' },
+    { id: 'artwork5', label: data.page5.title, pageNumber: 5, bgClass: 'bg-page5-bg', textClass: 'text-page5-text' },
+    { id: 'artwork6', label: data.page6.title, pageNumber: 6, bgClass: 'bg-page6-bg', textClass: 'text-page6-text' },
+    { id: 'artwork7', label: data.page7.title, pageNumber: 7, bgClass: 'bg-page7-bg', textClass: 'text-page7-text' },
+    { id: 'artwork8', label: data.page8.title, pageNumber: 8, bgClass: 'bg-page8-bg', textClass: 'text-page8-text' },
   ];
 
   const [selectedPage, setSelectedPage] = useState(null);

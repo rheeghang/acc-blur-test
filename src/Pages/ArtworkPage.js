@@ -23,6 +23,7 @@ const ArtworkPage = () => {
   const [menuIconColor, setMenuIconColor] = React.useState('#FF5218');
   const [menuIconScale, setMenuIconScale] = React.useState(1);
   const [initialAlpha, setInitialAlpha] = React.useState(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const data = language === 'ko' ? koData : enData;
   const config = pageConfig.pages[pageNumber];
@@ -34,14 +35,15 @@ const ArtworkPage = () => {
     }
   }, [pageNumber]);
 
-
+  // 페이지 변경 시 스크롤 초기화 및 isScrolled 리셋
   useEffect(() => {
-    const containers = document.querySelectorAll('.container');
+    const containers = document.querySelectorAll('.scroll-container');
     containers.forEach(container => {
       if (container) {
         container.scrollTop = 0;
       }
     });
+    setIsScrolled(false); // 페이지 변경 시 isScrolled 초기화
   }, [pageNumber]);
 
   // 가이드 메시지 관리
@@ -62,11 +64,17 @@ const ArtworkPage = () => {
     }
   }, [blurAmount, isOrientationMode, showMenu, outOfRangeStartTime, showGuideMessage, isUnlocked]);
 
-  // 스크롤 이벤트 핸들러 추가
+  // 스크롤 이벤트 핸들러
   useEffect(() => {
     const handleScroll = (e) => {
       const container = e.target;
       const scrollPosition = container.scrollTop;
+      
+      // 스크롤이 시작되면 isScrolled를 true로 설정
+      if (scrollPosition > 0) {
+        setIsScrolled(true);
+      }
+      
       const maxScroll = container.scrollHeight - container.clientHeight;
       const scrollRatio = scrollPosition / maxScroll;
       
@@ -75,7 +83,6 @@ const ArtworkPage = () => {
         setMenuIconColor('#FF8000');
         setMenuIconScale(1.3);
         
-        // 0.5초 후에 원래 상태로 돌아오기
         setTimeout(() => {
           setMenuIconColor('#FF5218');
           setMenuIconScale(1);
@@ -83,8 +90,7 @@ const ArtworkPage = () => {
       }
     };
 
-    // 컨테이너 요소 찾기
-    const containers = document.querySelectorAll('.container');
+    const containers = document.querySelectorAll('.scroll-container');
     containers.forEach(container => {
       container.addEventListener('scroll', handleScroll);
     });
@@ -96,10 +102,45 @@ const ArtworkPage = () => {
     };
   }, [showMenu]);
 
+  // 애니메이션 상태 모니터링을 위한 useEffect 추가
+  useEffect(() => {
+    let lastPercent = -1; // 마지막으로 체크한 퍼센트
+
+    const handleAnimation = () => {
+      const textContainer = document.querySelector('.text-container');
+      if (!textContainer) return;
+
+      requestAnimationFrame(function checkProgress() {
+        const animation = textContainer.getAnimations()[0];
+        if (!animation) return;
+
+        const currentPercent = (animation.currentTime % 2000) / 2000 * 100; // 2000ms = 2s
+
+        lastPercent = currentPercent;
+
+        if (animation.playState === 'running') {
+          requestAnimationFrame(checkProgress);
+        }
+      });
+    };
+
+    const textContainer = document.querySelector('.text-container');
+    if (textContainer) {
+      textContainer.addEventListener('animationstart', handleAnimation);
+    }
+
+    return () => {
+      if (textContainer) {
+        textContainer.removeEventListener('animationstart', handleAnimation);
+      }
+    };
+  }, [blurAmount, isScrolled]);
+
   const handlePageChange = (newPage) => {
     setShowMenu(false);
     setIsUnlocked(false);
     setOutOfRangeStartTime(null);
+    setIsScrolled(false); // 페이지 변경 시 isScrolled 초기화
     
     if (newPage === 'home') {
       navigate('/');
@@ -170,7 +211,7 @@ const ArtworkPage = () => {
           }}
         >
           <div 
-            className="container h-[150vh] overflow-y-auto overflow-x-hidden flex flex-col items-center"
+            className="scroll-container h-[150vh] overflow-y-auto overflow-x-hidden flex flex-col items-center"
             style={{
               transform: 'translateZ(0)',
               maxHeight: '140vh',
@@ -181,7 +222,8 @@ const ArtworkPage = () => {
             }}
           >
             <div 
-              className={`container p-6 w-[320px] ${config.className} shadow-xl mt-[50vh] mb-[80vh]`}
+              className={`text-container p-6 w-[320px] ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
+              ${blurAmount === 0 && !isScrolled ? 'animate-wobble' : ''}`}
               role="presentation"
               aria-hidden="true"
               contentEditable={true}

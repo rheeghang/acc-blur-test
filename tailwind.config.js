@@ -3,6 +3,26 @@ module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+  safelist: [
+    'bg-page1-bg',
+    'bg-page2-bg',
+    'bg-page3-bg',
+    'bg-page4-bg',
+    'bg-page5-bg',
+    'bg-page6-bg',
+    'bg-page7-bg',
+    'bg-page8-bg',
+    'text-page1-text',
+    'text-page2-text',
+    'text-page3-text',
+    'text-page4-text',
+    'text-page5-text',
+    'text-page6-text',
+    'text-page7-text',
+    'text-page8-text',
+    'text-stroke-thin',
+    'text-stroke-white-thin'
+  ],
   theme: {
     extend: {
       rotate: {
@@ -61,11 +81,22 @@ module.exports = {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' }
+        },
+        'pulse-scale': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.1)' }
+        },
+        wobble: {
+          '0%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+          '100%': { transform: 'translateY(0)' }
         }
       },
       animation: {
         'rotate-left': 'rotate-left 15s linear infinite',
-        'fadeIn': 'fadeIn 2s ease-in forwards'
+        'fadeIn': 'fadeIn 2s ease-in forwards',
+        'pulse-scale': 'pulse-scale 0.7s ease-in-out infinite',
+        wobble: 'wobble 2s ease-in-out infinite'
       },
       textShadow: {
         'stroke-thin': '-0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0.5px 0.5px 0 #000',
