@@ -232,11 +232,11 @@ const Tutorial = () => {
           }}
         >
           <div className={`p-4 ${currentConfig.bgColor} shadow-lg relative`}>
-            <p className={`text-lg leading-relaxed ${currentConfig.textColor} break-keep mb-8`}>
+            <p className={`text-lg leading-relaxed ${currentConfig.textColor} break-keep ${tutorialStep === 4 ? 'mb-0' : 'mb-8'}`}>
               {data.tutorial[`step${tutorialStep}`]}
             </p>
             
-            <div className="mt-14">
+            <div className={`${tutorialStep === 4 ? 'mt-0' : 'mt-14'}`}>
               {tutorialStep !== 4 && (
                 <div
                   className="absolute bottom-2 right-2 cursor-pointer tutorial-button"
@@ -286,4 +286,4 @@ const Tutorial = () => {
   );
 };
 
-export default Tutorial; 
+export default Tutorial;
