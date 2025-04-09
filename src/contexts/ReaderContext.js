@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useLanguage } from './LanguageContext';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
@@ -11,8 +11,45 @@ export const ReaderProvider = ({ children }) => {
 
   // 시스템의 VoiceOver/TalkBack 활성화 여부 확인
   const [isReaderEnabled, setIsReaderEnabled] = useState(() => {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // iOS VoiceOver 감지
+    if (typeof window !== 'undefined') {
+      // 1. accessibilityEnabled 확인
+      if ('accessibilityEnabled' in window.navigator) {
+        return window.navigator.accessibilityEnabled;
+      }
+      
+      // 2. VoiceOver 관련 이벤트 리스너가 있는지 확인
+      return (
+        'voiceURI' in window.speechSynthesis || 
+        'onvoiceschanged' in window.speechSynthesis
+      );
+    }
+    return false;
   });
+
+  // VoiceOver 상태 변경 감지
+  useEffect(() => {
+    const checkVoiceOver = () => {
+      if ('accessibilityEnabled' in window.navigator) {
+        setIsReaderEnabled(window.navigator.accessibilityEnabled);
+      } else {
+        setIsReaderEnabled(
+          'voiceURI' in window.speechSynthesis || 
+          'onvoiceschanged' in window.speechSynthesis
+        );
+      }
+    };
+
+    // 초기 체크
+    checkVoiceOver();
+
+    // VoiceOver 상태 변경 감지를 위한 이벤트 리스너
+    window.addEventListener('voiceschanged', checkVoiceOver);
+    
+    return () => {
+      window.removeEventListener('voiceschanged', checkVoiceOver);
+    };
+  }, []);
 
   // 페이지별 추가 안내 메시지
   const additionalGuidance = {
