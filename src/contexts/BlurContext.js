@@ -28,9 +28,29 @@ export const BlurProvider = ({ children }) => {
       setCurrentAlpha(alpha);
       
       if (!isUnlockedRef.current) {
-        const tolerance = 20; 
+        const tolerance = 20;
         const maxBlur = 15;
         
+        // 튜토리얼 4 특수 케이스: 0도 또는 360도 처리
+        if (Array.isArray(targetAlpha)) {
+          // alpha값이 0도 근처이거나 360도 근처일 때
+          const diffFrom0 = Math.abs(alpha - 0);
+          const diffFrom360 = Math.abs(alpha - 360);
+          
+          if (diffFrom0 <= tolerance || diffFrom360 <= tolerance) {
+            setBlurAmount(0);
+            setIsUnlocked(true);
+            console.log("✅ 튜토리얼 4: 0도 또는 360도 조건 충족!");
+          } else {
+            // 가장 가까운 목표 각도와의 차이를 기준으로 블러 계산
+            const minDifference = Math.min(diffFrom0, diffFrom360);
+            const blur = Math.min(maxBlur, (minDifference - tolerance) / 3);
+            setBlurAmount(blur);
+          }
+          return;
+        }
+
+        // 일반 케이스
         const alphaDifference = Math.abs(alpha - targetAlpha);
         
         if (alphaDifference <= tolerance) {
