@@ -4,14 +4,12 @@ import { useBlur } from '../contexts/BlurContext';
 import { useGuide } from '../contexts/GuideContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useMode } from '../contexts/ModeContext';
-import { useScreenReader } from '../contexts/ScreenReaderContext';
 import { Layout } from '../components/Layout';
 import MenuIcon from '../components/MenuIcon';
 import Menu from '../components/Menu';
 import pageConfig from '../config/pages.json';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
-import ScreenReaderText from '../components/ScreenReaderText';
 
 const ArtworkPage = () => {
   const { pageNumber } = useParams();

@@ -5,8 +5,6 @@ import Home from './Pages/Home';
 import Tutorial from './Tutorials/Tutorial';
 import ArtworkPage from './Pages/ArtworkPage';
 import About from './Pages/About';
-import ScreenReaderText from './components/ScreenReaderText';
-import LiveAnnouncer from './components/LiveAnnouncer';
 
 function App() {
   return (
@@ -18,7 +16,6 @@ function App() {
           <Route path="/artwork/:pageNumber" element={<ArtworkPage />} />
           <Route path="/about" element={<About />} />
         </Routes>
-        <LiveAnnouncer />
       </BrowserRouter>
     </AppProvider>
   );

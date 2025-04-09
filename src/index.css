@@ -7,9 +7,17 @@
 /* 커스텀 CSS는 여기 아래에 작성 */
 
 @layer base {
+  html {
+    @apply bg-black text-white;
+  }
   body {
-    @apply m-0 bg-vivid-blue min-h-screen font-sans font-semibold antialiased 
-    overflow-hidden leading-base;
+    @apply bg-black text-white;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 }
 
