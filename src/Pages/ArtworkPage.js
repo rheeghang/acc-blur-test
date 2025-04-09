@@ -24,6 +24,7 @@ const ArtworkPage = () => {
   const [menuIconScale, setMenuIconScale] = React.useState(1);
   const [initialAlpha, setInitialAlpha] = React.useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollRatio, setScrollRatio] = useState(0);
 
   const data = language === 'ko' ? koData : enData;
   const config = pageConfig.pages[pageNumber];
@@ -70,23 +71,19 @@ const ArtworkPage = () => {
       const container = e.target;
       const scrollPosition = container.scrollTop;
       
-      // 스크롤이 시작되면 isScrolled를 true로 설정
       if (scrollPosition > 0) {
         setIsScrolled(true);
       }
       
       const maxScroll = container.scrollHeight - container.clientHeight;
-      const scrollRatio = scrollPosition / maxScroll;
+      const ratio = scrollPosition / maxScroll;
+      setScrollRatio(ratio);
       
-      // 스크롤이 90% 이상 되었을 때 크기와 색상 모두 변경
-      if (scrollRatio >= 0.9 && !showMenu) {
+      // 스크롤이 90% 이상일 때 색상 변경
+      if (ratio >= 0.9 && !showMenu) {
         setMenuIconColor('#FF8000');
-        setMenuIconScale(1.3);
-        
-        setTimeout(() => {
-          setMenuIconColor('#FF5218');
-          setMenuIconScale(1);
-        }, 500);
+      } else {
+        setMenuIconColor('#FF5218');
       }
     };
 
@@ -170,10 +167,10 @@ const ArtworkPage = () => {
         <div className="fixed top-5 right-5 z-50">
           <button 
             onClick={() => setShowMenu(!showMenu)} 
-            className="rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 hover:bg-gray-800 transition-all z-100"
+            className={`rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 hover:bg-gray-800 transition-all z-100 
+              ${scrollRatio >= 0.9 && !showMenu ? 'animate-pulse-scale' : ''}`}
             style={{ 
               backgroundColor: menuIconColor,
-              transform: `scale(${menuIconScale})`,
               transition: 'all 0.3s ease'
             }}
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
@@ -200,8 +197,6 @@ const ArtworkPage = () => {
 
         <div 
           className="outer-container absolute w-[120%] h-[150vh] flex items-center justify-center"
-          role="presentation"
-          aria-hidden="true"
           style={{
             transform: `rotate(${config.rotationAngle}deg)`,
             top: pageNumber === '3' ? '40%' : '50%',
@@ -209,9 +204,10 @@ const ArtworkPage = () => {
             filter: isOrientationMode && !isUnlocked ? `blur(${blurAmount}px)` : 'none',
             transition: 'filter 0.5s ease, transform 0.5s ease'
           }}
+          role="presentation"
         >
           <div 
-            className="scroll-container h-[150vh] overflow-y-auto overflow-x-hidden flex flex-col items-center"
+            className="scroll-container h-[150vh] w-full overflow-y-auto overflow-x-hidden flex flex-col items-center"
             style={{
               transform: 'translateZ(0)',
               maxHeight: '140vh',
@@ -225,9 +221,6 @@ const ArtworkPage = () => {
               className={`text-container p-6 w-[320px] ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
               ${blurAmount === 0 && !isScrolled ? 'animate-wobble' : ''}`}
               role="presentation"
-              aria-hidden="true"
-              contentEditable={true}
-              suppressContentEditableWarning={true}
               style={{
                 marginTop: config.marginTop
               }}

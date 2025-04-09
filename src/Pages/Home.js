@@ -4,6 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Layout } from '../components/Layout';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
+import { useBlur } from '../contexts/BlurContext';
 
 const Modal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
@@ -103,6 +104,7 @@ const Home = () => {
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
   const gradientRatio = Math.min(100, Math.max(0, ((gamma + 90) / 180) * 100));
+  const { currentAlpha } = useBlur();
 
   const isIOS = () => {
     return (
@@ -164,6 +166,8 @@ const Home = () => {
     localStorage.setItem('language', lang);
   };
 
+  const oppositeAlpha = (currentAlpha + 180) % 360; // 반대편 각도 계산
+
   return (
     <Layout>
       <div 
@@ -199,12 +203,16 @@ const Home = () => {
           <div className="bg-key-gradient shadow-lg"
             style={{
               transition: "all 0.5s ease",
-              transform: `rotate(${gamma-90}deg)`,
+              transform: `rotate(${currentAlpha-90}deg)`,
               width: '250px',
               height: '250px',
-              borderRadius: (Math.abs(gamma) >= 40 && Math.abs(gamma) <= 70) || 
-                           (Math.abs(gamma) >= 290 && Math.abs(gamma) <= 320) 
-                           ? '125px' : '0px',
+              borderRadius: (currentAlpha >= 0 && currentAlpha <= 10) || 
+                           (oppositeAlpha >= 0 && oppositeAlpha <= 10)
+                           ? '5px' 
+                           : (currentAlpha >= 10 && currentAlpha <= 20) || 
+                             (oppositeAlpha >= 10 && oppositeAlpha <= 20)
+                             ? '10px'
+                           : '0px'
             }}
           />
         </div>

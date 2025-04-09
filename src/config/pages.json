@@ -28,15 +28,15 @@
       "targetAlpha": 45,
       "rotationAngle": 45,
       "className": "bg-page3-bg text-page3-text text-stroke-thin",
-      "marginTop": "55vh"
+      "marginTop": "65vh"
     },
     "4": {
       "targetBeta1": 2,
       "targetGamma1": -15,
       "targetBeta2": 0,
       "targetGamma2": -50,
-      "targetAlpha": 90,
-      "rotationAngle": 90,
+      "targetAlpha": 115,
+      "rotationAngle": 115,
       "className": "bg-page4-bg text-page4-text text-stroke-white-thin",
       "marginTop": "65vh"
     },
@@ -45,8 +45,8 @@
       "targetGamma1": 35,
       "targetBeta2": -4,
       "targetGamma2": 64,
-      "targetAlpha": 270,
-      "rotationAngle": 270,
+      "targetAlpha": 300,
+      "rotationAngle": 300,
       "className": "bg-page5-bg text-page5-text text-stroke-thin",
       "marginTop": "65vh"
     },
@@ -58,7 +58,7 @@
       "targetAlpha": 190,
       "rotationAngle": 190,
       "className": "bg-page6-bg text-page6-text text-stroke-thin",
-      "marginTop": "45vh"
+      "marginTop": "65vh"
     },
     "7": {
       "targetBeta1": -4,
@@ -68,7 +68,7 @@
       "targetAlpha": 135,
       "rotationAngle": 135,
       "className": "bg-page7-bg text-page7-text text-stroke-white-thin",
-      "marginTop": "65vh"
+      "marginTop": "75vh"
     },
     "8": {
       "targetBeta1": -10,
@@ -78,7 +78,7 @@
       "targetAlpha": 225,
       "rotationAngle": 225,
       "className": "bg-page8-bg text-page8-text text-stroke-white-thin",
-      "marginTop": "65vh"
+      "marginTop": "70vh"
     }
   },
   "tutorial": {
