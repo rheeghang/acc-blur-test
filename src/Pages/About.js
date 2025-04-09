@@ -60,20 +60,23 @@ const About = () => {
           </button>
         </div>
 
-        <div className="w-[100vw] h-[100vh] flex items-center justify-center">
+        <div className="w-full h-full absolute inset-0">
           <div 
-            className="container h-full overflow-y-auto overflow-x-hidden flex flex-col p-10 text-black leading-relaxed"
+            className="container h-full w-full overflow-y-auto overflow-x-hidden flex flex-col p-10 text-black leading-relaxed"
             style={{
-              background: 'linear-gradient(to left, #FFEA7B, #FACFB9)'
+              background: 'linear-gradient(to left, #FFEA7B, #FACFB9)',
+              WebkitOverflowScrolling: 'touch',
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
             }}
           >
-            <div className="text-center mb-8 w-full max-w-2xl">
+            <div className="text-center mb-14 w-full max-w-2xl mx-auto">
               <p className="text-base mb-2">{subtitle}</p>
               <h1 className="text-2xl font-bold mb-4">{title}</h1>
             </div>
             
             <div 
-              className="text-base leading-relaxed break-keep w-full max-w-2xl"
+              className="text-base leading-relaxed break-keep w-full max-w-2xl mx-auto flex-1 pb-[50px]"
               dangerouslySetInnerHTML={{ __html: body }}
             />
           </div>
