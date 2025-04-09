@@ -9,45 +9,35 @@ export const ReaderProvider = ({ children }) => {
   const { language } = useLanguage();
   const data = language === 'ko' ? koData : enData;
 
-  // 시스템의 VoiceOver/TalkBack 활성화 여부 확인
-  const [isReaderEnabled, setIsReaderEnabled] = useState(() => {
-    // iOS VoiceOver 감지
-    if (typeof window !== 'undefined') {
-      // 1. accessibilityEnabled 확인
-      if ('accessibilityEnabled' in window.navigator) {
-        return window.navigator.accessibilityEnabled;
-      }
-      
-      // 2. VoiceOver 관련 이벤트 리스너가 있는지 확인
-      return (
-        'voiceURI' in window.speechSynthesis || 
-        'onvoiceschanged' in window.speechSynthesis
-      );
-    }
-    return false;
-  });
+  const [isReaderEnabled, setIsReaderEnabled] = useState(false); // 기본값 false
 
-  // VoiceOver 상태 변경 감지
   useEffect(() => {
     const checkVoiceOver = () => {
-      if ('accessibilityEnabled' in window.navigator) {
-        setIsReaderEnabled(window.navigator.accessibilityEnabled);
-      } else {
-        setIsReaderEnabled(
-          'voiceURI' in window.speechSynthesis || 
-          'onvoiceschanged' in window.speechSynthesis
-        );
-      }
+      // iOS VoiceOver 감지
+      const isVoiceOverActive = 
+        // 1. aria-live 요소가 있는지 확인
+        document.querySelectorAll('[aria-live]').length > 0 ||
+        // 2. role="alert" 요소가 있는지 확인
+        document.querySelectorAll('[role="alert"]').length > 0 ||
+        // 3. VoiceOver가 활성화되면 추가되는 클래스 확인
+        document.documentElement.classList.contains('no-touch') ||
+        // 4. VoiceOver 커서 확인
+        document.querySelector('*:focus') !== null;
+
+      console.log("VoiceOver 감지 상태:", isVoiceOverActive);
+      setIsReaderEnabled(isVoiceOverActive);
     };
 
     // 초기 체크
     checkVoiceOver();
 
-    // VoiceOver 상태 변경 감지를 위한 이벤트 리스너
-    window.addEventListener('voiceschanged', checkVoiceOver);
+    // VoiceOver 상태 변경 감지를 위한 이벤트 리스너들
+    document.addEventListener('focusin', checkVoiceOver);
+    document.addEventListener('focusout', checkVoiceOver);
     
     return () => {
-      window.removeEventListener('voiceschanged', checkVoiceOver);
+      document.removeEventListener('focusin', checkVoiceOver);
+      document.removeEventListener('focusout', checkVoiceOver);
     };
   }, []);
 
