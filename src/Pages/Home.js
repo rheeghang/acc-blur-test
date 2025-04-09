@@ -190,7 +190,7 @@ const Home = () => {
         <div className="fixed inset-0 flex items-center justify-center z-0">
           <div className="bg-key-gradient shadow-lg"
             style={{
-              transition: "transform 0.05s linear",
+              transition: "transform 0.05s linear, border-radius 0s linear",
               transform: `rotate(${alpha - 90}deg)`,
               width: '250px',
               height: '250px',
