@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Layout } from '../components/Layout';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
-import { useBlur } from '../contexts/BlurContext';
 
 const Modal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
@@ -104,7 +103,30 @@ const Home = () => {
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
   const gradientRatio = Math.min(100, Math.max(0, ((gamma + 90) / 180) * 100));
-  const { currentAlpha } = useBlur();
+  
+  const [smoothAlpha, setSmoothAlpha] = useState(alpha);
+  const prevAlphaRef = useRef(alpha);
+
+  useEffect(() => {
+    let animationFrameId;
+    const updateAngle = () => {
+      const prev = prevAlphaRef.current;
+      let delta = alpha - prev;
+
+      // Normalize to shortest path
+      if (delta > 180) delta -= 360;
+      if (delta < -180) delta += 360;
+
+      const eased = prev + delta * 0.05; // adjust 0.05 for speed
+      prevAlphaRef.current = eased;
+      setSmoothAlpha(eased);
+
+      animationFrameId = requestAnimationFrame(updateAngle);
+    };
+
+    animationFrameId = requestAnimationFrame(updateAngle);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [alpha]);
 
   const isIOS = () => {
     return (
@@ -166,7 +188,7 @@ const Home = () => {
     localStorage.setItem('language', lang);
   };
 
-  const oppositeAlpha = (currentAlpha + 180) % 360; // 반대편 각도 계산
+  const oppositeAlpha = (alpha + 180) % 360; // 반대편 각도 계산
 
   return (
     <Layout>
@@ -203,13 +225,13 @@ const Home = () => {
           <div className="bg-key-gradient shadow-lg"
             style={{
               transition: "all 0.5s ease",
-              transform: `rotate(${currentAlpha-90}deg)`,
+              transform: `rotate(${smoothAlpha - 90}deg)`,
               width: '250px',
               height: '250px',
-              borderRadius: (currentAlpha >= 0 && currentAlpha <= 10) || 
+              borderRadius: (alpha >= 0 && alpha <= 10) || 
                            (oppositeAlpha >= 0 && oppositeAlpha <= 10)
                            ? '5px' 
-                           : (currentAlpha >= 10 && currentAlpha <= 20) || 
+                           : (alpha >= 10 && alpha <= 20) || 
                              (oppositeAlpha >= 10 && oppositeAlpha <= 20)
                              ? '10px'
                            : '0px'

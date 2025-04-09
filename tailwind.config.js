@@ -51,8 +51,8 @@ module.exports = {
         'page3-bg': '#26277D',
         'page3-text': '#00EA67', 
 
-        'page4-bg': '#D0D0D0',
-        'page4-text': '#FF5218',
+        'page4-bg': '#FF5526',
+        'page4-text': '#CAFEFF',
 
         'page5-bg': '#534546',
         'page5-text': '#FF93F5',
@@ -88,7 +88,7 @@ module.exports = {
         },
         wobble: {
           '0%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
+          '50%': { transform: 'translateY(-30px)' },
           '100%': { transform: 'translateY(0)' }
         }
       },
@@ -96,7 +96,7 @@ module.exports = {
         'rotate-left': 'rotate-left 15s linear infinite',
         'fadeIn': 'fadeIn 2s ease-in forwards',
         'pulse-scale': 'pulse-scale 0.7s ease-in-out infinite',
-        wobble: 'wobble 2s ease-in-out infinite'
+        wobble: 'wobble 1.2s ease-in-out infinite'
       },
       textShadow: {
         'stroke-thin': '-0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0.5px 0.5px 0 #000',
