@@ -55,30 +55,38 @@ const Tutorial = () => {
   }, [tutorialStep]);
 
   useEffect(() => {
+    console.log("🎯 Reader 상태:", { isReaderEnabled });
+  }, [isReaderEnabled]);
+
+  useEffect(() => {
     if (isReaderEnabled) {
-      console.log("🔊 초기 안내 메시지 재생");
+      console.log("🔊 초기 안내 메시지 재생 시도");
       readGuidance('tutorial', 'navigation');
     }
   }, [isReaderEnabled, readGuidance, language]);
 
   useEffect(() => {
-    if (blurAmount === 0 && isReaderEnabled) {
-      console.log("✅ blur=0, 컨텐츠 읽기 시작");
+    if (blurAmount === 0) {
+      console.log("🎯 Blur 상태:", { blurAmount, isReaderEnabled });
       
-      // 약간의 지연을 주어 초기 안내와 겹치지 않도록 함
-      setTimeout(() => {
-        // 페이지 컨텐츠 읽기
-        readPageContent('tutorial', `step${tutorialStep}`);
+      if (isReaderEnabled) {
+        console.log("✅ blur=0, 컨텐츠 읽기 시작");
         
-        // 잠시 후 다음 단계 안내
+        // 약간의 지연을 주어 초기 안내와 겹치지 않도록 함
         setTimeout(() => {
-          if (tutorialStep === 4) {
-            readGuidance('tutorial', 'completion');
-          } else {
-            readGuidance('tutorial', 'next');
-          }
-        }, 500); // 컨텐츠를 다 읽은 후 안내하도록 지연
-      }, 1000);
+          // 페이지 컨텐츠 읽기
+          readPageContent('tutorial', `step${tutorialStep}`);
+          
+          // 잠시 후 다음 단계 안내
+          setTimeout(() => {
+            if (tutorialStep === 4) {
+              readGuidance('tutorial', 'completion');
+            } else {
+              readGuidance('tutorial', 'next');
+            }
+          }, 500); // 컨텐츠를 다 읽은 후 안내하도록 지연
+        }, 1000);
+      }
     }
   }, [blurAmount, tutorialStep, isReaderEnabled, readPageContent, readGuidance, language]);
 
