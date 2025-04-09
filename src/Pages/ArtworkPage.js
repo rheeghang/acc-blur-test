@@ -182,6 +182,8 @@ const ArtworkPage = () => {
           >
             <div 
               className={`container p-6 w-[320px] ${config.className} shadow-xl mt-[50vh] mb-[80vh]`}
+              role="presentation"
+              aria-hidden="true"
               style={{
                 marginTop: config.marginTop
               }}
