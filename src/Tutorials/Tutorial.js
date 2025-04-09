@@ -56,25 +56,31 @@ const Tutorial = () => {
 
   useEffect(() => {
     if (isReaderEnabled) {
+      console.log("🔊 초기 안내 메시지 재생");
       readGuidance('tutorial', 'navigation');
     }
-  }, []);
+  }, [isReaderEnabled, readGuidance, language]);
 
   useEffect(() => {
-    if (blurAmount === 0) {
-      if (isReaderEnabled) {
+    if (blurAmount === 0 && isReaderEnabled) {
+      console.log("✅ blur=0, 컨텐츠 읽기 시작");
+      
+      // 약간의 지연을 주어 초기 안내와 겹치지 않도록 함
+      setTimeout(() => {
         // 페이지 컨텐츠 읽기
         readPageContent('tutorial', `step${tutorialStep}`);
         
-        // 다음 단계 안내
-        if (tutorialStep === 4) {
-          readGuidance('tutorial', 'completion');
-        } else {
-          readGuidance('tutorial', 'next');
-        }
-      }
+        // 잠시 후 다음 단계 안내
+        setTimeout(() => {
+          if (tutorialStep === 4) {
+            readGuidance('tutorial', 'completion');
+          } else {
+            readGuidance('tutorial', 'next');
+          }
+        }, 500); // 컨텐츠를 다 읽은 후 안내하도록 지연
+      }, 1000);
     }
-  }, [blurAmount, tutorialStep]);
+  }, [blurAmount, tutorialStep, isReaderEnabled, readPageContent, readGuidance, language]);
 
   useEffect(() => {
     const handleOrientation = (event) => {
