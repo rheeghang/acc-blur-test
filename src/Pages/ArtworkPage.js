@@ -38,6 +38,8 @@ const ArtworkPage = () => {
   const [menuIconColor, setMenuIconColor] = React.useState('#000000'); // 기본 검정색
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrollRatio, setScrollRatio] = useState(0);
+  const [hasReadContent, setHasReadContent] = useState(false);
+  const [isIntroRead, setIsIntroRead] = useState(false);
 
   const data = language === 'ko' ? koData : enData;
   const config = pageConfig.pages[pageNumber];
@@ -151,6 +153,88 @@ const ArtworkPage = () => {
     };
   }, [blurAmount, isScrolled]);
 
+  // 페이지 로드 시 가이던스 intro 읽기
+  useEffect(() => {
+    if (!isIntroRead && data[`page${pageNumber}`]?.guidance?.intro) {
+      setIsIntroRead(true);
+      // intro 내용을 읽기 위한 div 추가
+      const introElement = document.createElement('div');
+      introElement.setAttribute('aria-live', 'polite');
+      introElement.textContent = data[`page${pageNumber}`].guidance.intro;
+      document.body.appendChild(introElement);
+      
+      // 일정 시간 후 제거
+      setTimeout(() => {
+        document.body.removeChild(introElement);
+      }, 1000);
+    }
+  }, [pageNumber, data, isIntroRead]);
+
+  // 콘텐츠 클릭 가능 여부 확인
+  const isContentInteractive = !isOrientationMode || (isOrientationMode && blurAmount === 0);
+
+  // blur가 0이 되면 콘텐츠 읽기 시작
+  useEffect(() => {
+    if (isContentInteractive && !hasReadContent && pageContent) {
+      setHasReadContent(true);
+      
+      const readContent = async () => {
+        // 타이틀 읽기
+        const titleElement = document.createElement('div');
+        titleElement.setAttribute('aria-live', 'assertive');
+        titleElement.textContent = pageContent.title;
+        document.body.appendChild(titleElement);
+        
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        document.body.removeChild(titleElement);
+
+        // 아티스트 읽기
+        const artistElement = document.createElement('div');
+        artistElement.setAttribute('aria-live', 'assertive');
+        artistElement.textContent = pageContent.artist;
+        document.body.appendChild(artistElement);
+        
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        document.body.removeChild(artistElement);
+
+        // 캡션 읽기
+        const captionElement = document.createElement('div');
+        captionElement.setAttribute('aria-live', 'assertive');
+        captionElement.textContent = pageContent.caption.replace(/<[^>]*>/g, '');
+        document.body.appendChild(captionElement);
+        
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        document.body.removeChild(captionElement);
+
+        // 본문 읽기
+        const bodyElement = document.createElement('div');
+        bodyElement.setAttribute('aria-live', 'assertive');
+        bodyElement.textContent = pageContent.body.replace(/<[^>]*>/g, '');
+        document.body.appendChild(bodyElement);
+        
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        document.body.removeChild(bodyElement);
+
+        // 메뉴 안내
+        const menuElement = document.createElement('div');
+        menuElement.setAttribute('aria-live', 'polite');
+        menuElement.textContent = "우측 상단에 메뉴가 있습니다";
+        document.body.appendChild(menuElement);
+        
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        document.body.removeChild(menuElement);
+      };
+
+      readContent();
+    }
+  }, [isContentInteractive, hasReadContent, pageContent]);
+
+  // 페이지 변경 시 상태 초기화
+  useEffect(() => {
+    setHasReadContent(false);
+    setIsIntroRead(false);
+  }, [pageNumber]);
+
   const handlePageChange = (newPage) => {
     setShowMenu(false);
     setIsUnlocked(false);
@@ -172,7 +256,7 @@ const ArtworkPage = () => {
     <Layout>
       <div className="min-h-screen bg-base-color fixed w-full flex items-center justify-center">
         <div className="fixed top-2 left-0 right-0 text-center z-10 flex justify-center space-x-4">
-          <p className="text-xl font-bold text-white">
+          <p className="text-xl font-bold text-white" aria-hidden="true">
             {Math.round(currentAlpha)}°
             {/* 디버깅용 추가 정보 */}
             {/* <span className="text-sm ml-2">
@@ -220,7 +304,8 @@ const ArtworkPage = () => {
             top: pageNumber === '3' ? '40%' : '50%',
             marginTop: '-75vh',
             filter: isOrientationMode && !isUnlocked ? `blur(${blurAmount}px)` : 'none',
-            transition: 'filter 0.5s ease, transform 0.5s ease'
+            transition: 'filter 0.5s ease, transform 0.5s ease',
+            pointerEvents: isContentInteractive ? 'auto' : 'none' // 클릭 이벤트 제어
           }}
           role="presentation"
         >
@@ -234,11 +319,14 @@ const ArtworkPage = () => {
               msOverflowStyle: 'none',
               scrollbarWidth: 'none',
             }}
+            aria-hidden={!isContentInteractive} // 스크린리더 접근 제어
           >
             <div 
               className={`text-container p-6 w-[320px] ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
               ${blurAmount === 0 && !isScrolled ? 'animate-wobble' : ''}`}
-              role="presentation"
+              role="article"
+              aria-label={pageContent.title}
+              tabIndex={isContentInteractive ? 0 : -1} // 키보드 포커스 제어
               style={{
                 marginTop: config.marginTop
               }}
