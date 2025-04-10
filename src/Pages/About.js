@@ -9,6 +9,8 @@ import enData from '../i18n/en.json';
 
 const About = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [scrollRatio, setScrollRatio] = useState(0);
+  const [menuIconColor, setMenuIconColor] = useState('#000000');
   const { language } = useLanguage();
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
@@ -30,16 +32,50 @@ const About = () => {
     // 페이지 진입시 한 번만 실행
   }, []);
 
+  useEffect(() => {
+    const img = new Image();
+    img.src = '/title.png';
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = (e) => {
+      const container = e.target;
+      const scrollPosition = container.scrollTop;
+      const maxScroll = container.scrollHeight - container.clientHeight;
+      const ratio = scrollPosition / maxScroll;
+      setScrollRatio(ratio);
+      
+      // 스크롤이 90% 이상일 때 짙은 회색으로 변경
+      if (ratio >= 0.9 && !showMenu) {
+        setMenuIconColor('#333333');
+      } else {
+        setMenuIconColor('#000000');
+      }
+    };
+
+    const containers = document.querySelectorAll('.scroll-container');
+    containers.forEach(container => {
+      container.addEventListener('scroll', handleScroll);
+    });
+
+    return () => {
+      containers.forEach(container => {
+        container.removeEventListener('scroll', handleScroll);
+      });
+    };
+  }, [showMenu]);
+
   return (
     <Layout>
-      <div className="min-h-screen bg-black fixed w-full flex items-center justify-center white-space-pre-wrap">
+      <div className="min-h-screen bg-base-color fixed w-full flex items-center justify-center">
         {/* 메뉴 아이콘 */}
         <div className="fixed top-5 right-5 z-50">
           <button 
             onClick={() => setShowMenu(!showMenu)} 
-            className="rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 hover:bg-gray-800 transition-all z-100"
+            className={`menu-icon rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 hover:bg-gray-800 transition-all z-100 
+              ${scrollRatio >= 0.9 && !showMenu ? 'animate-pulse-scale' : ''}`}
             style={{ 
-              backgroundColor: '#FF5218',
+              backgroundColor: menuIconColor,
               transition: 'all 0.3s ease'
             }}
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
@@ -64,25 +100,44 @@ const About = () => {
           </button>
         </div>
 
-        <div className="w-full h-full absolute inset-0">
-          <div 
-            className="container h-full w-full overflow-y-auto overflow-x-hidden flex flex-col p-10 text-black leading-relaxed"
+        {/* 바깥 컨테이너 */}
+        <div className="outer-container absolute w-[120%] h-[150vh] flex items-center justify-center"
+          style={{
+            top: '50%',
+            marginTop: '-75vh',
+          }}
+        >
+          {/* 스크롤 컨테이너 */}
+          <div className="scroll-container h-[150vh] w-full overflow-y-auto overflow-x-hidden flex flex-col items-center"
             style={{
-              background: 'linear-gradient(to left, #FFEA7B, #FACFB9)',
-              WebkitOverflowScrolling: 'touch',
+              transform: 'translateZ(0)',
+              maxHeight: '140vh',
+              overflowY: 'auto',
+              WebkitScrollbar: 'none',
               msOverflowStyle: 'none',
               scrollbarWidth: 'none',
             }}
           >
-            <div className="text-center mb-14 w-full max-w-2xl mx-auto">
-              <p className="text-base mb-2">{subtitle}</p>
-              <h1 className="text-2xl font-bold mb-4">{title}</h1>
+            {/* 텍스트 컨테이너 */}
+            <div className="text-container w-[320px] shadow-xl mt-[50vh] mb-[80vh]"
+              style={{
+                background: 'linear-gradient(to left, #FFEA7B, #FACFB9)',
+              }}
+            >
+              <div className="p-10">
+                {/* 타이틀 이미지를 텍스트 컨테이너 상단에 배치 */}
+                <div className="flex justify-center mb-8">
+                  <img 
+                    src="/title.png" 
+                    alt="우리의 몸에는 타인이 깃든다." 
+                    className="w-[90%] h-auto"
+                  />
+                </div>
+                <div className="text-base text-black leading-relaxed break-keep"
+                  dangerouslySetInnerHTML={{ __html: body }}
+                />
+              </div>
             </div>
-            
-            <div 
-              className="text-base leading-relaxed break-keep w-full max-w-2xl mx-auto flex-1 pb-[50px]"
-              dangerouslySetInnerHTML={{ __html: body }}
-            />
           </div>
         </div>
 

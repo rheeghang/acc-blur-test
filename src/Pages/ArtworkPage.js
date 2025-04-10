@@ -35,7 +35,7 @@ const ArtworkPage = () => {
   const { language } = useLanguage();
   const { isOrientationMode } = useMode();
   const [outOfRangeStartTime, setOutOfRangeStartTime] = React.useState(null);
-  const [menuIconColor, setMenuIconColor] = React.useState('#FF5218');
+  const [menuIconColor, setMenuIconColor] = React.useState('#000000'); // 기본 검정색
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrollRatio, setScrollRatio] = useState(0);
 
@@ -97,11 +97,11 @@ const ArtworkPage = () => {
       const ratio = scrollPosition / maxScroll;
       setScrollRatio(ratio);
       
-      // 스크롤이 90% 이상일 때 색상 변경
+      // 스크롤이 90% 이상일 때 짙은 회색으로 변경
       if (ratio >= 0.9 && !showMenu) {
-        setMenuIconColor('#FF8000');
+        setMenuIconColor('#333333');
       } else {
-        setMenuIconColor('#FF5218');
+        setMenuIconColor('#000000');
       }
     };
 

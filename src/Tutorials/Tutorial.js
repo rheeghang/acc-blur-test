@@ -242,7 +242,7 @@ const Tutorial = () => {
   return (
     <Layout>
       <div 
-        className="relative min-h-screen overflow-hidden bg-base-color"
+        className="relative min-h-screen overflow-hidden bg-[#B7B7B7]"
         onTouchStart={(e) => {
           // 메뉴 아이콘이나 튜토리얼 버튼 영역이면 트리플 탭 처리하지 않음
           if (!e.target.closest('.tutorial-button') && !e.target.closest('.menu-icon')) {
@@ -291,7 +291,7 @@ const Tutorial = () => {
 
         {tutorialStep === 4 && (
           <button
-            className={`menu-icon fixed top-3 right-3 cursor-pointer rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 transition-all z-50 bg-key-color ${
+            className={`menu-icon fixed top-3 right-3 cursor-pointer rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 transition-all z-50 bg-black ${
               isUnlocked && !showMenu ? 'animate-pulse-scale' : ''
             }`}
             onClick={(e) => {
@@ -372,7 +372,7 @@ const Tutorial = () => {
                 >
                   <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
                     <path d="M5 12H19M19 12L12 5M19 12L12 19" 
-                      stroke="#FF5218" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
               )}

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useMode } from '../contexts/ModeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
+import { useNavigate } from 'react-router-dom';
 
 const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
-  const { isOrientationMode, setIsOrientationMode } = useMode();
   const { language } = useLanguage();
+  const navigate = useNavigate();
   
   // 언어에 따른 데이터 선택
   const data = language === 'ko' ? koData : enData;
@@ -26,57 +26,56 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [previousPage, setPreviousPage] = useState(pageNumber);
 
-  // 모드 토글 핸들러
-  const handleModeToggle = () => {
-    setIsOrientationMode(!isOrientationMode);
-  };
-
-  // 버튼 텍스트를 언어에 따라 표시
-  const buttonText = {
-    home: language === 'ko' ? '홈' : 'Home',
-    about: language === 'ko' ? '전시 설명' : 'About'
+  const handleNavigation = (path) => {
+    switch(path) {
+      case 'home':
+        navigate('/');
+        break;
+      case 'howto':
+        navigate('/howto');
+        break;
+      case 'about':
+        navigate('/about');
+        break;
+      default:
+        onPageSelect(path);
+    }
+    onClose();
   };
 
   const handlePageSelect = (pageNum) => {
-    setPreviousPage(pageNumber); // 현재 페이지 저장
+    setPreviousPage(pageNumber);
     setSelectedPage(pageNum);
     setIsTransitioning(true);
     
-    // 0.5초 후에 페이지 전환
     setTimeout(() => {
       onPageSelect(pageNum);
       onClose();
     }, 500);
   };
 
+  const navItems = [
+    { 
+      id: 'home', 
+      label: language === 'ko' ? '처음으로' : 'Home',
+      action: () => handleNavigation('home')
+    },
+    { 
+      id: 'howto', 
+      label: language === 'ko' ? '웹 사용법' : 'How to Use',
+      action: () => handleNavigation('howto')
+    },
+    { 
+      id: 'about', 
+      label: language === 'ko' ? '전시설명' : 'About',
+      action: () => handleNavigation('about')
+    }
+  ];
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-20 z-51 flex items-center justify-center text-center">
+    <div className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center text-center">
       <div className="menu-container w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold">
         <div className="h-12"></div>
-
-        <div className="px-4 py-2 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <span className="text-black !text-black z-100">
-              {language === 'ko' 
-                ? (isOrientationMode ? '각도 모드' : '각도해제 모드')
-                : (isOrientationMode ? 'Angle Mode' : 'Angle Off')
-              }
-            </span>
-            <button 
-              onClick={handleModeToggle}
-              className="focus:outline-none"
-              aria-label="모드 전환"
-            >
-              <div className={`relative w-12 h-6 rounded-full transition-colors duration-200 ease-in-out ${
-                isOrientationMode ? 'bg-page3-bg' : 'bg-gray-300'
-              }`}>
-                <div className={`absolute top-0 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-200 ease-in-out ${
-                  isOrientationMode ? 'translate-x-6' : 'translate-x-0'
-                }`} />
-              </div>
-            </button>
-          </div>
-        </div>
 
         <div className="flex-1 overflow-y-auto py-2 px-2">
           <div className="flex flex-col items-center">
@@ -99,20 +98,21 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
         </div>
 
         <div className="flex h-12">
-          <button
-            onClick={() => handlePageSelect('home')}
-            className={`w-1/2 h-full bg-white text-black border border-gray-200 hover:bg-gray-50 transition-all duration-500
-              ${isTransitioning && selectedPage === 'home' ? 'w-[55%]' : 'w-1/2'}`}
-          >
-            {buttonText.home}
-          </button>
-          <button
-            onClick={() => handlePageSelect('about')}
-            className={`w-1/2 h-full bg-black text-white hover:bg-gray-900 transition-all duration-500
-              ${isTransitioning && selectedPage === 'about' ? 'w-[55%]' : 'w-1/2'}`}
-          >
-            {buttonText.about}
-          </button>
+          {navItems.map((item, index) => (
+            <React.Fragment key={item.id}>
+              {index > 0 && (
+                <div className="flex items-center text-gray-300">
+                  <span>|</span>
+                </div>
+              )}
+              <button
+                onClick={item.action}
+                className="flex-1 h-full text-black hover:text-gray-600 transition-colors duration-200"
+              >
+                {item.label}
+              </button>
+            </React.Fragment>
+          ))}
         </div>
       </div>
     </div>
