@@ -6,30 +6,47 @@ import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
 import { useBlur } from '../contexts/BlurContext';
 
+const MOBILE_MAX_WIDTH = 1024; // 태블릿 크기까지 허용
+
 const Modal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  const isLegacyIOS = () => {
-    const match = navigator.userAgent.match(/OS (\d+)_/);
-    return match && parseInt(match[1], 10) < 13;
-  };
-  
-  const modalMessage = isLegacyIOS() 
-    ? "iOS 13 이하 디바이스에선 방향 센서 사용이 어려운 기기입니다. 데스크에 문의해 주세요."
-    : "작품 감상을 위해 기기의 방향 감지 센서를 허용해 주세요.";
-  const buttonText = isLegacyIOS() ? "확인" : "허용 후 계속하기";
+  console.log({
+    ua: navigator.userAgent,
+    platform: navigator.platform,
+    maxTouchPoints: navigator.maxTouchPoints,
+    width: window.innerWidth,
+  });
 
-  if (!isMobile) return null;
+  // 화면 크기가 MOBILE_MAX_WIDTH보다 큰 경우 모바일 접속 안내 메시지
+  if (window.innerWidth > MOBILE_MAX_WIDTH) {
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/50 transition-opacity pointer-events-none" />
+        <div className="relative z-[101] w-80 rounded-lg bg-white p-6 shadow-xl">
+          <h3 className="mb-4 text-xl font-bold text-gray-900 select-none">
+            모바일로 접속해 주세요
+          </h3>
+          <p className="mb-6 text-gray-600 select-none">
+            이 작품은 모바일 기기에서만 감상하실 수 있습니다.
+          </p>
+          <button
+            onClick={onClose}
+            className="w-full rounded-md bg-black px-4 py-2 text-white transition-colors active:bg-gray-800"
+            style={{ WebkitTapHighlightColor: 'transparent' }}
+          >
+            확인
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const modalMessage = "작품 감상을 위해 기기의 방향 감지 센서를 허용해 주세요.";
+  const buttonText = "허용 후 계속하기";
 
   const handlePermissionRequest = async (e) => {
-    if (isLegacyIOS()) {
-      onClose();
-      return;
-    }
-
     try {
-      // iOS 13+ 디바이스(iPhone/iPad)에서 권한 요청
       if (typeof DeviceOrientationEvent !== 'undefined' && 
           typeof DeviceOrientationEvent.requestPermission === 'function') {
         const permission = await DeviceOrientationEvent.requestPermission();
@@ -39,7 +56,7 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
           console.error('방향 감지 센서 권한이 거부되었습니다.');
         }
       } else {
-        // 안드로이드나 이전 버전 iOS 디바이스
+        // 안드로이드 기기
         onConfirm();
       }
     } catch (error) {
@@ -81,7 +98,6 @@ const LanguageSelector = ({ language, onLanguageChange }) => {
   };
 
   return (
-    
     <div className="fixed bottom-[15vh] left-0 right-0 flex justify-center">
     <div className="text-xl font-bold text-black">
       <button 
@@ -109,8 +125,14 @@ const LanguageSelector = ({ language, onLanguageChange }) => {
 };
 
 const isIOS = () => {
+  // iPad detection for iOS 13+
+  const isIPad = navigator.maxTouchPoints &&
+                 navigator.maxTouchPoints > 2 &&
+                 /MacIntel/.test(navigator.platform);
+
   return (
-    ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) ||
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    isIPad ||
     (navigator.userAgent.includes("Mac") && "ontouchend" in document)
   );
 };
@@ -141,19 +163,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-      if (isIOS()) {
-        setShowModal(true);
-      } else {
-        setPermissionGranted(true);
-        setShowModal(false);
-      }
-    } else {
-      setPermissionGranted(true);
-      setShowModal(false);
-    }
+    setShowModal(true);  // 항상 모달을 표시하고, Modal 컴포넌트에서 내용을 결정
   }, []);
 
   useEffect(() => {

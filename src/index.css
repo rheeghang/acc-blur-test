@@ -10,12 +10,12 @@
   html {
     @apply bg-black text-white;
     overscroll-behavior-y: contain;
-    overscroll-behavior-x: none;
+    overscroll-behavior-x: contain;
   }
   body {
     @apply bg-black text-white;
     overscroll-behavior-y: contain;
-    overscroll-behavior-x: none;
+    overscroll-behavior-x: contain;
     overflow: hidden;
   }
 
