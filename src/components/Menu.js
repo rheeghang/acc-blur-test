@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ToggleSwitch from './ToggleSwitch';
 import { useMode } from '../contexts/ModeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import koData from '../i18n/ko.json';

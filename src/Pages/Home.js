@@ -1,22 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Layout } from '../components/Layout';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
-import { useReader } from '../contexts/ReaderContext';
 import { useBlur } from '../contexts/BlurContext';
 
 const Modal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  const modalMessage = "작품 감상을 위해 기기의 방향 감지 센서 사용이 필요합니다 ";
+  const modalMessage = "작품 감상을 위해 기기의 방향 감지 센서를 허용해 주세요. ";
   const buttonText = "허용 후 계속하기";
 
   if (!isMobile) return null;
-
-  let isProcessing = false;
 
   const handlePermissionRequest = async (e) => {
     try {
@@ -107,20 +104,11 @@ const Home = () => {
   const [permissionGranted, setPermissionGranted] = useState(false);
   const [showModal, setShowModal] = useState(true);
   const [startButtonOpacity, setStartButtonOpacity] = useState(0);
-  const [showStartButton, setShowStartButton] = useState(false);
+  const [introSpoken, setIntroSpoken] = useState(false);
   const { language, changeLanguage } = useLanguage();
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
   const gradientRatio = Math.min(100, Math.max(0, ((gamma + 90) / 180) * 100));
-  const { 
-    isReaderEnabled, 
-    speak, 
-    stop,
-    readerSettings,
-    updateSettings,
-    readPageContent,
-    readGuidance
-  } = useReader();
   const { currentAlpha } = useBlur();
 
   const handleOrientation = (event) => {
@@ -151,7 +139,6 @@ const Home = () => {
 
   useEffect(() => {
     const showTimer = setTimeout(() => {
-      setShowStartButton(true);
       setTimeout(() => {
         setStartButtonOpacity(1);
       }, 100);
@@ -164,18 +151,6 @@ const Home = () => {
     img.src = '/title.png';
   }, []);
 
-  useEffect(() => {
-    // 페이지 진입시
-    readGuidance('home', 'enter');
-  }, []);
-
-  useEffect(() => {
-    // 시작 버튼이 나타나고(opacity가 1) 특정 각도 범위에 들어왔을 때
-    if (startButtonOpacity === 1) {
-      readGuidance('home', 'start');
-    }
-  }, [startButtonOpacity]);
-
   const handleStart = () => {
     navigate('/tutorial/step/1');
   };
@@ -187,13 +162,6 @@ const Home = () => {
 
   const oppositeAlpha = (alpha + 180) % 360;
 
-  // 예시: 버튼 클릭시 텍스트 읽기
-  const handleButtonClick = () => {
-    if (isReaderEnabled) {
-      speak("버튼이 클릭되었습니다.");
-    }
-  };
-
   return (
     <Layout>
       <div 
@@ -202,14 +170,43 @@ const Home = () => {
           background: `linear-gradient(to left, #FFEA7B ${gradientRatio - 15}%, #FACFB9 ${gradientRatio + 15}%)`
         }}>
       <div className="min-h-screen p-4 relative flex flex-col">
+        {/* intro 메시지 - 페이지 진입 시 */}
+        <div 
+          aria-live="polite" 
+          className="sr-only"
+        >
+          {data.home.guidance.intro}
+        </div>
+
         <Modal 
           isOpen={showModal}
           onClose={() => setShowModal(false)}
           onConfirm={() => {
             setPermissionGranted(true);
             setShowModal(false);
+            setIntroSpoken(false);
           }}
         />
+
+        {/* intro 메시지 - 허용 버튼 클릭 후 */}
+        {permissionGranted && !introSpoken && (
+          <div 
+            aria-live="polite" 
+            className="sr-only"
+          >
+            {data.home.guidance.enter}
+          </div>
+        )}
+
+        {/* start 메시지 - intro 완료되고 opacity가 1일 때 */}
+        {startButtonOpacity === 1 && introSpoken && (
+          <div 
+            aria-live="assertive" 
+            className="sr-only"
+          >
+            {data.home.guidance.start}
+          </div>
+        )}
 
         <div className="fixed bottom-[23vh] left-2 right-0 flex flex-col items-center space-y-2 text-center z-10">
           <div className="items-center space-y-2 text-center font-bold text-black">

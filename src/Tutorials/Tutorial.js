@@ -9,7 +9,6 @@ import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
 import MenuIcon from '../components/MenuIcon';
 import Menu from '../components/Menu';
-import { useReader } from '../contexts/ReaderContext';
 import Guide from '../components/Guide';
 
 const Tutorial = () => {
@@ -35,10 +34,9 @@ const Tutorial = () => {
   const { showGuideMessage } = useGuide();
   const { language } = useLanguage();
   const data = language === 'ko' ? koData : enData;
-  const { readGuidance, readPageContent } = useReader();
   const [showGuide, setShowGuide] = useState(true);
   const [lastInputType, setLastInputType] = useState(null);
-  const [showIntroMessage, setShowIntroMessage] = useState(false); // New state for intro message
+  const [showIntroMessage, setShowIntroMessage] = useState(false);
 
   // 현재 설정 가져오기
   const currentConfig = pageConfig.tutorial[tutorialStep];
@@ -71,10 +69,6 @@ const Tutorial = () => {
   // 컴포넌트 마운트 시 전체 상태 확인
   useEffect(() => {
     console.log("📱 Tutorial 컴포넌트 마운트");
-    console.log("📱 Reader 초기 상태:", {
-      readGuidance: !!readGuidance,
-      readPageContent: !!readPageContent,
-    });
     console.log("📱 기타 상태:", {
       tutorialStep,
       blurAmount,
@@ -270,8 +264,11 @@ const Tutorial = () => {
           </div>
         )}
 
-        {(blurAmount === 0 && hasIntroSpoken || hasContentAnnounced) && (
-          <div aria-live="assertive" className="sr-only">
+        {((blurAmount === 0 && hasIntroSpoken) || hasContentAnnounced) && (
+          <div 
+            aria-live="assertive" 
+            className="sr-only"
+          >
             {getTutorialMessage(tutorialStep)}
             {tutorialStep === 4 
               ? "화면을 빠르게 세번 터치하여 메뉴를 열어주세요."

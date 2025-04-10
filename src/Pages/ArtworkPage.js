@@ -21,8 +21,6 @@ const ArtworkPage = () => {
   const { isOrientationMode } = useMode();
   const [outOfRangeStartTime, setOutOfRangeStartTime] = React.useState(null);
   const [menuIconColor, setMenuIconColor] = React.useState('#FF5218');
-  const [menuIconScale, setMenuIconScale] = React.useState(1);
-  const [initialAlpha, setInitialAlpha] = React.useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrollRatio, setScrollRatio] = useState(0);
 

@@ -1,26 +1,32 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AppProvider } from './providers/AppProvider';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { BlurProvider } from './contexts/BlurContext';
+import { GuideProvider } from './contexts/GuideContext';
+import { ModeProvider } from './contexts/ModeContext';
 import Home from './Pages/Home';
 import Tutorial from './Tutorials/Tutorial';
 import ArtworkPage from './Pages/ArtworkPage';
 import About from './Pages/About';
-import { ReaderProvider } from './contexts/ReaderContext';
 
 function App() {
   return (
-    <AppProvider>
-      <ReaderProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/tutorial/step/:number" element={<Tutorial />} />
-            <Route path="/artwork/:pageNumber" element={<ArtworkPage />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
-        </BrowserRouter>
-      </ReaderProvider>
-    </AppProvider>
+    <LanguageProvider>
+      <BlurProvider>
+        <GuideProvider>
+          <ModeProvider>
+            <Router>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/tutorial/step/:step" element={<Tutorial />} />
+                <Route path="/artwork/:pageNumber" element={<ArtworkPage />} />
+              </Routes>
+            </Router>
+          </ModeProvider>
+        </GuideProvider>
+      </BlurProvider>
+    </LanguageProvider>
   );
 }
 
