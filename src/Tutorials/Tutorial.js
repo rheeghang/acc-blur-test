@@ -22,6 +22,7 @@ const Tutorial = () => {
     return isNaN(step) || step < 1 || step > 4 ? 1 : step;
   });
 
+  const [hasIntroSpoken, setHasIntroSpoken] = useState(false);
   const [alphaInit, setAlphaInit] = useState(null);
   const [currentAlpha, setCurrentAlpha] = useState(0);
   const [currentBeta, setCurrentBeta] = useState(0);
@@ -32,8 +33,9 @@ const Tutorial = () => {
   const { showGuideMessage } = useGuide();
   const { language } = useLanguage();
   const data = language === 'ko' ? koData : enData;
-  const { readGuidance, readPageContent, isReaderEnabled } = useReader();
+  const { readGuidance, readPageContent } = useReader();
   const [showGuide, setShowGuide] = useState(true);
+  const [lastInputType, setLastInputType] = useState(null);
 
   // 현재 설정 가져오기
   const currentConfig = pageConfig.tutorial[tutorialStep];
@@ -58,7 +60,6 @@ const Tutorial = () => {
   useEffect(() => {
     console.log("📱 Tutorial 컴포넌트 마운트");
     console.log("📱 Reader 초기 상태:", {
-      isReaderEnabled,
       readGuidance: !!readGuidance,
       readPageContent: !!readPageContent,
     });
@@ -70,40 +71,32 @@ const Tutorial = () => {
   }, []); // 마운트 시에만 실행
 
   useEffect(() => {
-    console.log("🎯 Reader 상태 변경:", { isReaderEnabled });
-  }, [isReaderEnabled]);
-
-  useEffect(() => {
-    if (isReaderEnabled) {
-      console.log("🔊 초기 안내 메시지 재생 시도");
-      readGuidance('tutorial', 'navigation');
-    }
-  }, [isReaderEnabled, readGuidance, language]);
+    const timer = setTimeout(() => {
+      setHasIntroSpoken(true);
+    }, 3000); // Adjust timing based on the intro text duration
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (blurAmount === 0) {
-      console.log("🎯 Blur 상태:", { blurAmount, isReaderEnabled });
+
       
-      if (isReaderEnabled) {
-        console.log("✅ blur=0, 컨텐츠 읽기 시작");
+      // 약간의 지연을 주어 초기 안내와 겹치지 않도록 함
+      setTimeout(() => {
+        // 페이지 컨텐츠 읽기
+        readPageContent('tutorial', `step${tutorialStep}`);
         
-        // 약간의 지연을 주어 초기 안내와 겹치지 않도록 함
+        // 잠시 후 다음 단계 안내
         setTimeout(() => {
-          // 페이지 컨텐츠 읽기
-          readPageContent('tutorial', `step${tutorialStep}`);
-          
-          // 잠시 후 다음 단계 안내
-          setTimeout(() => {
-            if (tutorialStep === 4) {
-              readGuidance('tutorial', 'completion');
-            } else {
-              readGuidance('tutorial', 'next');
-            }
-          }, 500); // 컨텐츠를 다 읽은 후 안내하도록 지연
-        }, 1000);
-      }
+          if (tutorialStep === 4) {
+            readGuidance('tutorial', 'completion');
+          } else {
+            readGuidance('tutorial', 'next');
+          }
+        }, 500); // 컨텐츠를 다 읽은 후 안내하도록 지연
+      }, 1000);
     }
-  }, [blurAmount, tutorialStep, isReaderEnabled, readPageContent, readGuidance, language]);
+  }, [blurAmount, tutorialStep, readPageContent, readGuidance, language]);
 
   useEffect(() => {
     const handleOrientation = (event) => {
@@ -141,37 +134,68 @@ const Tutorial = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleDoubleTap = (() => {
-    let lastTap = 0;
+  const handleTripleTap = (() => {
+    const tapTimes = [];
+    let lastTapType = null;
     
-    return (e) => {
-      if (e.target.closest('.tutorial-button') || e.target.closest('.menu-icon')) {
-        e.stopPropagation();
-        return;
-      }
-      
-      if (showMenu) {
-        e.stopPropagation();
-        return;
-      }
-      
-      if (tutorialStep === 4) {
-        e.stopPropagation();
-        return;
-      }
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    console.log("🔧 초기 상태:", {
+      디바이스: isMobile ? "모바일" : "PC"
+    });
 
-      if (!isUnlocked) {
+    return (e) => {
+      const eventType = e.type;
+
+      // 메뉴 아이콘이나 튜토리얼 버튼 클릭 시에만 이벤트 중단
+      if (e.target.closest('.tutorial-button') || e.target.closest('.menu-icon')) {
+        console.log("❌ 버튼 영역 터치 - 무시됨");
         e.stopPropagation();
         return;
       }
-      
-      const currentTime = new Date().getTime();
-      const tapLength = currentTime - lastTap;
-      
-      if (tapLength < 500 && tapLength > 0) {
-        handleTutorialNext();
+            // 👇 같은 클릭이 touch → click 두 번 감지될 경우 무시
+      if (lastInputType === 'touchstart' && eventType === 'click') {
+        console.log("⚠️ touch → click 중복 감지, click 무시");
+        return;
       }
-      lastTap = currentTime;
+      
+      setLastInputType(eventType);
+      
+      const now = Date.now();
+      
+      // 2초 이상 된 탭 제거
+      while (tapTimes.length > 0 && now - tapTimes[0] > 1000) {
+        console.log("⏰ 오래된 탭 제거됨");
+        tapTimes.shift();
+      }
+      
+      tapTimes.push(now);
+      console.log("👆 탭/클릭 감지됨:", {
+        횟수: tapTimes.length,
+        이벤트: e.type,
+        시간: new Date().toLocaleTimeString()
+      });
+      
+      if (tapTimes.length === 3 && tapTimes[2] - tapTimes[0] <= 1000) {
+        console.log("✨ 트리플 탭 감지!", {
+          총소요시간: `${tapTimes[2] - tapTimes[0]}ms`,
+          탭간격: [
+            `1-2: ${tapTimes[1] - tapTimes[0]}ms`,
+            `2-3: ${tapTimes[2] - tapTimes[1]}ms`
+          ],
+          잠금상태: !isUnlocked
+        });
+        
+        if (tutorialStep === 4) {
+          setShowMenu((prev) => !prev);
+        } else {
+          handleTutorialNext();
+        }
+        tapTimes.length = 0;
+        
+        if (window.navigator.vibrate) {
+          window.navigator.vibrate(200);
+        }
+      }
     };
   })();
 
@@ -215,24 +239,38 @@ const Tutorial = () => {
     }
   };
 
-  // 로딩 상태 처리
-  if (!currentConfig) {
-    return (
-      <Layout>
-        <div className="min-h-screen bg-base-color flex items-center justify-center">
-          <p className="text-white">로딩중...</p>
-        </div>
-      </Layout>
-    );
-  }
+  // 튜토리얼 메시지를 동적으로 가져오는 함수
+  const getTutorialMessage = (step) => {
+    return data.tutorial[`step${step}`];
+  };
+
 
   return (
     <Layout>
       <div 
         className="relative min-h-screen overflow-hidden bg-base-color"
-        onTouchStart={handleDoubleTap}
+        onTouchStart={handleTripleTap}
+        onClick={handleTripleTap}
         style={{ WebkitTapHighlightColor: 'transparent' }}
+        role="button"
       >
+       
+        {!hasIntroSpoken && (
+          <div aria-live="polite" className="sr-only">
+            시계 반대 방향으로 기기를 조금만 돌려보세요.
+          </div>
+        )}
+
+        {blurAmount === 0 && hasIntroSpoken && (
+          <div aria-live="polite" className="sr-only">
+            {getTutorialMessage(tutorialStep)}
+            {tutorialStep === 4 
+              ? "화면을 빠르게 세번 터치하여 메뉴를 열어주세요."
+              : "화면을 빠르게 세번 터치하여 다음으로 이동해주세요."
+            }
+          </div>
+        )}
+
         <Guide 
           show={showGuide} 
           language={language}
