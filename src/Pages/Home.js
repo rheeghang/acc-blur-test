@@ -21,7 +21,7 @@ const isMobileDevice = () => {
          (navigator.userAgent.includes("Mac") && "ontouchend" in document);
 };
 
-const Modal = ({ isOpen, onClose, onConfirm }) => {
+const Modal = ({ isOpen, onClose, onConfirm, className }) => {
   if (!isOpen) return null;
 
   // 화면 크기가 MOBILE_MAX_WIDTH보다 큰 경우에만 PC 메시지 표시
@@ -102,7 +102,7 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
   );
 };
 
-const LanguageSelector = ({ language, onLanguageChange }) => {
+const LanguageSelector = ({ language, onLanguageChange, className }) => {
   const handleLanguageSelect = (lang, e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -192,7 +192,7 @@ const Home = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setInitialEnterSpoken(true);
-    }, 2500);
+    }, 3500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -236,6 +236,7 @@ const Home = () => {
               setIntroSpoken(true);
             }, 2500);
           }}
+          className="modal-content"
         />
 
         {/* intro 메시지 - 허용 버튼 클릭 후 */}
@@ -262,7 +263,7 @@ const Home = () => {
 
         <div className="fixed bottom-[23vh] left-2 right-0 flex flex-col items-center space-y-2 text-center z-10">
           <div className="items-center space-y-2 text-center font-bold text-black">
-            <p className="text-xl font-lg text-black" aria-hidden="true">{Math.round(alpha)}°</p>
+            <p className="angle-text text-xl font-lg text-black" aria-hidden="true">{Math.round(alpha)}°</p>
           </div>
         </div>
 
@@ -270,12 +271,12 @@ const Home = () => {
           <img 
             src="/title.png" 
             alt="우리의 몸에는 타인이 깃든다." 
-            className="w-[80vw] h-auto"
+            className="title-image w-[80vw] h-auto"
           />
         </div>
 
         <div className="fixed inset-0 flex items-center justify-center z-0">
-          <div className="bg-key-gradient shadow-lg"
+          <div className="center-box bg-key-gradient shadow-lg"
             style={{
               transition: "transform 0.05s linear, border-radius 0s linear",
               transform: `rotate(${currentAlpha - 90}deg)`,
@@ -292,14 +293,9 @@ const Home = () => {
           />
         </div>
 
-        <div className="fixed bottom-3 left-0 right-0 flex flex-col items-center space-y-3">
+        <div className="bottom-content fixed bottom-3 left-0 right-0 flex flex-col items-center space-y-3">
           <button 
-            onTouchStart={(e) => {
-              e.preventDefault();
-              if (startButtonOpacity === 1) {
-                handleStart();
-              }
-            }}
+            onTouchStart={handleStart}
             className="start-button rounded-full w-48 bg-black px-6 py-4 text-xl font-bold text-white shadow-2xl"
             style={{ 
               WebkitTapHighlightColor: 'transparent',
@@ -315,6 +311,7 @@ const Home = () => {
             <LanguageSelector 
               language={language}
               onLanguageChange={handleLanguageChange}
+              className="language-selector"
             />
           </div>
         </div>

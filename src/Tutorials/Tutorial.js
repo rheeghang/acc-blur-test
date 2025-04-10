@@ -291,7 +291,7 @@ const Tutorial = () => {
 
         {tutorialStep === 4 && (
           <button
-            className={`fixed top-3 right-3 cursor-pointer menu-icon rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 transition-all z-50 bg-key-color ${
+            className={`menu-icon fixed top-3 right-3 cursor-pointer rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 transition-all z-50 bg-key-color ${
               isUnlocked && !showMenu ? 'animate-pulse-scale' : ''
             }`}
             onClick={(e) => {
@@ -341,7 +341,7 @@ const Tutorial = () => {
             top: '50%'
           }}
         >
-          <div className={`p-4 ${currentConfig.bgColor} shadow-lg relative`} aria-hidden={true}>
+          <div className={`tutorial-container p-4 ${currentConfig.bgColor} shadow-lg relative`} aria-hidden={true}>
             <p className={`text-lg leading-relaxed ${currentConfig.textColor} break-keep ${tutorialStep === 4 ? 'mb-0' : 'mb-8'}`}>
               {data.tutorial.steps[`step${tutorialStep}`]}
             </p>

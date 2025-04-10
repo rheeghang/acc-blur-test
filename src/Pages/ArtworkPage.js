@@ -185,7 +185,7 @@ const ArtworkPage = () => {
         <div className="fixed top-5 right-5 z-50">
           <button 
             onClick={() => setShowMenu(!showMenu)} 
-            className={`rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 hover:bg-gray-800 transition-all z-100 
+            className={`menu-icon rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 hover:bg-gray-800 transition-all z-100 
               ${scrollRatio >= 0.9 && !showMenu ? 'animate-pulse-scale' : ''}`}
             style={{ 
               backgroundColor: menuIconColor,

@@ -51,7 +51,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-20 z-51 flex items-center justify-center text-center">
-      <div className="w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold">
+      <div className="menu-container w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold">
         <div className="h-12"></div>
 
         <div className="px-4 py-2 border-b border-gray-200">
@@ -84,7 +84,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
               <button
                 key={item.id}
                 onClick={() => handlePageSelect(item.pageNumber)}
-                className={`py-3 px-1 ${item.bgClass} ${item.textClass} mb-2 rounded-none shadow-md hover:opacity-90 transition-all duration-500 font-medium flex items-center justify-center
+                className={`menu-button py-3 px-1 ${item.bgClass} ${item.textClass} mb-2 rounded-none shadow-md hover:opacity-90 transition-all duration-500 font-medium flex items-center justify-center
                   ${isTransitioning ? 
                     (selectedPage === item.pageNumber ? 'w-full' : 
                      previousPage === item.pageNumber && pageType === 'artwork' ? 'w-[calc(100%-2rem)]' : 
