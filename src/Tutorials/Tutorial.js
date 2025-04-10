@@ -30,6 +30,7 @@ const Tutorial = () => {
   const [currentGamma, setCurrentGamma] = useState(0);
   const [outOfRangeStartTime, setOutOfRangeStartTime] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
+  const [isIntroMessageActive, setIsIntroMessageActive] = useState(false);
   const { blurAmount, setTargetAngles, isUnlocked } = useBlur();
   const { showGuideMessage } = useGuide();
   const { language } = useLanguage();
@@ -89,10 +90,21 @@ const Tutorial = () => {
   }, []);
 
   useEffect(() => {
-    if (blurAmount === 0 && hasIntroSpoken && !hasContentAnnounced && !showIntroMessage) {
+    if (showIntroMessage) {
+      setIsIntroMessageActive(true);
+      const timer = setTimeout(() => {
+        setIsIntroMessageActive(false);
+      }, 2500); // 인트로 메시지가 완전히 읽힌 후에 상태를 변경
+
+      return () => clearTimeout(timer);
+    }
+  }, [showIntroMessage]);
+
+  useEffect(() => {
+    if (blurAmount === 0 && hasIntroSpoken && !hasContentAnnounced && !isIntroMessageActive) {
       setHasContentAnnounced(true);
     }
-  }, [blurAmount, hasIntroSpoken, hasContentAnnounced, showIntroMessage]);
+  }, [blurAmount, hasIntroSpoken, hasContentAnnounced, isIntroMessageActive]);
 
   useEffect(() => {
     const handleOrientation = (event) => {
@@ -250,7 +262,6 @@ const Tutorial = () => {
           }
         }}
         style={{ WebkitTapHighlightColor: 'transparent' }}
-        role="button"
       >
        
         {showIntroMessage && (
@@ -259,8 +270,8 @@ const Tutorial = () => {
           </div>
         )}
 
-        {hasContentAnnounced && (
-          <div aria-live="polite" className="sr-only">
+        {blurAmount === 0 && hasIntroSpoken && !isIntroMessageActive && (
+          <div aria-live="assertive" className="sr-only">
             {getTutorialMessage(tutorialStep)}
             {tutorialStep === 4 
               ? "화면을 빠르게 세번 터치하여 메뉴를 열어주세요."
@@ -275,7 +286,7 @@ const Tutorial = () => {
           fullscreen={true}
         />
 
-        <div className="fixed top-2 left-0 right-0 text-center z-10">
+        <div className="fixed top-2 left-0 right-0 text-center z-10" aria-hidden="true">
           {(tutorialStep === 1 || tutorialStep === 2 || tutorialStep === 3 || tutorialStep === 4) && (
             <p className="text-xl font-bold text-white">{Math.round(currentAlpha)}°</p>
           )}
