@@ -4,11 +4,17 @@
         "startButton": "Start"
     },
     "tutorial": {
-        "step1": "The National Asian Culture Center, in cooperation with Tissue Office, has developed a mobile web docent to suggest various stances from which to experience the exhibition.",
-        "step2": "Deviating from the usual function of a docent, which is to expressly, smoothly, and conveniently deliver curatorial commentary,",
-        "step3": "this mobile web docent allows us, as cumbersome, unproductive, and unfamiliar as it may be, to take in the presented works from different angles and perspectives.",
-        "step4": "Excellent! Now you are ready to view other artworks through the menu.",
-        "shakeGuide": ""
+        "guidance": {
+            "rotate": "Please rotate your device slightly counterclockwise.",
+            "next": "Triple tap the screen to proceed to the next step.",
+            "menu": "Triple tap the screen to open the menu."
+        },
+        "steps": {
+            "step1": "The National Asian Culture Center, in cooperation with Tissue Office, has developed a mobile web docent to suggest various stances from which to experience the exhibition.",
+            "step2": "Deviating from the usual function of a docent, which is to expressly, smoothly, and conveniently deliver curatorial commentary,",
+            "step3": "this mobile web docent allows us, as cumbersome, unproductive, and unfamiliar as it may be, to take in the presented works from different angles and perspectives.",
+            "step4": "Excellent! Now you are ready to view other artworks through the menu."
+        }
     },
     "guide": {
         "message": "Shake to move to the next work"

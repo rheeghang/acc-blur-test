@@ -175,7 +175,7 @@ const Home = () => {
           aria-live="polite" 
           className="sr-only"
         >
-          {data.home.guidance.intro}
+          {data.home1.guidance.intro}
         </div>
 
         <Modal 
@@ -194,7 +194,7 @@ const Home = () => {
             aria-live="polite" 
             className="sr-only"
           >
-            {data.home.guidance.enter}
+            {data.home1.guidance.intro}
           </div>
         )}
 
@@ -204,7 +204,7 @@ const Home = () => {
             aria-live="assertive" 
             className="sr-only"
           >
-            {data.home.guidance.start}
+            {data.home1.guidance.start}
           </div>
         )}
 

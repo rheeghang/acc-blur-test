@@ -235,7 +235,7 @@ const Tutorial = () => {
 
   // 튜토리얼 메시지를 동적으로 가져오는 함수
   const getTutorialMessage = (step) => {
-    return data.tutorial[`step${step}`];
+    return data.tutorial.steps[`step${step}`];
   };
 
 
@@ -260,7 +260,7 @@ const Tutorial = () => {
        
         {showIntroMessage && (
           <div aria-live="polite" className="sr-only">
-            시계 반대 방향으로 기기를 조금만 돌려보세요.
+            {data.tutorial.guidance.rotate}
           </div>
         )}
 
@@ -271,8 +271,8 @@ const Tutorial = () => {
           >
             {getTutorialMessage(tutorialStep)}
             {tutorialStep === 4 
-              ? "화면을 빠르게 세번 터치하여 메뉴를 열어주세요."
-              : "화면을 빠르게 세번 터치하여 다음으로 이동해주세요."
+              ? data.tutorial.guidance.menu
+              : data.tutorial.guidance.next
             }
           </div>
         )}
@@ -343,7 +343,7 @@ const Tutorial = () => {
         >
           <div className={`p-4 ${currentConfig.bgColor} shadow-lg relative`} aria-hidden={true}>
             <p className={`text-lg leading-relaxed ${currentConfig.textColor} break-keep ${tutorialStep === 4 ? 'mb-0' : 'mb-8'}`}>
-              {data.tutorial[`step${tutorialStep}`]}
+              {data.tutorial.steps[`step${tutorialStep}`]}
             </p>
             
             <div className={`${tutorialStep === 4 ? 'mt-0' : 'mt-14'}`}>
