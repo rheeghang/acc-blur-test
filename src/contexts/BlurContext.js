@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
 const BlurContext = createContext();
+const MOBILE_MAX_WIDTH = 1024; // 태블릿 크기까지 허용
 
 export const BlurProvider = ({ children }) => {
   const [blurAmount, setBlurAmount] = useState(0);
@@ -9,8 +10,9 @@ export const BlurProvider = ({ children }) => {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const isUnlockedRef = useRef(isUnlocked);
   const isTutorialModeRef = useRef(false);
-  const isMobileRef = useRef(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+  const isMobileRef = useRef(window.innerWidth <= MOBILE_MAX_WIDTH);
 
+ 
   useEffect(() => {
     isUnlockedRef.current = isUnlocked;
   }, [isUnlocked]);
