@@ -190,9 +190,10 @@ const Home = () => {
 
   // 화면 처음 로드될 때 enter 메시지 재생
   useEffect(() => {
-    if (!initialEnterSpoken) {
+    const timer = setTimeout(() => {
       setInitialEnterSpoken(true);
-    }
+    }, 2500);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleStart = () => {
@@ -218,6 +219,7 @@ const Home = () => {
         {!initialEnterSpoken && (
           <div 
             aria-live="polite" 
+            aria-atomic="true"
             className="sr-only"
           >
             {data.home1.guidance.enter}
@@ -230,7 +232,9 @@ const Home = () => {
           onConfirm={() => {
             setPermissionGranted(true);
             setShowModal(false);
-            setIntroSpoken(true);
+            setTimeout(() => {
+              setIntroSpoken(true);
+            }, 2500);
           }}
         />
 
@@ -238,6 +242,7 @@ const Home = () => {
         {permissionGranted && !introSpoken && (
           <div 
             aria-live="polite" 
+            aria-atomic="true"
             className="sr-only"
           >
             {data.home1.guidance.intro}
@@ -248,6 +253,7 @@ const Home = () => {
         {showStartMessage && (
           <div 
             aria-live="assertive" 
+            aria-atomic="true"
             className="sr-only"
           >
             {data.home1.guidance.start}
