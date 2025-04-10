@@ -145,6 +145,7 @@ const Home = () => {
   const [introSpoken, setIntroSpoken] = useState(false);
   const [showStartMessage, setShowStartMessage] = useState(false);
   const [initialEnterSpoken, setInitialEnterSpoken] = useState(false);
+  const [introMessageComplete, setIntroMessageComplete] = useState(false);
   const { language, changeLanguage } = useLanguage();
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
@@ -181,12 +182,22 @@ const Home = () => {
 
   useEffect(() => {
     if (permissionGranted && !introSpoken) {
-      const timer = setTimeout(() => {
-        setShowStartMessage(true);
-      }, 2000);
-      return () => clearTimeout(timer);
+      // intro 메시지가 읽히는데 충분한 시간을 줌 (예: 4초)
+      const introTimer = setTimeout(() => {
+        setIntroMessageComplete(true);
+      }, 4000);
+
+      // start 메시지는 intro 메시지가 완료된 후에 표시
+      if (introMessageComplete) {
+        const startTimer = setTimeout(() => {
+          setShowStartMessage(true);
+        }, 1000); // intro 완료 1초 후 start 메시지
+        return () => clearTimeout(startTimer);
+      }
+
+      return () => clearTimeout(introTimer);
     }
-  }, [permissionGranted, introSpoken]);
+  }, [permissionGranted, introSpoken, introMessageComplete]);
 
   // 화면 처음 로드될 때 enter 메시지 재생
   useEffect(() => {
@@ -240,7 +251,7 @@ const Home = () => {
         />
 
         {/* intro 메시지 - 허용 버튼 클릭 후 */}
-        {permissionGranted && !introSpoken && (
+        {permissionGranted && !introSpoken && !introMessageComplete && (
           <div 
             aria-live="polite" 
             aria-atomic="true"
@@ -250,8 +261,8 @@ const Home = () => {
           </div>
         )}
 
-        {/* start 메시지 - 2초 후 */}
-        {showStartMessage && (
+        {/* start 메시지 - intro 메시지 완료 후 */}
+        {showStartMessage && introMessageComplete && (
           <div 
             aria-live="assertive" 
             aria-atomic="true"
@@ -267,7 +278,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="fixed top-0 left-0 right-0 flex items-center justify-center z-10">
+        <div className="fixed top-0 left-0 right-0 flex items-center justify-center z-10" aria-hidden="true">
           <img 
             src="/title.png" 
             alt="우리의 몸에는 타인이 깃든다." 
