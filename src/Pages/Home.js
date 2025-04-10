@@ -10,19 +10,36 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  const modalMessage = "작품 감상을 위해 기기의 방향 감지 센서를 허용해 주세요. ";
-  const buttonText = "허용 후 계속하기";
+  const isLegacyIOS = () => {
+    const match = navigator.userAgent.match(/OS (\d+)_/);
+    return match && parseInt(match[1], 10) < 13;
+  };
+  
+  const modalMessage = isLegacyIOS() 
+    ? "iOS 13 이하 디바이스에선 방향 센서 사용이 어려운 기기입니다. 데스크에 문의해 주세요."
+    : "작품 감상을 위해 기기의 방향 감지 센서를 허용해 주세요.";
+  const buttonText = isLegacyIOS() ? "확인" : "허용 후 계속하기";
 
   if (!isMobile) return null;
 
   const handlePermissionRequest = async (e) => {
+    if (isLegacyIOS()) {
+      onClose();
+      return;
+    }
+
     try {
-      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      // iOS 13+ 디바이스(iPhone/iPad)에서 권한 요청
+      if (typeof DeviceOrientationEvent !== 'undefined' && 
+          typeof DeviceOrientationEvent.requestPermission === 'function') {
         const permission = await DeviceOrientationEvent.requestPermission();
         if (permission === 'granted') {
           onConfirm();
+        } else {
+          console.error('방향 감지 센서 권한이 거부되었습니다.');
         }
       } else {
+        // 안드로이드나 이전 버전 iOS 디바이스
         onConfirm();
       }
     } catch (error) {
@@ -105,6 +122,8 @@ const Home = () => {
   const [showModal, setShowModal] = useState(true);
   const [startButtonOpacity, setStartButtonOpacity] = useState(0);
   const [introSpoken, setIntroSpoken] = useState(false);
+  const [showStartMessage, setShowStartMessage] = useState(false);
+  const [initialEnterSpoken, setInitialEnterSpoken] = useState(false);
   const { language, changeLanguage } = useLanguage();
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
@@ -151,6 +170,22 @@ const Home = () => {
     img.src = '/title.png';
   }, []);
 
+  useEffect(() => {
+    if (permissionGranted && !introSpoken) {
+      const timer = setTimeout(() => {
+        setShowStartMessage(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [permissionGranted, introSpoken]);
+
+  // 화면 처음 로드될 때 enter 메시지 재생
+  useEffect(() => {
+    if (!initialEnterSpoken) {
+      setInitialEnterSpoken(true);
+    }
+  }, []);
+
   const handleStart = () => {
     navigate('/tutorial/step/1');
   };
@@ -170,13 +205,15 @@ const Home = () => {
           background: `linear-gradient(to left, #FFEA7B ${gradientRatio - 15}%, #FACFB9 ${gradientRatio + 15}%)`
         }}>
       <div className="min-h-screen p-4 relative flex flex-col">
-        {/* intro 메시지 - 페이지 진입 시 */}
-        <div 
-          aria-live="polite" 
-          className="sr-only"
-        >
-          {data.home1.guidance.intro}
-        </div>
+        {/* 초기 enter 메시지 */}
+        {!initialEnterSpoken && (
+          <div 
+            aria-live="polite" 
+            className="sr-only"
+          >
+            {data.home1.guidance.enter}
+          </div>
+        )}
 
         <Modal 
           isOpen={showModal}
@@ -184,7 +221,7 @@ const Home = () => {
           onConfirm={() => {
             setPermissionGranted(true);
             setShowModal(false);
-            setIntroSpoken(false);
+            setIntroSpoken(true);
           }}
         />
 
@@ -198,8 +235,8 @@ const Home = () => {
           </div>
         )}
 
-        {/* start 메시지 - intro 완료되고 opacity가 1일 때 */}
-        {startButtonOpacity === 1 && introSpoken && (
+        {/* start 메시지 - 2초 후 */}
+        {showStartMessage && (
           <div 
             aria-live="assertive" 
             className="sr-only"
@@ -210,7 +247,7 @@ const Home = () => {
 
         <div className="fixed bottom-[23vh] left-2 right-0 flex flex-col items-center space-y-2 text-center z-10">
           <div className="items-center space-y-2 text-center font-bold text-black">
-            <p className="text-xl font-lg text-black">{Math.round(alpha)}°</p>
+            <p className="text-xl font-lg text-black" aria-hidden="true">{Math.round(alpha)}°</p>
           </div>
         </div>
 
