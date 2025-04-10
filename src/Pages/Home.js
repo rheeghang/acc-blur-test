@@ -8,17 +8,23 @@ import { useBlur } from '../contexts/BlurContext';
 
 const MOBILE_MAX_WIDTH = 1024; // 태블릿 크기까지 허용
 
+const isMobileDevice = () => {
+  // iPad detection for iOS 13+
+  const isIPad = navigator.maxTouchPoints &&
+                 navigator.maxTouchPoints > 2 &&
+                 /MacIntel/.test(navigator.platform);
+
+  // 화면 크기가 MOBILE_MAX_WIDTH 이하이거나 모바일/태블릿 기기인 경우
+  return window.innerWidth <= MOBILE_MAX_WIDTH || 
+         /iPhone|iPad|iPod|Android/.test(navigator.userAgent) ||
+         isIPad ||
+         (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+};
+
 const Modal = ({ isOpen, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
-  console.log({
-    ua: navigator.userAgent,
-    platform: navigator.platform,
-    maxTouchPoints: navigator.maxTouchPoints,
-    width: window.innerWidth,
-  });
-
-  // 화면 크기가 MOBILE_MAX_WIDTH보다 큰 경우 모바일 접속 안내 메시지
+  // 화면 크기가 MOBILE_MAX_WIDTH보다 큰 경우에만 PC 메시지 표시
   if (window.innerWidth > MOBILE_MAX_WIDTH) {
     return (
       <div className="fixed inset-0 z-[100] flex items-center justify-center">
@@ -47,20 +53,26 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
 
   const handlePermissionRequest = async (e) => {
     try {
+      // iOS 기기(아이패드 포함)에서는 requestPermission 함수가 있는지 확인
       if (typeof DeviceOrientationEvent !== 'undefined' && 
           typeof DeviceOrientationEvent.requestPermission === 'function') {
+        console.log("iOS 기기 감지됨 - 권한 요청 시도");
         const permission = await DeviceOrientationEvent.requestPermission();
         if (permission === 'granted') {
+          console.log("권한 승인됨");
           onConfirm();
         } else {
           console.error('방향 감지 센서 권한이 거부되었습니다.');
         }
       } else {
-        // 안드로이드 기기
+        // 안드로이드나 권한 요청이 필요없는 기기
+        console.log("non-iOS 기기 감지됨 - 권한 요청 없이 진행");
         onConfirm();
       }
     } catch (error) {
       console.error('권한 요청 실패:', error);
+      // 권한 요청 실패 시에도 onConfirm 호출 (안드로이드 등에서 필요)
+      onConfirm();
     }
   };
 
@@ -121,19 +133,6 @@ const LanguageSelector = ({ language, onLanguageChange }) => {
       </button>
     </div>
     </div>
-  );
-};
-
-const isIOS = () => {
-  // iPad detection for iOS 13+
-  const isIPad = navigator.maxTouchPoints &&
-                 navigator.maxTouchPoints > 2 &&
-                 /MacIntel/.test(navigator.platform);
-
-  return (
-    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    isIPad ||
-    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
   );
 };
 

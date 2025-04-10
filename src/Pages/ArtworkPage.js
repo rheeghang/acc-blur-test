@@ -11,6 +11,21 @@ import pageConfig from '../config/pages.json';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
 
+const MOBILE_MAX_WIDTH = 1024; // 태블릿 크기까지 허용
+
+const isMobileDevice = () => {
+  // iPad detection for iOS 13+
+  const isIPad = navigator.maxTouchPoints &&
+                 navigator.maxTouchPoints > 2 &&
+                 /MacIntel/.test(navigator.platform);
+
+  // 화면 크기가 MOBILE_MAX_WIDTH 이하이거나 모바일/태블릿 기기인 경우
+  return window.innerWidth <= MOBILE_MAX_WIDTH || 
+         /iPhone|iPad|iPod|Android/.test(navigator.userAgent) ||
+         isIPad ||
+         (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+};
+
 const ArtworkPage = () => {
   const { pageNumber } = useParams();
   const navigate = useNavigate();
@@ -30,7 +45,12 @@ const ArtworkPage = () => {
 
   useEffect(() => {
     if (config) {
-      setTargetAngles(config.targetAlpha);
+      // PC가 아닌 경우에만 방향 감지 적용 (모바일과 태블릿 동일하게 처리)
+      if (window.innerWidth <= MOBILE_MAX_WIDTH) {
+        setTargetAngles(config.targetAlpha);
+      } else {
+        setIsUnlocked(true); // PC인 경우 잠금 해제
+      }
     }
   }, [pageNumber]);
 
