@@ -23,6 +23,7 @@ const Tutorial = () => {
   });
 
   const [hasIntroSpoken, setHasIntroSpoken] = useState(false);
+  const [hasContentAnnounced, setHasContentAnnounced] = useState(false);
   const [alphaInit, setAlphaInit] = useState(null);
   const [currentAlpha, setCurrentAlpha] = useState(0);
   const [currentBeta, setCurrentBeta] = useState(0);
@@ -88,6 +89,12 @@ const Tutorial = () => {
   }, []);
 
   useEffect(() => {
+    if (blurAmount === 0 && hasIntroSpoken && !hasContentAnnounced && !showIntroMessage) {
+      setHasContentAnnounced(true);
+    }
+  }, [blurAmount, hasIntroSpoken, hasContentAnnounced, showIntroMessage]);
+
+  useEffect(() => {
     const handleOrientation = (event) => {
       const alpha = event.alpha ?? 0;
       const beta = event.beta ?? 0;
@@ -134,12 +141,6 @@ const Tutorial = () => {
     return (e) => {
       const eventType = e.type;
 
-      // 메뉴 아이콘이나 튜토리얼 버튼 클릭 시에만 이벤트 중단
-      if (e.target.closest('.tutorial-button') || e.target.closest('.menu-icon')) {
-        console.log("❌ 버튼 영역 터치 - 무시됨");
-        e.stopPropagation();
-        return;
-      }
       // 👇 같은 클릭이 touch → click 두 번 감지될 경우 무시
       if (lastInputType === 'touchstart' && eventType === 'click') {
         console.log("⚠️ touch → click 중복 감지, click 무시");
@@ -150,7 +151,7 @@ const Tutorial = () => {
       
       const now = Date.now();
       
-      // 2초 이상 된 탭 제거
+      // 1초 이상 된 탭 제거
       while (tapTimes.length > 0 && now - tapTimes[0] > 1000) {
         console.log("⏰ 오래된 탭 제거됨");
         tapTimes.shift();
@@ -169,8 +170,7 @@ const Tutorial = () => {
           탭간격: [
             `1-2: ${tapTimes[1] - tapTimes[0]}ms`,
             `2-3: ${tapTimes[2] - tapTimes[1]}ms`
-          ],
-          잠금상태: !isUnlocked
+          ]
         });
         
         if (tutorialStep === 4) {
@@ -237,8 +237,18 @@ const Tutorial = () => {
     <Layout>
       <div 
         className="relative min-h-screen overflow-hidden bg-base-color"
-        onTouchStart={handleTripleTap}
-        onClick={handleTripleTap}
+        onTouchStart={(e) => {
+          // 메뉴 아이콘이나 튜토리얼 버튼 영역이면 트리플 탭 처리하지 않음
+          if (!e.target.closest('.tutorial-button') && !e.target.closest('.menu-icon')) {
+            handleTripleTap(e);
+          }
+        }}
+        onClick={(e) => {
+          // 메뉴 아이콘이나 튜토리얼 버튼 영역이면 트리플 탭 처리하지 않음
+          if (!e.target.closest('.tutorial-button') && !e.target.closest('.menu-icon')) {
+            handleTripleTap(e);
+          }
+        }}
         style={{ WebkitTapHighlightColor: 'transparent' }}
         role="button"
       >
@@ -249,7 +259,7 @@ const Tutorial = () => {
           </div>
         )}
 
-        {blurAmount === 0 && hasIntroSpoken && (
+        {hasContentAnnounced && (
           <div aria-live="polite" className="sr-only">
             {getTutorialMessage(tutorialStep)}
             {tutorialStep === 4 
@@ -276,7 +286,8 @@ const Tutorial = () => {
             className={`fixed top-3 right-3 cursor-pointer menu-icon rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 transition-all z-50 bg-key-color ${
               isUnlocked && !showMenu ? 'animate-pulse-scale' : ''
             }`}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               if (isUnlocked || showMenu) {
                 setShowMenu(!showMenu);
               }
@@ -331,8 +342,18 @@ const Tutorial = () => {
               {tutorialStep !== 4 && (
                 <div
                   className="absolute bottom-2 right-2 cursor-pointer tutorial-button"
-                  onClick={() => isUnlocked && handleTutorialNext()}
-                  onTouchStart={() => isUnlocked && handleTutorialNext()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (isUnlocked) {
+                      handleTutorialNext();
+                    }
+                  }}
+                  onTouchStart={(e) => {
+                    e.stopPropagation();
+                    if (isUnlocked) {
+                      handleTutorialNext();
+                    }
+                  }}
                   style={{ 
                     pointerEvents: isUnlocked ? 'auto' : 'none',
                     background: 'none',
