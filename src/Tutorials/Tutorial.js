@@ -36,6 +36,7 @@ const Tutorial = () => {
   const { readGuidance, readPageContent } = useReader();
   const [showGuide, setShowGuide] = useState(true);
   const [lastInputType, setLastInputType] = useState(null);
+  const [showIntroMessage, setShowIntroMessage] = useState(false); // New state for intro message
 
   // 현재 설정 가져오기
   const currentConfig = pageConfig.tutorial[tutorialStep];
@@ -54,6 +55,15 @@ const Tutorial = () => {
     if (currentConfig) {
       setTargetAngles(currentConfig.targetAlpha);
     }
+  }, [tutorialStep]);
+
+  // Show intro message on tutorial step change
+  useEffect(() => {
+    setShowIntroMessage(true);
+    const timer = setTimeout(() => {
+      setShowIntroMessage(false);
+    }, 2500);
+    return () => clearTimeout(timer);
   }, [tutorialStep]);
 
   // 컴포넌트 마운트 시 전체 상태 확인
@@ -78,27 +88,6 @@ const Tutorial = () => {
   }, []);
 
   useEffect(() => {
-    if (blurAmount === 0) {
-
-      
-      // 약간의 지연을 주어 초기 안내와 겹치지 않도록 함
-      setTimeout(() => {
-        // 페이지 컨텐츠 읽기
-        readPageContent('tutorial', `step${tutorialStep}`);
-        
-        // 잠시 후 다음 단계 안내
-        setTimeout(() => {
-          if (tutorialStep === 4) {
-            readGuidance('tutorial', 'completion');
-          } else {
-            readGuidance('tutorial', 'next');
-          }
-        }, 500); // 컨텐츠를 다 읽은 후 안내하도록 지연
-      }, 1000);
-    }
-  }, [blurAmount, tutorialStep, readPageContent, readGuidance, language]);
-
-  useEffect(() => {
     const handleOrientation = (event) => {
       const alpha = event.alpha ?? 0;
       const beta = event.beta ?? 0;
@@ -119,7 +108,6 @@ const Tutorial = () => {
 
   useEffect(() => {
     const originalShakeEvent = window.onshake;
-
 
     return () => {
       window.onshake = originalShakeEvent;
@@ -152,7 +140,7 @@ const Tutorial = () => {
         e.stopPropagation();
         return;
       }
-            // 👇 같은 클릭이 touch → click 두 번 감지될 경우 무시
+      // 👇 같은 클릭이 touch → click 두 번 감지될 경우 무시
       if (lastInputType === 'touchstart' && eventType === 'click') {
         console.log("⚠️ touch → click 중복 감지, click 무시");
         return;
@@ -255,7 +243,7 @@ const Tutorial = () => {
         role="button"
       >
        
-        {!hasIntroSpoken && (
+        {showIntroMessage && (
           <div aria-live="polite" className="sr-only">
             시계 반대 방향으로 기기를 조금만 돌려보세요.
           </div>
@@ -334,7 +322,7 @@ const Tutorial = () => {
             top: '50%'
           }}
         >
-          <div className={`p-4 ${currentConfig.bgColor} shadow-lg relative`}>
+          <div className={`p-4 ${currentConfig.bgColor} shadow-lg relative`} aria-hidden={true}>
             <p className={`text-lg leading-relaxed ${currentConfig.textColor} break-keep ${tutorialStep === 4 ? 'mb-0' : 'mb-8'}`}>
               {data.tutorial[`step${tutorialStep}`]}
             </p>
