@@ -234,7 +234,7 @@ const Home = () => {
             setShowModal(false);
             setTimeout(() => {
               setIntroSpoken(true);
-            }, 2500);
+            }, 4500);
           }}
           className="modal-content"
         />

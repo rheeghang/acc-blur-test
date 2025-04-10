@@ -1,7 +1,12 @@
 {
     "home1": {
         "title": "Crossing the Line:\n Our Bodies, Embedded with Others",
-        "startButton": "Start"
+        "startButton": "Start",
+        "guidance": {
+            "enter": "Welcome to the exhibition.",
+            "intro": "Please rotate your device to experience the artwork.",
+            "start": "Press the start button to begin your journey."
+        }
     },
     "tutorial": {
         "guidance": {
