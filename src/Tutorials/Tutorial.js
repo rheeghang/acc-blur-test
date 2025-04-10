@@ -270,7 +270,7 @@ const Tutorial = () => {
           </div>
         )}
 
-        {blurAmount === 0 && hasIntroSpoken && !isIntroMessageActive && (
+        {(blurAmount === 0 && hasIntroSpoken || hasContentAnnounced) && (
           <div aria-live="assertive" className="sr-only">
             {getTutorialMessage(tutorialStep)}
             {tutorialStep === 4 
