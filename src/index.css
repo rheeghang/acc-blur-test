@@ -9,10 +9,14 @@
 @layer base {
   html {
     @apply bg-black text-white;
+    overscroll-behavior-y: contain;
   }
   body {
     @apply bg-black text-white;
+    overscroll-behavior-y: contain;
+    overflow: hidden;
   }
+
 }
 
 @layer components {
