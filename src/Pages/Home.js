@@ -58,33 +58,19 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
 
   const handlePermissionRequest = async (e) => {
     try {
-      // iOS 기기이고 권한 요청이 필요한 경우
-      if (isIOSDevice() && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        console.log("iOS 기기 감지됨 - 권한 요청 시도");
-        try {
-          const permission = await DeviceOrientationEvent.requestPermission();
-          console.log("권한 응답:", permission);
-          if (permission === 'granted') {
-            console.log("권한 승인됨");
-            onConfirm();
-          } else {
-            console.log("권한 거부됨");
-            alert("방향 감지 센서 권한이 필요합니다. 설정에서 권한을 허용해주세요.");
-          }
-        } catch (permissionError) {
-          console.error("권한 요청 중 오류:", permissionError);
-          if (window.confirm("센서 권한 요청에 실패했습니다. 계속 진행하시겠습니까?")) {
-            onConfirm();
-          }
-        }
-      } else {
-        // iOS가 아니거나 권한 요청이 필요없는 기기
-        console.log("non-iOS 기기 감지됨 또는 권한 요청 불필요 - 권한 요청 없이 진행");
+      console.log("📱 iOS 기기 - 센서 권한 요청 시작");
+
+      const permission = await DeviceOrientationEvent.requestPermission();
+      console.log("🟢 권한 응답:", permission);
+
+      if (permission === 'granted') {
         onConfirm();
+      } else {
+        alert("센서 권한이 거부되었습니다. 설정에서 허용해주세요.");
       }
     } catch (error) {
       console.error('전체 처리 실패:', error);
-      if (window.confirm("센서 접근에 문제가 발생했습니다. 계속 진행하시겠습니까?")) {
+      if (window.confirm("센서 권한 요청에 실패했습니다. 계속 진행하시겠습니까?")) {
         onConfirm();
       }
     }

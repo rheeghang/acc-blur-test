@@ -178,82 +178,21 @@ const ArtworkPage = () => {
     if (isContentInteractive && !hasReadContent && pageContent) {
       setHasReadContent(true);
       
-      // 타이틀 읽기
-      const readTitle = () => {
-        const titleElement = document.createElement('div');
-        titleElement.setAttribute('aria-live', 'assertive');
-        titleElement.className = 'sr-only';
-        titleElement.textContent = pageContent.guidance.title;
-        document.body.appendChild(titleElement);
+      // 모든 콘텐츠를 하나의 문자열로 구성
+      const contentToRead = `
+        ${pageContent.guidance.title}.
+        ${pageContent.guidance.artist}.
+        ${pageContent.guidance.caption.replace(/<[^>]*>/g, '')}.
+        ${pageContent.guidance.body.replace(/<[^>]*>/g, '')}.
+        ${data.pages.next}
+      `;
 
-        // 2초 후 아티스트 읽기
-        setTimeout(() => {
-          document.body.removeChild(titleElement);
-          readArtist();
-        }, 3000);
-      };
-
-      // 아티스트 읽기
-      const readArtist = () => {
-        const artistElement = document.createElement('div');
-        artistElement.setAttribute('aria-live', 'assertive');
-        artistElement.className = 'sr-only';
-        artistElement.textContent = pageContent.guidance.artist;
-        document.body.appendChild(artistElement);
-
-        // 2초 후 캡션 읽기
-        setTimeout(() => {
-          document.body.removeChild(artistElement);
-          readCaption();
-        }, 2000);
-      };
-
-      // 캡션 읽기
-      const readCaption = () => {
-        const captionElement = document.createElement('div');
-        captionElement.setAttribute('aria-live', 'assertive');
-        captionElement.className = 'sr-only';
-        captionElement.textContent = pageContent.guidance.caption.replace(/<[^>]*>/g, '');
-        document.body.appendChild(captionElement);
-
-        // 3초 후 본문 읽기
-        setTimeout(() => {
-          document.body.removeChild(captionElement);
-          readBody();
-        }, 3000);
-      };
-
-      // 본문 읽기
-      const readBody = () => {
-        const bodyElement = document.createElement('div');
-        bodyElement.setAttribute('aria-live', 'assertive');
-        bodyElement.className = 'sr-only';
-        bodyElement.textContent = pageContent.guidance.body.replace(/<[^>]*>/g, '');
-        document.body.appendChild(bodyElement);
-
-        // 5초 후 메뉴 안내
-        setTimeout(() => {
-          document.body.removeChild(bodyElement);
-          readMenuGuide();
-        }, 5000);
-      };
-
-      // 메뉴 안내
-      const readMenuGuide = () => {
-        const menuElement = document.createElement('div');
-        menuElement.setAttribute('aria-live', 'assertive');
-        menuElement.className = 'sr-only';
-        menuElement.textContent = data.pages.next;
-        document.body.appendChild(menuElement);
-
-        // 2초 후 제거
-        setTimeout(() => {
-          document.body.removeChild(menuElement);
-        }, 2000);
-      };
-
-      // 순차적 읽기 시작
-      readTitle();
+      // 하나의 div로 모든 콘텐츠 읽기
+      const contentElement = document.createElement('div');
+      contentElement.setAttribute('aria-live', 'assertive');
+      contentElement.className = 'sr-only';
+      contentElement.textContent = contentToRead;
+      document.body.appendChild(contentElement);
     }
   }, [isContentInteractive, hasReadContent, pageContent]);
 
