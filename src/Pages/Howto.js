@@ -94,42 +94,38 @@ const Howto = () => {
           <div className="space-y-6">
             <div className="max-w-md mx-auto flex flex-col items-center">
               <div className="howto-text-container w-[320px] h-[600px] bg-white shadow-xl relative">
-                <div className="p-8">
-                  <h1 className="text-xl text-center font-bold mb-8">
-                    {language === 'ko' ? '웹 사용법' : 'How to Use'}
-                  </h1>
-                  <ol className="list-decimal list-inside space-y-4 break-keep">
+                <div className="p-5 pt-8">
+                  <h1 className="text-lg text-center font-bold mb-8">
+                    {language === 'ko' ? '이 도슨트 웹사이트를 사용하는 방법' : 'How to Use This Website'}
+                    </h1>
+                  <div className="space-y-4 break-keep text-base">
                     {data.howto?.steps?.map((step, index) => (
-                      <li key={index} className="mb-4 leading-relaxed">
+                      <p key={index} className="mb-4 leading-relaxed">
                         {step}
-                      </li>
+                      </p>
                     ))}
-                  </ol>
+                  </div>
                 </div>
                 
                 {/* 하단에 각도 모드 토글 추가 */}
-                <div className="absolute bottom-0 left-0 right-0 px-4 py-4 border-t border-gray-200 bg-white">
-                  <div className="flex items-center justify-between">
-                    <span className="text-black">
-                      {language === 'ko' 
-                        ? (isOrientationMode ? '각도 모드' : '각도 모드')
-                        : (isOrientationMode ? 'Angle Mode' : 'Angle Off')
-                      }
-                    </span>
-                    <button 
-                      onClick={handleModeToggle}
-                      className="focus:outline-none"
-                      aria-label="모드 전환"
-                    >
-                      <div className={`relative w-12 h-6 rounded-full transition-colors duration-200 ease-in-out ${
-                        isOrientationMode ? 'bg-page3-bg' : 'bg-gray-300'
+                <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-4">
+                  <button 
+                    onClick={handleModeToggle}
+                    className="focus:outline-none"
+                    aria-label="모드 전환"
+                  >
+                    <div className={`relative w-[72px] h-[36px] rounded-full transition-colors duration-200 ease-in-out ${
+                      isOrientationMode ? 'bg-black' : 'bg-gray-300'
+                    }`}>
+                      <div className={`absolute top-0.5 flex items-center justify-center w-[32px] h-[32px] rounded-full bg-white shadow-md transform transition-transform duration-200 ease-in-out ${
+                        isOrientationMode ? 'translate-x-[38px]' : 'translate-x-0.5'
                       }`}>
-                        <div className={`absolute top-0 w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-200 ease-in-out ${
-                          isOrientationMode ? 'translate-x-6' : 'translate-x-0'
-                        }`} />
+                        <span className="text-xs font-medium text-gray-500">
+                          {isOrientationMode ? 'ON' : 'OFF'}
+                        </span>
                       </div>
-                    </button>
-                  </div>
+                    </div>
+                  </button>
                 </div>
               </div>
             </div>

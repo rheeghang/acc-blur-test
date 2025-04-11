@@ -21,10 +21,20 @@ const isMobileDevice = () => {
          (navigator.userAgent.includes("Mac") && "ontouchend" in document);
 };
 
+// iOS 버전 체크 함수 추가 (Modal 컴포넌트 위에)
+const getIOSVersion = () => {
+  const agent = window.navigator.userAgent;
+  const start = agent.indexOf('OS ');
+  if ((agent.indexOf('iPhone') > -1 || agent.indexOf('iPad') > -1) && start > -1) {
+    return parseInt(agent.substr(start + 3, 2), 10);
+  }
+  return 0;
+};
+
 const Modal = ({ isOpen, onClose, onConfirm, className }) => {
   if (!isOpen) return null;
 
-  // 화면 크기가 MOBILE_MAX_WIDTH보다 큰 경우에만 PC 메시지 표시
+  // PC 체크
   if (window.innerWidth > MOBILE_MAX_WIDTH) {
     return (
       <div className="fixed inset-0 z-[100] flex items-center justify-center">
@@ -35,6 +45,31 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
           </h3>
           <p className="mb-6 text-gray-600 select-none">
             이 작품은 모바일 기기에서만 감상하실 수 있습니다.
+          </p>
+          <button
+            onClick={onClose}
+            className="w-full rounded-md bg-black px-4 py-2 text-white transition-colors active:bg-gray-800"
+            style={{ WebkitTapHighlightColor: 'transparent' }}
+          >
+            확인
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // iOS 13 이전 버전 체크
+  const iosVersion = getIOSVersion();
+  if (iosVersion > 0 && iosVersion < 13) {
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/50 transition-opacity pointer-events-none" />
+        <div className="relative z-[101] w-80 rounded-lg bg-white p-6 shadow-xl">
+          <h3 className="mb-4 text-xl font-bold text-gray-900 select-none">
+            기기 버전 안내
+          </h3>
+          <p className="mb-6 text-gray-600 select-none">
+            iOS 13 이상의 버전이 필요합니다. 기기의 iOS를 업데이트하거나 다른 기기로 접속해 주세요.
           </p>
           <button
             onClick={onClose}

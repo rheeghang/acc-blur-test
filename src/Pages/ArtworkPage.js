@@ -178,51 +178,62 @@ const ArtworkPage = () => {
     if (isContentInteractive && !hasReadContent && pageContent) {
       setHasReadContent(true);
       
-      const readContent = async () => {
+      const readContent = () => {
         // 타이틀 읽기
         const titleElement = document.createElement('div');
         titleElement.setAttribute('aria-live', 'assertive');
-        titleElement.textContent = pageContent.title;
-        document.body.appendChild(titleElement);
+        titleElement.setAttribute('role', 'status');
+        titleElement.textContent = pageContent.guidance.title;
         
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        document.body.removeChild(titleElement);
-
         // 아티스트 읽기
         const artistElement = document.createElement('div');
         artistElement.setAttribute('aria-live', 'assertive');
-        artistElement.textContent = pageContent.artist;
-        document.body.appendChild(artistElement);
+        artistElement.setAttribute('role', 'status');
+        artistElement.textContent = pageContent.guidance.artist;
         
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        document.body.removeChild(artistElement);
-
         // 캡션 읽기
         const captionElement = document.createElement('div');
         captionElement.setAttribute('aria-live', 'assertive');
-        captionElement.textContent = pageContent.caption.replace(/<[^>]*>/g, '');
-        document.body.appendChild(captionElement);
+        captionElement.setAttribute('role', 'status');
+        captionElement.textContent = pageContent.guidance.caption.replace(/<[^>]*>/g, '');
         
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        document.body.removeChild(captionElement);
-
         // 본문 읽기
         const bodyElement = document.createElement('div');
         bodyElement.setAttribute('aria-live', 'assertive');
-        bodyElement.textContent = pageContent.body.replace(/<[^>]*>/g, '');
-        document.body.appendChild(bodyElement);
+        bodyElement.setAttribute('role', 'status');
+        bodyElement.textContent = pageContent.guidance.body.replace(/<[^>]*>/g, '');
         
-        await new Promise(resolve => setTimeout(resolve, 5000));
-        document.body.removeChild(bodyElement);
-
         // 메뉴 안내
         const menuElement = document.createElement('div');
-        menuElement.setAttribute('aria-live', 'polite');
+        menuElement.setAttribute('aria-live', 'assertive');
+        menuElement.setAttribute('role', 'status');
         menuElement.textContent = data.pages.next;
-        document.body.appendChild(menuElement);
-        
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        document.body.removeChild(menuElement);
+
+        // 순차적으로 읽기 실행
+        const elements = [titleElement, artistElement, captionElement, bodyElement, menuElement];
+        let currentIndex = 0;
+
+        const readNext = () => {
+          if (currentIndex < elements.length) {
+            const currentElement = elements[currentIndex];
+            document.body.appendChild(currentElement);
+
+            // 현재 요소의 읽기가 완료되면 1초 후 다음 요소로 진행
+            const onEnd = () => {
+              document.body.removeChild(currentElement);
+              currentIndex++;
+              // 1초 후에 다음 요소 읽기
+              setTimeout(() => {
+                readNext();
+              }, 1000);
+            };
+
+            // VoiceOver나 다른 스크린리더가 읽기를 완료할 때까지 대기
+            currentElement.addEventListener('DOMNodeRemoved', onEnd, { once: true });
+          }
+        };
+
+        readNext();
       };
 
       readContent();
@@ -325,7 +336,7 @@ const ArtworkPage = () => {
               className={`text-container p-6 w-[320px] ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
               ${blurAmount === 0 && !isScrolled ? 'animate-wobble' : ''}`}
               role="article"
-              aria-label={pageContent.title}
+              aria-labelledby={pageContent.title}
               tabIndex={isContentInteractive ? 0 : -1} // 키보드 포커스 제어
               style={{
                 marginTop: config.marginTop
