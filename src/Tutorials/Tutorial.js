@@ -341,7 +341,10 @@ const Tutorial = () => {
             top: '50%'
           }}
         >
-          <div className={`tutorial-container p-4 ${currentConfig.bgColor} shadow-lg relative`} aria-hidden={true}>
+          <div 
+            className={`tutorial-container p-4 ${currentConfig.bgColor} shadow-lg relative`}
+            aria-hidden={!isUnlocked}
+          >
             <p className={`text-lg leading-relaxed ${currentConfig.textColor} break-keep ${tutorialStep === 4 ? 'mb-0' : 'mb-8'}`}>
               {data.tutorial.steps[`step${tutorialStep}`]}
             </p>
@@ -368,6 +371,8 @@ const Tutorial = () => {
                     border: 'none',
                     padding: 0
                   }}
+                  aria-hidden={!isUnlocked}
+                  tabIndex={isUnlocked ? 0 : -1}
                   aria-label={language === 'ko' ? "다음 단계로" : "Next step"}
                 >
                   <svg width="40" height="40" viewBox="0 0 24 24" fill="none">

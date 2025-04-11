@@ -16,6 +16,7 @@ const Howto = () => {
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
   const [menuIconColor, setMenuIconColor] = useState('#000000'); // 기본 검정색
+  const [hasTitleAnnounced, setHasTitleAnnounced] = useState(false);
 
   // 로컬 스토리지 연동
   useEffect(() => {
@@ -24,6 +25,24 @@ const Howto = () => {
       setIsOrientationMode(savedMode === 'true');
     }
   }, []);
+
+  // 페이지 로드 시 제목 읽기
+  useEffect(() => {
+    if (!hasTitleAnnounced) {
+      const titleElement = document.createElement('div');
+      titleElement.setAttribute('aria-live', 'assertive');
+      titleElement.className = 'sr-only';
+      titleElement.textContent = language === 'ko' ? '이 도슨트 웹사이트를 사용하는 방법' : 'How to Use This Website';
+      document.body.appendChild(titleElement);
+      
+      setHasTitleAnnounced(true);
+      
+      // 일정 시간 후 제거
+      setTimeout(() => {
+        document.body.removeChild(titleElement);
+      }, 1000);
+    }
+  }, [language, hasTitleAnnounced]);
 
   // 모드 토글 핸들러
   const handleModeToggle = () => {
@@ -95,9 +114,12 @@ const Howto = () => {
             <div className="max-w-md mx-auto flex flex-col items-center">
               <div className="howto-text-container w-[320px] h-[600px] bg-white shadow-xl relative">
                 <div className="p-5 pt-8">
-                  <h1 className="text-lg text-center font-bold mb-8">
+                  <h1 
+                    className="text-lg text-center font-bold mb-8"
+                    aria-live="off"
+                  >
                     {language === 'ko' ? '이 도슨트 웹사이트를 사용하는 방법' : 'How to Use This Website'}
-                    </h1>
+                  </h1>
                   <div className="space-y-4 break-keep text-base">
                     {data.howto?.steps?.map((step, index) => (
                       <p key={index} className="mb-4 leading-relaxed">

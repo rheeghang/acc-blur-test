@@ -15,6 +15,7 @@ const About = () => {
   const navigate = useNavigate();
   const data = language === 'ko' ? koData : enData;
   const { title, subtitle, body } = data.about;
+  const [hasTitleAnnounced, setHasTitleAnnounced] = useState(false);
 
   const handlePageChange = (newPage) => {
     setShowMenu(false);
@@ -29,8 +30,20 @@ const About = () => {
   };
 
   useEffect(() => {
-    // 페이지 진입시 한 번만 실행
-  }, []);
+    if (!hasTitleAnnounced) {
+      const titleElement = document.createElement('div');
+      titleElement.setAttribute('aria-live', 'assertive');
+      titleElement.className = 'sr-only';
+      titleElement.textContent = '우리의 몸에는 타인이 깃든다. 전시 설명';
+      document.body.appendChild(titleElement);
+      
+      setHasTitleAnnounced(true);
+      
+      setTimeout(() => {
+        document.body.removeChild(titleElement);
+      }, 1000);
+    }
+  }, [hasTitleAnnounced]);
 
   useEffect(() => {
     const img = new Image();
@@ -130,7 +143,8 @@ const About = () => {
                 <div className="flex justify-center mb-8">
                   <img 
                     src="/title.png" 
-                    alt="우리의 몸에는 타인이 깃든다." 
+                    alt="" 
+                    aria-hidden="true"
                     className="w-[90%] h-auto"
                   />
                 </div>

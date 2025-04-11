@@ -293,7 +293,6 @@ const ArtworkPage = () => {
             <div 
               className={`text-container p-6 w-[320px] ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
               ${blurAmount === 0 && !isScrolled ? 'animate-wobble' : ''}`}
-              aria-labelledby={pageContent.title}
               tabIndex={isContentInteractive ? 0 : -1} // 키보드 포커스 제어
               style={{
                 marginTop: config.marginTop
