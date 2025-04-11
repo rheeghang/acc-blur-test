@@ -165,7 +165,7 @@ const ArtworkPage = () => {
       const introElement = document.createElement('div');
       introElement.setAttribute('aria-live', 'polite');
       introElement.className = 'sr-only';
-      introElement.textContent = pageContent.guidance?.intro || '';
+      introElement.textContent = pageContent.guidance.intro || '';
       document.body.appendChild(introElement);
       
       // intro 메시지 제거 타이머
@@ -197,14 +197,12 @@ const ArtworkPage = () => {
     });
 
     if (blurAmount === 0 && !hasReadContent) {
-      console.log('🎯 콘텐츠 읽기 조건 충족:', {
+      console.log('✨ hasReadContent true로 설정 시도', {
         blurAmount,
         hasReadContent,
         시간: new Date().toLocaleTimeString()
       });
 
-      // hasReadContent를 true로 설정하기 전에 로그
-      console.log('✨ hasReadContent true로 설정 시도');
       setHasReadContent(true);
       
       const contentToRead = `
@@ -215,30 +213,23 @@ const ArtworkPage = () => {
         ${data.pages.next}
       `;
 
-      console.log('📝 콘텐츠 준비:', {
-        콘텐츠길이: contentToRead.length,
-        hasReadContent상태: hasReadContent
-      });
-
       const contentElement = document.createElement('div');
       contentElement.setAttribute('role', 'alert');
       contentElement.setAttribute('aria-live', 'assertive');
       contentElement.setAttribute('aria-atomic', 'true');
       contentElement.className = 'sr-only';
+      contentElement.textContent = contentToRead;
       
+      // 요소를 실제로 추가
       document.body.appendChild(contentElement);
-      console.log('➕ DOM 요소 추가됨');
-      
-      // 약간의 지연 후 콘텐츠 설정
-      setTimeout(() => {
-        contentElement.textContent = contentToRead;
-        console.log('📢 콘텐츠 텍스트 설정됨');
-      }, 100);
+      console.log('📢 콘텐츠 요소 추가됨');
 
       // 콘텐츠 요소 제거
       setTimeout(() => {
-        document.body.removeChild(contentElement);
-        console.log('🗑 콘텐츠 요소 제거됨, hasReadContent 상태:', hasReadContent);
+        if (document.body.contains(contentElement)) {
+          document.body.removeChild(contentElement);
+          console.log('🗑 콘텐츠 요소 제거됨, hasReadContent 상태:', hasReadContent);
+        }
       }, 10000);
     }
   }, [blurAmount, hasReadContent, pageContent, data]);
