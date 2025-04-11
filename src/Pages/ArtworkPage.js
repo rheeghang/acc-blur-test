@@ -158,22 +158,33 @@ const ArtworkPage = () => {
 
   // 페이지 로드 시 intro 메시지 읽기
   useEffect(() => {
-    if (!isIntroRead) {
+    console.log('🔊 인트로 메시지 상태:', {
+      isIntroRead,
+      pageNumber,
+      introMessage: pageContent?.guidance?.intro
+    });
+
+    if (!isIntroRead && pageContent?.guidance?.intro) {
       setIsIntroRead(true);
       
       // intro 메시지 읽기
       const introElement = document.createElement('div');
       introElement.setAttribute('aria-live', 'polite');
       introElement.className = 'sr-only';
-      introElement.textContent = pageContent.guidance.intro || '';
+      introElement.textContent = pageContent.guidance.intro;
       document.body.appendChild(introElement);
+      
+      console.log('🔊 인트로 메시지 추가됨:', pageContent.guidance.intro);
       
       // intro 메시지 제거 타이머
       setTimeout(() => {
-        document.body.removeChild(introElement);
+        if (document.body.contains(introElement)) {
+          document.body.removeChild(introElement);
+          console.log('🔊 인트로 메시지 제거됨');
+        }
       }, 2000);
     }
-  }, [pageNumber, data, isIntroRead]);
+  }, [pageNumber, data, isIntroRead, pageContent]);
 
   // 페이지 변경 시 상태 초기화를 명확하게 처리
   useEffect(() => {
@@ -193,13 +204,15 @@ const ArtworkPage = () => {
     console.log('🔍 hasReadContent 현재 상태:', {
       hasReadContent,
       blurAmount,
+      isIntroRead,
       시간: new Date().toLocaleTimeString()
     });
 
-    if (blurAmount === 0 && !hasReadContent) {
+    if (blurAmount === 0 && !hasReadContent && isIntroRead) {
       console.log('✨ hasReadContent true로 설정 시도', {
         blurAmount,
         hasReadContent,
+        isIntroRead,
         시간: new Date().toLocaleTimeString()
       });
 
@@ -321,7 +334,7 @@ const ArtworkPage = () => {
           className="outer-container absolute w-[120%] h-[150vh] flex items-center justify-center"
           style={{
             transform: `rotate(${config.rotationAngle}deg)`,
-            top: pageNumber === '3' ? '40%' : '50%',
+            top: '50%',
             marginTop: '-75vh',
             filter: isOrientationMode && !isUnlocked ? `blur(${blurAmount}px)` : 'none',
             transition: 'filter 0.5s ease, transform 0.5s ease',
