@@ -30,7 +30,7 @@ const Tutorial = () => {
   const [outOfRangeStartTime, setOutOfRangeStartTime] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
   const [isIntroMessageActive, setIsIntroMessageActive] = useState(false);
-  const { blurAmount, setTargetAngles, isUnlocked } = useBlur();
+  const { blurAmount, setTargetAngles, isUnlocked, setIsUnlocked } = useBlur();
   const { showGuideMessage } = useGuide();
   const { language } = useLanguage();
   const data = language === 'ko' ? koData : enData;
@@ -229,6 +229,7 @@ const Tutorial = () => {
     if (tutorialStep < 4) {
       const nextStep = tutorialStep + 1;
       setTutorialStep(nextStep);
+      setIsUnlocked(false); // 다음 스텝으로 넘어갈 때 isUnlocked 리셋
     } else {
       window.location.href = '/artwork/1';
     }
@@ -370,7 +371,7 @@ const Tutorial = () => {
             ...currentConfig.style,
             transform: `translate(-50%, -50%) rotate(${currentConfig.rotationAngle}deg)`,
             transformOrigin: 'center center',
-            filter: `blur(${blurAmount}px)`,
+            filter: isUnlocked ? 'none' : `blur(${blurAmount}px)`,
             transition: 'filter 0.3s ease, transform 0.3s ease, top 0.3s ease',
             width: currentConfig.style.width,
             top: '50%'
