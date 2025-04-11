@@ -186,36 +186,17 @@ const ArtworkPage = () => {
     }
   }, [pageNumber, data, isIntroRead, pageContent]);
 
-  // 페이지 변경 시 상태 초기화를 명확하게 처리
-  useEffect(() => {
-    console.log('🔄 페이지 변경 감지:', {
-      pageNumber,
-      이전_hasReadContent: hasReadContent,
-      이전_isIntroRead: isIntroRead
-    });
-    
-    // hasReadContent 초기화
-    setHasReadContent(false);
-    // isIntroRead 초기화
-    setIsIntroRead(false);
-    
-    console.log('🔄 상태 초기화 완료:', {
-      hasReadContent: false,
-      isIntroRead: false
-    });
-  }, [pageNumber]); // pageNumber가 변경될 때만 실행
-
   // blur 상태에 따른 콘텐츠 읽기
   useEffect(() => {
-    console.log('🔍 hasReadContent 현재 상태:', {
-      hasReadContent,
+    console.log('🔍 콘텐츠 재생 조건 확인:', {
       blurAmount,
+      hasReadContent,
       isIntroRead,
       시간: new Date().toLocaleTimeString()
     });
 
     if (blurAmount === 0 && !hasReadContent && isIntroRead) {
-      console.log('✨ hasReadContent true로 설정 시도', {
+      console.log('✨ 콘텐츠 재생 시작', {
         blurAmount,
         hasReadContent,
         isIntroRead,
@@ -239,38 +220,44 @@ const ArtworkPage = () => {
       contentElement.className = 'sr-only';
       contentElement.textContent = contentToRead;
       
-      // 요소를 실제로 추가
       document.body.appendChild(contentElement);
-      console.log('📢 콘텐츠 요소 추가됨');
+      console.log('📢 콘텐츠 요소 추가됨:', contentToRead);
 
-      // 콘텐츠 요소 제거
       setTimeout(() => {
         if (document.body.contains(contentElement)) {
           document.body.removeChild(contentElement);
-          console.log('🗑 콘텐츠 요소 제거됨, hasReadContent 상태:', hasReadContent);
+          console.log('🗑 콘텐츠 요소 제거됨');
         }
       }, 10000);
     }
-  }, [blurAmount, hasReadContent, pageContent, data]);
+  }, [blurAmount, hasReadContent, isIntroRead, pageContent, data]);
 
-  // hasReadContent 상태 변화 모니터링
+  // 페이지 변경 시 상태 초기화
   useEffect(() => {
-    console.log('👀 hasReadContent 상태 변화:', {
-      hasReadContent,
-      시간: new Date().toLocaleTimeString()
+    console.log('🔄 페이지 변경 감지:', {
+      pageNumber,
+      이전_hasReadContent: hasReadContent,
+      이전_isIntroRead: isIntroRead,
+      현재_blurAmount: blurAmount
     });
-  }, [hasReadContent]);
+    
+    setHasReadContent(false);
+    setIsIntroRead(false);
+    
+    console.log('🔄 상태 초기화 완료:', {
+      hasReadContent: false,
+      isIntroRead: false
+    });
+  }, [pageNumber]);
 
-  // blur 상태 변화 추적을 위한 useEffect
+  // blurAmount 변경 감지
   useEffect(() => {
     console.log('🔍 Blur 상태 변경:', {
       현재_blur: blurAmount,
-      isUnlocked: isUnlocked,
-      isOrientationMode: isOrientationMode,
-      hasReadContent: hasReadContent,
-      isIntroRead: isIntroRead,
-      targetAngles: config?.targetAlpha,
-      currentAlpha: currentAlpha
+      isUnlocked,
+      isOrientationMode,
+      hasReadContent,
+      isIntroRead
     });
   }, [blurAmount]);
 
