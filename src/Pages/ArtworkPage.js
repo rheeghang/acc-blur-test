@@ -178,65 +178,82 @@ const ArtworkPage = () => {
     if (isContentInteractive && !hasReadContent && pageContent) {
       setHasReadContent(true);
       
-      const readContent = () => {
-        // 타이틀 읽기
+      // 타이틀 읽기
+      const readTitle = () => {
         const titleElement = document.createElement('div');
         titleElement.setAttribute('aria-live', 'assertive');
-        titleElement.setAttribute('role', 'status');
+        titleElement.className = 'sr-only';
         titleElement.textContent = pageContent.guidance.title;
-        
-        // 아티스트 읽기
-        const artistElement = document.createElement('div');
-        artistElement.setAttribute('aria-live', 'assertive');
-        artistElement.setAttribute('role', 'status');
-        artistElement.textContent = pageContent.guidance.artist;
-        
-        // 캡션 읽기
-        const captionElement = document.createElement('div');
-        captionElement.setAttribute('aria-live', 'assertive');
-        captionElement.setAttribute('role', 'status');
-        captionElement.textContent = pageContent.guidance.caption.replace(/<[^>]*>/g, '');
-        
-        // 본문 읽기
-        const bodyElement = document.createElement('div');
-        bodyElement.setAttribute('aria-live', 'assertive');
-        bodyElement.setAttribute('role', 'status');
-        bodyElement.textContent = pageContent.guidance.body.replace(/<[^>]*>/g, '');
-        
-        // 메뉴 안내
-        const menuElement = document.createElement('div');
-        menuElement.setAttribute('aria-live', 'assertive');
-        menuElement.setAttribute('role', 'status');
-        menuElement.textContent = data.pages.next;
+        document.body.appendChild(titleElement);
 
-        // 순차적으로 읽기 실행
-        const elements = [titleElement, artistElement, captionElement, bodyElement, menuElement];
-        let currentIndex = 0;
-
-        const readNext = () => {
-          if (currentIndex < elements.length) {
-            const currentElement = elements[currentIndex];
-            document.body.appendChild(currentElement);
-
-            // 현재 요소의 읽기가 완료되면 1초 후 다음 요소로 진행
-            const onEnd = () => {
-              document.body.removeChild(currentElement);
-              currentIndex++;
-              // 1초 후에 다음 요소 읽기
-              setTimeout(() => {
-                readNext();
-              }, 1000);
-            };
-
-            // VoiceOver나 다른 스크린리더가 읽기를 완료할 때까지 대기
-            currentElement.addEventListener('DOMNodeRemoved', onEnd, { once: true });
-          }
-        };
-
-        readNext();
+        // 2초 후 아티스트 읽기
+        setTimeout(() => {
+          document.body.removeChild(titleElement);
+          readArtist();
+        }, 3000);
       };
 
-      readContent();
+      // 아티스트 읽기
+      const readArtist = () => {
+        const artistElement = document.createElement('div');
+        artistElement.setAttribute('aria-live', 'assertive');
+        artistElement.className = 'sr-only';
+        artistElement.textContent = pageContent.guidance.artist;
+        document.body.appendChild(artistElement);
+
+        // 2초 후 캡션 읽기
+        setTimeout(() => {
+          document.body.removeChild(artistElement);
+          readCaption();
+        }, 2000);
+      };
+
+      // 캡션 읽기
+      const readCaption = () => {
+        const captionElement = document.createElement('div');
+        captionElement.setAttribute('aria-live', 'assertive');
+        captionElement.className = 'sr-only';
+        captionElement.textContent = pageContent.guidance.caption.replace(/<[^>]*>/g, '');
+        document.body.appendChild(captionElement);
+
+        // 3초 후 본문 읽기
+        setTimeout(() => {
+          document.body.removeChild(captionElement);
+          readBody();
+        }, 3000);
+      };
+
+      // 본문 읽기
+      const readBody = () => {
+        const bodyElement = document.createElement('div');
+        bodyElement.setAttribute('aria-live', 'assertive');
+        bodyElement.className = 'sr-only';
+        bodyElement.textContent = pageContent.guidance.body.replace(/<[^>]*>/g, '');
+        document.body.appendChild(bodyElement);
+
+        // 5초 후 메뉴 안내
+        setTimeout(() => {
+          document.body.removeChild(bodyElement);
+          readMenuGuide();
+        }, 5000);
+      };
+
+      // 메뉴 안내
+      const readMenuGuide = () => {
+        const menuElement = document.createElement('div');
+        menuElement.setAttribute('aria-live', 'assertive');
+        menuElement.className = 'sr-only';
+        menuElement.textContent = data.pages.next;
+        document.body.appendChild(menuElement);
+
+        // 2초 후 제거
+        setTimeout(() => {
+          document.body.removeChild(menuElement);
+        }, 2000);
+      };
+
+      // 순차적 읽기 시작
+      readTitle();
     }
   }, [isContentInteractive, hasReadContent, pageContent]);
 
