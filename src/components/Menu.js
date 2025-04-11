@@ -75,8 +75,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   return (
     <div 
       className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center text-center"
-      role="dialog"
-      aria-modal="true"
+      role="menu"
       aria-label={language === 'ko' ? '메뉴' : 'Menu'}
     >
       {/* 스크린 리더용 안내 메시지 */}
@@ -90,7 +89,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
 
       <div 
         className="menu-container w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold"
-        role="document"
+        role="menu"
       >
         <div className="h-12"></div>
 

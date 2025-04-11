@@ -306,6 +306,8 @@ const ArtworkPage = () => {
               transition: 'all 0.3s ease'
             }}
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
+            aria-expanded={showMenu}
+            aria-controls="menu-overlay"
           >
             {showMenu ? (
               <svg 
@@ -317,13 +319,13 @@ const ArtworkPage = () => {
                 strokeWidth="2"
                 strokeLinecap="round" 
                 strokeLinejoin="round"
-                aria-label="닫기 아이콘"
+                aria-label="닫기"
               >
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             ) : (
-              <MenuIcon />
+              <MenuIcon aria-label="메뉴" />
             )}
           </button>
         </div>
@@ -376,13 +378,15 @@ const ArtworkPage = () => {
 
         {/* 메뉴 오버레이 */}
         {showMenu && (
-          <Menu
-            isOpen={showMenu}
-            onClose={() => setShowMenu(false)}
-            onPageSelect={handlePageChange}
-            pageNumber={Number(pageNumber)}
-            pageType="artwork"
-          />
+          <div id="menu-overlay" role="dialog" aria-modal="true" aria-label="메뉴">
+            <Menu
+              isOpen={showMenu}
+              onClose={() => setShowMenu(false)}
+              onPageSelect={handlePageChange}
+              pageNumber={Number(pageNumber)}
+              pageType="artwork"
+            />
+          </div>
         )}
       </div>
     </Layout>

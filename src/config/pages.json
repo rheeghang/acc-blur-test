@@ -103,8 +103,8 @@
       "targetGamma1": -15,
       "targetBeta2": 0,
       "targetGamma2": -50,
-      "targetAlpha": 90,
-      "rotationAngle": 90,
+      "targetAlpha": 120,
+      "rotationAngle": 120,
       "bgColor": "bg-white",
       "textColor": "text-gray-800",
       "style": {
@@ -119,8 +119,8 @@
       "targetGamma1": -15,
       "targetBeta2": -44,
       "targetGamma2": -25,
-      "targetAlpha": 130,
-      "rotationAngle": 130,
+      "targetAlpha": 250,
+      "rotationAngle": 250,
       "bgColor": "bg-white",
       "textColor": "text-gray-800",
       "style": {
