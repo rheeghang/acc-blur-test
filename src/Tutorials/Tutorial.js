@@ -60,10 +60,14 @@ const Tutorial = () => {
 
   // Show intro message on tutorial step change
   useEffect(() => {
+    setHasContentAnnounced(false);
     setShowIntroMessage(true);
+    
+    // 스텝 4일 때는 다른 메시지 출력
     const timer = setTimeout(() => {
       setShowIntroMessage(false);
     }, 2500);
+    
     return () => clearTimeout(timer);
   }, [tutorialStep]);
 
@@ -247,6 +251,13 @@ const Tutorial = () => {
     return data.tutorial.steps[`step${step}`];
   };
 
+  // 회전 안내 메시지 선택 함수
+  const getRotationGuidance = (step) => {
+    if (step === 4) {
+      return data.tutorial.guidance.holdStraight; // "화면을 다시 바르게 들어주세요" 메시지
+    }
+    return data.tutorial.guidance.rotate; // "시계방향으로 회전" 메시지
+  };
 
   return (
     <Layout>
@@ -269,7 +280,7 @@ const Tutorial = () => {
        
         {showIntroMessage && (
           <div aria-live="polite" className="sr-only">
-            {data.tutorial.guidance.rotate}
+            {getRotationGuidance(tutorialStep)}
           </div>
         )}
 

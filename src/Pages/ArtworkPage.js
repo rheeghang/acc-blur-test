@@ -298,7 +298,7 @@ const ArtworkPage = () => {
                 marginTop: config.marginTop
               }}
             >
-              <div className="text-center mb-8 break-keep">
+              <div className="text-center mb-8 break-keep" aria-hidden={blurAmount !== 0}>
                 <h1 className="text-xl font-bold mb-4">{pageContent.title}</h1>
                 <p className="text-base mb-2">{pageContent.artist}</p>
                 <p className="text-xs" dangerouslySetInnerHTML={{ __html: pageContent.caption }} />
