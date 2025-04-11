@@ -177,66 +177,11 @@ const ArtworkPage = () => {
 
   // blur가 0이 되었을 때만 콘텐츠 읽기
   useEffect(() => {
-    // blur가 0이고 아직 콘텐츠를 읽지 않았을 때만 실행
-    if (blurAmount === 0 && !hasReadContent && isIntroRead) {
-      setHasReadContent(true);
-      
-      const contentToRead = `
-        ${pageContent.guidance.title}.
-        ${pageContent.guidance.artist}.
-        ${pageContent.guidance.caption}.
-        ${pageContent.guidance.body}.
-        ${data.pages.next}
-      `;
-
-      const contentElement = document.createElement('div');
-      contentElement.setAttribute('role', 'alert');
-      contentElement.setAttribute('aria-live', 'assertive');
-      contentElement.setAttribute('aria-atomic', 'true');
-      contentElement.className = 'sr-only';
-      
-      // 요소를 먼저 추가
-      document.body.appendChild(contentElement);
-      
-      // 약간의 지연 후 콘텐츠 설정 (스크린 리더가 변경을 감지하도록)
-      setTimeout(() => {
-        contentElement.textContent = contentToRead;
-      }, 100);
-
-      // 콘텐츠 요소 제거 타이머
-      setTimeout(() => {
-        document.body.removeChild(contentElement);
-      }, 10000);
-    }
-  }, [blurAmount, hasReadContent, isIntroRead, pageContent, data]);
-
-  // 페이지 변경 시 상태 초기화
-  useEffect(() => {
-    setHasReadContent(false);
-    setIsIntroRead(false);
-  }, [pageNumber]);
-
-  // blur 상태 변화 추적을 위한 useEffect
-  useEffect(() => {
-    console.log('🔍 Blur 상태 변경:', {
-      현재_blur: blurAmount,
-      isUnlocked: isUnlocked,
-      isOrientationMode: isOrientationMode,
-      hasReadContent: hasReadContent,
-      isIntroRead: isIntroRead,
-      targetAngles: config?.targetAlpha,
-      currentAlpha: currentAlpha
-    });
-  }, [blurAmount]);
-
-  // 콘텐츠 읽기 조건 체크 useEffect
-  useEffect(() => {
     if (blurAmount === 0) {
       console.log('✨ Blur=0 감지됨:', {
         시간: new Date().toLocaleTimeString(),
         blur상태: blurAmount,
         콘텐츠읽음여부: hasReadContent,
-        인트로읽음여부: isIntroRead,
         방향모드: isOrientationMode,
         잠금해제: isUnlocked,
         현재각도: currentAlpha,
@@ -247,18 +192,16 @@ const ArtworkPage = () => {
     console.log('📊 콘텐츠 읽기 조건 상태:', {
       조건1_Blur0: blurAmount === 0,
       조건2_미읽음: !hasReadContent,
-      조건3_인트로완료: isIntroRead,
-      조건_모두충족: (blurAmount === 0 && !hasReadContent && isIntroRead),
+      조건_모두충족: (blurAmount === 0 && !hasReadContent),
       추가정보: {
         현재_blur: blurAmount,
         콘텐츠상태: hasReadContent ? '읽음' : '미읽음',
-        인트로상태: isIntroRead ? '완료' : '미완료',
         방향모드: isOrientationMode ? '활성' : '비활성',
         잠금상태: isUnlocked ? '해제' : '잠김'
       }
     });
 
-    if (blurAmount === 0 && !hasReadContent && isIntroRead) {
+    if (blurAmount === 0 && !hasReadContent) {
       console.log('🎯 콘텐츠 읽기 시도:', {
         시간: new Date().toLocaleTimeString(),
         pageContent존재: !!pageContent,
@@ -270,7 +213,6 @@ const ArtworkPage = () => {
         }
       });
 
-      // 콘텐츠 읽기 시도 시 기존 코드...
       setHasReadContent(true);
       
       const contentToRead = `
@@ -305,7 +247,26 @@ const ArtworkPage = () => {
         console.log('🗑 콘텐츠 요소 제거 완료');
       }, 10000);
     }
-  }, [blurAmount, hasReadContent, isIntroRead, pageContent, data, isOrientationMode, isUnlocked, currentAlpha, config]);
+  }, [blurAmount, hasReadContent, pageContent, data, isOrientationMode, isUnlocked, currentAlpha, config]);
+
+  // 페이지 변경 시 상태 초기화
+  useEffect(() => {
+    setHasReadContent(false);
+    setIsIntroRead(false);
+  }, [pageNumber]);
+
+  // blur 상태 변화 추적을 위한 useEffect
+  useEffect(() => {
+    console.log('🔍 Blur 상태 변경:', {
+      현재_blur: blurAmount,
+      isUnlocked: isUnlocked,
+      isOrientationMode: isOrientationMode,
+      hasReadContent: hasReadContent,
+      isIntroRead: isIntroRead,
+      targetAngles: config?.targetAlpha,
+      currentAlpha: currentAlpha
+    });
+  }, [blurAmount]);
 
   const handlePageChange = (newPage) => {
     setShowMenu(false);
