@@ -178,7 +178,7 @@ const ArtworkPage = () => {
   // blur가 0이 되었을 때만 콘텐츠 읽기
   useEffect(() => {
     // blur가 0이고 아직 콘텐츠를 읽지 않았을 때만 실행
-    if (blurAmount === 0 && !hasReadContent && isIntroRead) {
+    if (blurAmount === 0 && isIntroRead) {
       setHasReadContent(true);
       
       const contentToRead = `
@@ -190,15 +190,23 @@ const ArtworkPage = () => {
       `;
 
       const contentElement = document.createElement('div');
+      contentElement.setAttribute('role', 'alert');
       contentElement.setAttribute('aria-live', 'assertive');
+      contentElement.setAttribute('aria-atomic', 'true');
       contentElement.className = 'sr-only';
-      contentElement.textContent = contentToRead;
+      
+      // 요소를 먼저 추가
       document.body.appendChild(contentElement);
+      
+      // 약간의 지연 후 콘텐츠 설정 (스크린 리더가 변경을 감지하도록)
+      setTimeout(() => {
+        contentElement.textContent = contentToRead;
+      }, 100);
 
       // 콘텐츠 요소 제거 타이머
       setTimeout(() => {
         document.body.removeChild(contentElement);
-      }, 10000); // 콘텐츠를 읽기에 충분한 시간
+      }, 10000);
     }
   }, [blurAmount, hasReadContent, isIntroRead, pageContent, data]);
 
