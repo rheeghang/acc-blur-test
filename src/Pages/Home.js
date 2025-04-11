@@ -58,28 +58,28 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
 
   const handlePermissionRequest = async (e) => {
     try {
-      console.log("📱 iOS 기기 - 센서 권한 요청 시작");
+      console.log("📱 권한 요청 시작");
       
-      // iOS 기기인 경우에만 권한 요청
-      if (isIOSDevice() && typeof DeviceOrientationEvent.requestPermission === 'function') {
+      // iOS 기기 체크 (iOS 13 이상)
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        console.log("📱 iOS 13+ 기기 감지");
+        
         const permission = await DeviceOrientationEvent.requestPermission();
         console.log("🟢 권한 응답:", permission);
 
         if (permission === 'granted') {
+          console.log("✅ 권한 허용됨");
           onConfirm();
-        } else {
-          alert("센서 권한이 거부되었습니다. 설정에서 허용해주세요.");
         }
       } else {
-        // iOS가 아니거나 권한 요청이 필요없는 경우 바로 진행
-        console.log("📱 non-iOS 기기 또는 권한 요청 불필요");
+        // iOS가 아니거나 iOS 13 미만인 경우
+        console.log("📱 non-iOS 기기 또는 iOS 13 미만");
         onConfirm();
       }
     } catch (error) {
-      console.error('전체 처리 실패:', error);
-      if (window.confirm("센서 권한 요청에 실패했습니다. 계속 진행하시겠습니까?")) {
-        onConfirm();
-      }
+      console.log('권한 요청 처리:', error);
+      // 에러가 발생해도 계속 진행
+      onConfirm();
     }
   };
 
