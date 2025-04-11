@@ -179,7 +179,7 @@ const ArtworkPage = () => {
   // blur가 0이 되면 콘텐츠 읽기 시작
   useEffect(() => {
     // blurAmount가 0이고 isContentInteractive가 true일 때만 콘텐츠를 읽음
-    if (blurAmount === 0 && isContentInteractive && !hasReadContent && pageContent) {
+    if (blurAmount === 0) {
       setHasReadContent(true);
       
       const contentToRead = `

@@ -60,25 +60,31 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
     try {
       console.log("📱 권한 요청 시작");
       
-      // iOS 기기 체크 (iOS 13 이상)
-      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      // iOS 기기에서 DeviceOrientationEvent.requestPermission 함수가 있는지 확인
+      if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
         console.log("📱 iOS 13+ 기기 감지");
         
-        const permission = await DeviceOrientationEvent.requestPermission();
-        console.log("🟢 권한 응답:", permission);
-
-        if (permission === 'granted') {
-          console.log("✅ 권한 허용됨");
-          onConfirm();
-        }
+        // 직접 권한 요청 실행
+        DeviceOrientationEvent.requestPermission()
+          .then(permissionState => {
+            console.log("🟢 권한 응답:", permissionState);
+            if (permissionState === 'granted') {
+              console.log("✅ 권한 허용됨");
+              onConfirm();
+            }
+          })
+          .catch(error => {
+            console.error('권한 요청 에러:', error);
+            // 에러 발생시에도 계속 진행
+            onConfirm();
+          });
       } else {
         // iOS가 아니거나 iOS 13 미만인 경우
         console.log("📱 non-iOS 기기 또는 iOS 13 미만");
         onConfirm();
       }
     } catch (error) {
-      console.log('권한 요청 처리:', error);
-      // 에러가 발생해도 계속 진행
+      console.log('권한 요청 처리 에러:', error);
       onConfirm();
     }
   };
@@ -91,22 +97,14 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
           센서 권한을 허용해 주세요
         </h3>
         <p className="mb-6 text-gray-600 select-none">
-          "작품 감상을 위해 기기의 방향 감지 센서를 허용해 주세요."
+          작품 감상을 위해 기기의 방향 감지 센서를 허용해 주세요.
         </p>
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            handlePermissionRequest();
-          }}
-          onTouchStart={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            handlePermissionRequest();
-          }}
+          onClick={handlePermissionRequest}
           className="w-full rounded-md bg-black px-4 py-2 text-white transition-colors active:bg-gray-800"
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          "허용 후 계속하기"
+          허용 후 계속하기
         </button>
       </div>
     </div>
