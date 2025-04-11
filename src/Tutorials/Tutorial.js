@@ -348,7 +348,7 @@ const Tutorial = () => {
             
             <div className={`${tutorialStep === 4 ? 'mt-0' : 'mt-14'}`}>
               {tutorialStep !== 4 && (
-                <div
+                <button
                   className="absolute bottom-2 right-2 cursor-pointer tutorial-button"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -374,7 +374,7 @@ const Tutorial = () => {
                     <path d="M5 12H19M19 12L12 5M19 12L12 19" 
                       stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                </div>
+                </button>
               )}
             </div>
           </div>

@@ -153,32 +153,35 @@ const ArtworkPage = () => {
     };
   }, [blurAmount, isScrolled]);
 
+  // 콘텐츠 클릭 가능 여부 확인
+  const isContentInteractive = isOrientationMode ? blurAmount === 0 : true;
+
   // 페이지 로드 시 가이던스 intro 읽기
   useEffect(() => {
-    if (!isIntroRead && data[`page${pageNumber}`]?.guidance?.intro) {
-      setIsIntroRead(true);
-      // intro 내용을 읽기 위한 div 추가
-      const introElement = document.createElement('div');
-      introElement.setAttribute('aria-live', 'polite');
-      introElement.textContent = data[`page${pageNumber}`].guidance.intro;
-      document.body.appendChild(introElement);
-      
-      // 일정 시간 후 제거
-      setTimeout(() => {
-        document.body.removeChild(introElement);
-      }, 1000);
-    }
-  }, [pageNumber, data, isIntroRead]);
+    // 페이지 로드 직후에만 intro를 읽도록 함
+    const timeoutId = setTimeout(() => {
+      if (!isIntroRead && data[`page${pageNumber}`]?.guidance?.intro) {
+        setIsIntroRead(true);
+        const introElement = document.createElement('div');
+        introElement.setAttribute('aria-live', 'polite');
+        introElement.textContent = data[`page${pageNumber}`].guidance.intro;
+        document.body.appendChild(introElement);
+        
+        setTimeout(() => {
+          document.body.removeChild(introElement);
+        }, 2000);
+      }
+    }, 500); // 페이지 로드 후 약간의 지연을 두어 다른 요소들이 준비되도록 함
 
-  // 콘텐츠 클릭 가능 여부 확인
-  const isContentInteractive = !isOrientationMode || (isOrientationMode && blurAmount === 0);
+    return () => clearTimeout(timeoutId);
+  }, [pageNumber, data, isIntroRead]);
 
   // blur가 0이 되면 콘텐츠 읽기 시작
   useEffect(() => {
-    if (isContentInteractive && !hasReadContent && pageContent) {
+    // blurAmount가 0이고 isContentInteractive가 true일 때만 콘텐츠를 읽음
+    if (blurAmount === 0 && isContentInteractive && !hasReadContent && pageContent) {
       setHasReadContent(true);
       
-      // 모든 콘텐츠를 하나의 문자열로 구성
       const contentToRead = `
         ${pageContent.guidance.title}.
         ${pageContent.guidance.artist}.
@@ -187,14 +190,13 @@ const ArtworkPage = () => {
         ${data.pages.next}
       `;
 
-      // 하나의 div로 모든 콘텐츠 읽기
       const contentElement = document.createElement('div');
       contentElement.setAttribute('aria-live', 'assertive');
       contentElement.className = 'sr-only';
       contentElement.textContent = contentToRead;
       document.body.appendChild(contentElement);
     }
-  }, [isContentInteractive, hasReadContent, pageContent]);
+  }, [blurAmount, isContentInteractive, hasReadContent, pageContent]);
 
   // 페이지 변경 시 상태 초기화
   useEffect(() => {
