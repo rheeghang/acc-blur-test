@@ -59,14 +59,21 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
   const handlePermissionRequest = async (e) => {
     try {
       console.log("📱 iOS 기기 - 센서 권한 요청 시작");
+      
+      // iOS 기기인 경우에만 권한 요청
+      if (isIOSDevice() && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        const permission = await DeviceOrientationEvent.requestPermission();
+        console.log("🟢 권한 응답:", permission);
 
-      const permission = await DeviceOrientationEvent.requestPermission();
-      console.log("🟢 권한 응답:", permission);
-
-      if (permission === 'granted') {
-        onConfirm();
+        if (permission === 'granted') {
+          onConfirm();
+        } else {
+          alert("센서 권한이 거부되었습니다. 설정에서 허용해주세요.");
+        }
       } else {
-        alert("센서 권한이 거부되었습니다. 설정에서 허용해주세요.");
+        // iOS가 아니거나 권한 요청이 필요없는 경우 바로 진행
+        console.log("📱 non-iOS 기기 또는 권한 요청 불필요");
+        onConfirm();
       }
     } catch (error) {
       console.error('전체 처리 실패:', error);
@@ -157,7 +164,12 @@ const Home = () => {
   const { currentAlpha } = useBlur();
 
   const handleOrientation = (event) => {
-    setAlpha(event.alpha || 0);
+    // alpha 값을 -180 ~ 180 범위로 정규화
+    let normalizedAlpha = event.alpha || 0;
+    if (normalizedAlpha > 180) {
+      normalizedAlpha = normalizedAlpha - 360;
+    }
+    setAlpha(normalizedAlpha);
     setGamma(event.gamma || 0);
   };
 
@@ -294,12 +306,15 @@ const Home = () => {
           <div className="center-box bg-key-gradient shadow-lg"
             style={{
               transition: "transform 0.05s linear, border-radius 0s linear",
-              transform: `rotate(${currentAlpha - 90}deg)`,
+              // 정규화된 alpha 값 사용
+              transform: `rotate(${(currentAlpha > 180 ? currentAlpha - 360 : currentAlpha) - 90}deg)`,
               width: '250px',
               height: '250px',
               borderRadius: (() => {
-                if ((currentAlpha >= 40 && currentAlpha <= 90) || 
-                    (currentAlpha >= 270 && currentAlpha <= 320)) {
+                // 정규화된 alpha 값으로 조건 체크
+                const normalizedAlpha = currentAlpha > 180 ? currentAlpha - 360 : currentAlpha;
+                if ((normalizedAlpha >= 40 && normalizedAlpha <= 90) || 
+                    (normalizedAlpha >= -90 && normalizedAlpha <= -40)) {
                   return '999px';
                 }
                 return '0px';

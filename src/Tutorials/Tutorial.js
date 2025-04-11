@@ -350,55 +350,59 @@ const Tutorial = () => {
             top: '50%'
           }}
         >
-          <div 
-            className={`tutorial-container p-4 ${currentConfig.bgColor} shadow-lg relative`} 
+          <button 
+            className={`tutorial-container p-4 shadow-lg relative w-full ${
+              tutorialStep === 4 ? 'bg-key-color text-center' : 'bg-white text-left'
+            }`}
             aria-hidden={blurAmount !== 0}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (blurAmount === 0 && !isAdvancing && tutorialStep !== 4) {
+                handleTutorialNext();
+              }
+            }}
+            onTouchStart={(e) => {
+              e.stopPropagation();
+              if (blurAmount === 0 && !isAdvancing && tutorialStep !== 4) {
+                handleTutorialNext();
+              }
+            }}
+            style={{
+              border: 'none',
+              cursor: blurAmount === 0 && tutorialStep !== 4 ? 'pointer' : 'default',
+              pointerEvents: blurAmount === 0 ? 'auto' : 'none'
+            }}
+            disabled={blurAmount !== 0 || tutorialStep === 4}
+            tabIndex={blurAmount === 0 ? 0 : -1}
+            role="button"
+            aria-label={language === 'ko' ? "다음 단계로" : "Next step"}
           >
             <p className={`text-lg leading-relaxed ${currentConfig.textColor} break-keep ${tutorialStep === 4 ? 'mb-0' : 'mb-8'}`}>
               {data.tutorial.steps[`step${tutorialStep}`]}
             </p>
             
-            <div className={`${tutorialStep === 4 ? 'mt-0' : 'mt-14'}`}>
+            <div className={`${tutorialStep === 4 ? 'mt-0' : 'mt-14'} relative`}>
               {tutorialStep !== 4 && (
-                <button
-                  className="absolute bottom-2 right-2 cursor-pointer tutorial-button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (isUnlocked) {
-                      handleTutorialNext();
-                    }
-                  }}
-                  onTouchStart={(e) => {
-                    e.stopPropagation();
-                    if (isUnlocked) {
-                      handleTutorialNext();
-                    }
-                  }}
-                  style={{ 
-                    pointerEvents: isUnlocked ? 'auto' : 'none',
-                    background: 'none',
-                    border: 'none',
-                    padding: 0
-                  }}
-                  tabIndex={blurAmount === 0 ? 0 : -1}
-                  aria-label={language === 'ko' ? "다음 단계로" : "Next step"}
-                  role="button"
+                <svg 
+                  className="absolute bottom-2 right-2"
+                  role="img"
+                  aria-hidden="true"
+                  width="40" 
+                  height="40" 
+                  viewBox="0 0 24 24" 
+                  fill="none"
                 >
-                  <svg 
-                    role="img"
-                    aria-hidden="true"
-                    width="40" 
-                    height="40" 
-                    viewBox="0 0 24 24" 
-                    fill="none"
-                  >
-                    <path d="M5 12H19M19 12L12 5M19 12L12 19" 
-                      stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
+                  <path 
+                    d="M5 12H19M19 12L12 5M19 12L12 19" 
+                    stroke="black" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                </svg>
               )}
             </div>
-          </div>
+          </button>
         </div>
 
         {showMenu && (
