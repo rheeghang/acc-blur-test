@@ -190,13 +190,19 @@ const ArtworkPage = () => {
   useEffect(() => {
     console.log('🔄 페이지 변경 감지:', {
       pageNumber,
-      이전_hasReadContent: hasReadContent
+      이전_hasReadContent: hasReadContent,
+      이전_isIntroRead: isIntroRead
     });
     
     // hasReadContent 초기화
     setHasReadContent(false);
+    // isIntroRead 초기화
+    setIsIntroRead(false);
     
-    console.log('🔄 hasReadContent 초기화 완료');
+    console.log('🔄 상태 초기화 완료:', {
+      hasReadContent: false,
+      isIntroRead: false
+    });
   }, [pageNumber]); // pageNumber가 변경될 때만 실행
 
   // blur 상태에 따른 콘텐츠 읽기
