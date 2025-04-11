@@ -103,6 +103,7 @@ const About = () => {
         {/* 바깥 컨테이너 */}
         <div className="outer-container absolute w-[120%] h-[150vh] flex items-center justify-center"
           style={{
+            transform: `rotate(-10deg)`,
             top: '50%',
             marginTop: '-75vh',
           }}
