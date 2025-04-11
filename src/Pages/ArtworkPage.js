@@ -156,30 +156,29 @@ const ArtworkPage = () => {
   // 콘텐츠 클릭 가능 여부 확인
   const isContentInteractive = isOrientationMode ? blurAmount === 0 : true;
 
-  // 페이지 로드 시 가이던스 intro 읽기
+  // 페이지 로드 시 intro 메시지 읽기
   useEffect(() => {
-    // 페이지 로드 직후에만 intro를 읽도록 함
-    const timeoutId = setTimeout(() => {
-      if (!isIntroRead && data[`page${pageNumber}`]?.guidance?.intro) {
-        setIsIntroRead(true);
-        const introElement = document.createElement('div');
-        introElement.setAttribute('aria-live', 'polite');
-        introElement.textContent = data[`page${pageNumber}`].guidance.intro;
-        document.body.appendChild(introElement);
-        
-        setTimeout(() => {
-          document.body.removeChild(introElement);
-        }, 2000);
-      }
-    }, 500); // 페이지 로드 후 약간의 지연을 두어 다른 요소들이 준비되도록 함
-
-    return () => clearTimeout(timeoutId);
+    if (!isIntroRead) {
+      setIsIntroRead(true);
+      
+      // intro 메시지 읽기
+      const introElement = document.createElement('div');
+      introElement.setAttribute('aria-live', 'polite');
+      introElement.className = 'sr-only';
+      introElement.textContent = data[`page${pageNumber}`]?.guidance?.intro || '';
+      document.body.appendChild(introElement);
+      
+      // intro 메시지 제거 타이머
+      setTimeout(() => {
+        document.body.removeChild(introElement);
+      }, 2000);
+    }
   }, [pageNumber, data, isIntroRead]);
 
-  // blur가 0이 되면 콘텐츠 읽기 시작
+  // blur가 0이 되었을 때만 콘텐츠 읽기
   useEffect(() => {
-    // blurAmount가 0이고 isContentInteractive가 true일 때만 콘텐츠를 읽음
-    if (blurAmount === 0) {
+    // blur가 0이고 아직 콘텐츠를 읽지 않았을 때만 실행
+    if (blurAmount === 0 && !hasReadContent && isIntroRead) {
       setHasReadContent(true);
       
       const contentToRead = `
@@ -195,8 +194,13 @@ const ArtworkPage = () => {
       contentElement.className = 'sr-only';
       contentElement.textContent = contentToRead;
       document.body.appendChild(contentElement);
+
+      // 콘텐츠 요소 제거 타이머
+      setTimeout(() => {
+        document.body.removeChild(contentElement);
+      }, 10000); // 콘텐츠를 읽기에 충분한 시간
     }
-  }, [blurAmount, isContentInteractive, hasReadContent, pageContent]);
+  }, [blurAmount, hasReadContent, isIntroRead, pageContent, data]);
 
   // 페이지 변경 시 상태 초기화
   useEffect(() => {

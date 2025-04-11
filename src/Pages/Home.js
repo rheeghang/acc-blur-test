@@ -93,11 +93,11 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
       <div className="fixed inset-0 bg-black/50 transition-opacity pointer-events-none" />
       <div className="relative z-[101] w-80 rounded-lg bg-white p-6 shadow-xl">
-        <h3 className="mb-4 text-xl font-bold text-gray-900 select-none">
+        <h3 className="mb-4 text-xl font-bold text-gray-900 select-none" aria-hidden="true">
           센서 권한을 허용해 주세요
         </h3>
         <p className="mb-6 text-gray-600 select-none">
-          작품 감상을 위해 기기의 방향 감지 센서를 허용해 주세요.
+          작품 감상을 위해 아래 버튼을 눌러 기기의 방향 감지 센서를 허용해 주세요.
         </p>
         <button
           onClick={handlePermissionRequest}
