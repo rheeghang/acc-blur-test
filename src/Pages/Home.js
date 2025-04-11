@@ -8,17 +8,15 @@ import { useBlur } from '../contexts/BlurContext';
 
 const MOBILE_MAX_WIDTH = 1024; // 태블릿 크기까지 허용
 
-const isMobileDevice = () => {
-  // iPad detection for iOS 13+
-  const isIPad = navigator.maxTouchPoints &&
-                 navigator.maxTouchPoints > 2 &&
-                 /MacIntel/.test(navigator.platform);
+// iOS 체크 함수
+const isIOSDevice = () => {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+};
 
-  // 화면 크기가 MOBILE_MAX_WIDTH 이하이거나 모바일/태블릿 기기인 경우
-  return window.innerWidth <= MOBILE_MAX_WIDTH || 
-         /iPhone|iPad|iPod|Android/.test(navigator.userAgent) ||
-         isIPad ||
-         (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+// 모바일 기기 체크 함수 수정
+const isMobileDevice = () => {
+  return window.innerWidth <= MOBILE_MAX_WIDTH;
 };
 
 // iOS 버전 체크 함수 추가 (Modal 컴포넌트 위에)
@@ -58,56 +56,37 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
     );
   }
 
-  // iOS 13 이전 버전 체크
-  const iosVersion = getIOSVersion();
-  if (iosVersion > 0 && iosVersion < 13) {
-    return (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center">
-        <div className="fixed inset-0 bg-black/50 transition-opacity pointer-events-none" />
-        <div className="relative z-[101] w-80 rounded-lg bg-white p-6 shadow-xl">
-          <h3 className="mb-4 text-xl font-bold text-gray-900 select-none">
-            기기 버전 안내
-          </h3>
-          <p className="mb-6 text-gray-600 select-none">
-            iOS 13 이상의 버전이 필요합니다. 기기의 iOS를 업데이트하거나 다른 기기로 접속해 주세요.
-          </p>
-          <button
-            onClick={onClose}
-            className="w-full rounded-md bg-black px-4 py-2 text-white transition-colors active:bg-gray-800"
-            style={{ WebkitTapHighlightColor: 'transparent' }}
-          >
-            확인
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const modalMessage = "작품 감상을 위해 기기의 방향 감지 센서를 허용해 주세요.";
-  const buttonText = "허용 후 계속하기";
-
   const handlePermissionRequest = async (e) => {
     try {
-      // iOS 기기(아이패드 포함)에서는 requestPermission 함수가 있는지 확인
-      if (typeof DeviceOrientationEvent !== 'undefined' && 
-          typeof DeviceOrientationEvent.requestPermission === 'function') {
+      // iOS 기기이고 권한 요청이 필요한 경우
+      if (isIOSDevice() && typeof DeviceOrientationEvent.requestPermission === 'function') {
         console.log("iOS 기기 감지됨 - 권한 요청 시도");
-        const permission = await DeviceOrientationEvent.requestPermission();
-        if (permission === 'granted') {
-          console.log("권한 승인됨");
-          onConfirm();
-        } else {
-          console.error('방향 감지 센서 권한이 거부되었습니다.');
+        try {
+          const permission = await DeviceOrientationEvent.requestPermission();
+          console.log("권한 응답:", permission);
+          if (permission === 'granted') {
+            console.log("권한 승인됨");
+            onConfirm();
+          } else {
+            console.log("권한 거부됨");
+            alert("방향 감지 센서 권한이 필요합니다. 설정에서 권한을 허용해주세요.");
+          }
+        } catch (permissionError) {
+          console.error("권한 요청 중 오류:", permissionError);
+          if (window.confirm("센서 권한 요청에 실패했습니다. 계속 진행하시겠습니까?")) {
+            onConfirm();
+          }
         }
       } else {
-        // 안드로이드나 권한 요청이 필요없는 기기
-        console.log("non-iOS 기기 감지됨 - 권한 요청 없이 진행");
+        // iOS가 아니거나 권한 요청이 필요없는 기기
+        console.log("non-iOS 기기 감지됨 또는 권한 요청 불필요 - 권한 요청 없이 진행");
         onConfirm();
       }
     } catch (error) {
-      console.error('권한 요청 실패:', error);
-      // 권한 요청 실패 시에도 onConfirm 호출 (안드로이드 등에서 필요)
-      onConfirm();
+      console.error('전체 처리 실패:', error);
+      if (window.confirm("센서 접근에 문제가 발생했습니다. 계속 진행하시겠습니까?")) {
+        onConfirm();
+      }
     }
   };
 
@@ -119,18 +98,22 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
           센서 권한을 허용해 주세요
         </h3>
         <p className="mb-6 text-gray-600 select-none">
-          {modalMessage}
+          "작품 감상을 위해 기기의 방향 감지 센서를 허용해 주세요."
         </p>
         <button
-          onClick={handlePermissionRequest}
+          onClick={(e) => {
+            e.preventDefault();
+            handlePermissionRequest();
+          }}
           onTouchStart={(e) => {
+            e.preventDefault();
             e.stopPropagation();
             handlePermissionRequest();
           }}
           className="w-full rounded-md bg-black px-4 py-2 text-white transition-colors active:bg-gray-800"
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          {buttonText}
+          "허용 후 계속하기"
         </button>
       </div>
     </div>
