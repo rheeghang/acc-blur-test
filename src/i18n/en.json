@@ -1,24 +1,36 @@
 {
     "home1": {
         "title": "Crossing the Line:\n Our Bodies, Embedded with Others",
+        "subtitle": "2025 ACC CONTACT",
         "startButton": "Start",
         "guidance": {
             "enter": "Welcome to the exhibition.",
-            "intro": "Please rotate your device to experience the artwork.",
-            "start": "Press the start button to begin your journey."
+            "intro": "There is a square box in the center of the screen. When you tilt your device, the box rotates. There is a start button at the bottom.",
+            "start": "The start button has appeared at the bottom of the screen."
         }
+    },
+    "howto": {
+        "title": "How to Use this Web Docent",
+        "steps": [
+            "1. Choose an artwork you want to learn about from the menu.",
+            "2. Slightly rotate your phone. The angle may vary slightly for each person.",
+            "3. Somewhere, you'll find a point where the screen becomes clear. Once you find it, you can start reading.",
+            "4. If it's difficult to find, you can go back to the menu and try again from the beginning.",
+            "5. While we recommend reading in a blurred state, if it's too difficult to see, you can press the button below (I press it sometimes too)."
+        ]
     },
     "tutorial": {
         "guidance": {
             "rotate": "Please rotate your device slightly counterclockwise.",
-            "next": "Triple tap the screen to proceed to the next step.",
-            "menu": "Triple tap the screen to open the menu."
+            "next": "Click the center button to proceed to the next step.",
+            "menu": "There is a menu button in the top right.",
+            "holdStraight": "Please hold your device straight again"
         },
         "steps": {
             "step1": "The National Asian Culture Center, in cooperation with Tissue Office, has developed a mobile web docent to suggest various stances from which to experience the exhibition.",
             "step2": "Deviating from the usual function of a docent, which is to expressly, smoothly, and conveniently deliver curatorial commentary,",
             "step3": "this mobile web docent allows us, as cumbersome, unproductive, and unfamiliar as it may be, to take in the presented works from different angles and perspectives.",
-            "step4": "Excellent! Now you are ready to view other artworks through the menu."
+            "step4": "Excellent!\nNow you are ready.\nOpen the menu to view freely."
         }
     },
     "guide": {
@@ -27,6 +39,9 @@
     "menu": {
         "close": "Close",
         "orientationMode": "Angle Mode"
+    },
+    "pages": {
+        "next": "There is a menu icon in the top right."
     },
     "exhibition": {
         "title": "2025 ACC CONTACT",

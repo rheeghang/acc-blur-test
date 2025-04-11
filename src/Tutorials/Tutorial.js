@@ -64,11 +64,26 @@ const Tutorial = () => {
     setShowIntroMessage(true);
     
     // 스텝 4일 때는 다른 메시지 출력
-    const timer = setTimeout(() => {
-      setShowIntroMessage(false);
-    }, 2500);
-    
-    return () => clearTimeout(timer);
+    if (tutorialStep === 4) {
+      const timer1 = setTimeout(() => {
+        setShowIntroMessage(false);
+      }, 2500);
+      
+      const timer2 = setTimeout(() => {
+        setShowIntroMessage(true);
+      }, 3000);
+      
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
+    } else {
+      const timer = setTimeout(() => {
+        setShowIntroMessage(false);
+      }, 2500);
+      
+      return () => clearTimeout(timer);
+    }
   }, [tutorialStep]);
 
   // 컴포넌트 마운트 시 전체 상태 확인
@@ -254,9 +269,9 @@ const Tutorial = () => {
   // 회전 안내 메시지 선택 함수
   const getRotationGuidance = (step) => {
     if (step === 4) {
-      return data.tutorial.guidance.holdStraight; // "화면을 다시 바르게 들어주세요" 메시지
+      return data.tutorial.guidance.holdStraight;
     }
-    return data.tutorial.guidance.rotate; // "시계방향으로 회전" 메시지
+    return data.tutorial.guidance.rotate;
   };
 
   return (
