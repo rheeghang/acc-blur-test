@@ -165,7 +165,7 @@ const ArtworkPage = () => {
       const introElement = document.createElement('div');
       introElement.setAttribute('aria-live', 'polite');
       introElement.className = 'sr-only';
-      introElement.textContent = data[`page${pageNumber}`]?.guidance?.intro || '';
+      introElement.textContent = pageContent.guidance?.intro || '';
       document.body.appendChild(introElement);
       
       // intro 메시지 제거 타이머

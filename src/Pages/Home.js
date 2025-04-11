@@ -303,17 +303,20 @@ const Home = () => {
         <div className="fixed inset-0 flex items-center justify-center z-0">
           <div className="center-box bg-key-gradient shadow-lg"
             style={{
-              transition: "transform 0.05s linear, border-radius 0s linear",
-              // 정규화된 alpha 값 사용
+              transition: "transform 0.05s linear, border-radius 0.3s ease-in-out",
               transform: `rotate(${(currentAlpha > 180 ? currentAlpha - 360 : currentAlpha) - 90}deg)`,
               width: '250px',
               height: '250px',
               borderRadius: (() => {
-                // 정규화된 alpha 값으로 조건 체크
                 const normalizedAlpha = currentAlpha > 180 ? currentAlpha - 360 : currentAlpha;
-                if ((normalizedAlpha >= 40 && normalizedAlpha <= 90) || 
-                    (normalizedAlpha >= -90 && normalizedAlpha <= -40)) {
-                  return '999px';
+                const absAlpha = Math.abs(normalizedAlpha);
+                
+                // 40도에서 90도 사이에서 점진적으로 변화
+                if (absAlpha >= 40 && absAlpha <= 90) {
+                  // 40도에서 90도 사이의 값을 0에서 1 사이의 값으로 정규화
+                  const progress = (absAlpha - 40) / 50;
+                  // 정규화된 값을 이용해 border-radius를 계산
+                  return `${progress * 999}px`;
                 }
                 return '0px';
               })()
