@@ -86,23 +86,6 @@ const Howto = () => {
     setShowMenu(false);
   };
 
-  useEffect(() => {
-    const handleScroll = (e) => {
-      const container = e.target;
-      const scrollPosition = container.scrollTop;
-      const maxScroll = container.scrollHeight - container.clientHeight;
-      const ratio = scrollPosition / maxScroll;
-      setScrollRatio(ratio);
-      
-      // 스크롤이 90% 이상일 때 짙은 회색으로 변경
-      if (ratio >= 0.9 && !showMenu) {
-        setMenuIconColor('#333333');
-      } else {
-        setMenuIconColor('#000000');
-      }
-    };
-    // ... 나머지 코드 유지
-  }, [showMenu]);
 
   return (
     <Layout>
@@ -110,7 +93,7 @@ const Howto = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="space-y-6">
             <div className="max-w-md mx-auto flex flex-col items-center">
-              <div className="text-container w-[320px] h-[600px] bg-white shadow-xl relative">
+              <div className="howto-text-container w-[320px] h-[600px] bg-white shadow-xl relative">
                 <div className="p-8">
                   <h1 className="text-xl text-center font-bold mb-8">
                     {language === 'ko' ? '웹 사용법' : 'How to Use'}

@@ -218,7 +218,7 @@ const ArtworkPage = () => {
         // 메뉴 안내
         const menuElement = document.createElement('div');
         menuElement.setAttribute('aria-live', 'polite');
-        menuElement.textContent = "우측 상단에 메뉴가 있습니다";
+        menuElement.textContent = data.pages.next;
         document.body.appendChild(menuElement);
         
         await new Promise(resolve => setTimeout(resolve, 2000));

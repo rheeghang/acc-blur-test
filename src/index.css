@@ -163,6 +163,12 @@ code {
     margin-top: 85vh !important;
     font-size:120% !important;
   }
+
+  .howto-text-container {
+    width: 450px;
+    height: 800px;
+    margin-top:15vh !important;
+  }
 }
 
 /* 기본 유틸리티 클래스 */
