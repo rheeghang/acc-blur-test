@@ -36,7 +36,7 @@ const Tutorial = () => {
   const data = language === 'ko' ? koData : enData;
   const [showGuide, setShowGuide] = useState(true);
   const [lastInputType, setLastInputType] = useState(null);
-  const [showIntroMessage, setShowIntroMessage] = useState(false);
+  const [showIntroMessage, setShowIntroMessage] = useState(true);
   const [isAdvancing, setIsAdvancing] = useState(false);
 
   // 현재 설정 가져오기
@@ -275,6 +275,11 @@ const Tutorial = () => {
     return data.tutorial.guidance.rotate;
   };
 
+  useEffect(() => {
+    // 컴포넌트 마운트 시 즉시 안내 메시지 표시
+    setShowIntroMessage(true);
+  }, []);
+
   return (
     <Layout>
       <div 
@@ -295,7 +300,7 @@ const Tutorial = () => {
       >
        
         {showIntroMessage && (
-          <div aria-live="polite" className="sr-only">
+          <div aria-live="assertive" className="sr-only">
             {getRotationGuidance(tutorialStep)}
           </div>
         )}

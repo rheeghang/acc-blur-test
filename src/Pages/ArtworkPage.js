@@ -165,8 +165,6 @@ const ArtworkPage = () => {
     });
 
     if (!isIntroRead && pageContent?.guidance?.intro) {
-      setIsIntroRead(true);
-      
       // intro 메시지 읽기
       const introElement = document.createElement('div');
       introElement.setAttribute('aria-live', 'polite');
@@ -176,6 +174,12 @@ const ArtworkPage = () => {
       
       console.log('🔊 인트로 메시지 추가됨:', pageContent.guidance.intro);
       
+      // 페이지 시작 후 0.2초 후에 isIntroRead를 true로 설정
+      setTimeout(() => {
+        setIsIntroRead(true);
+        console.log('🔊 isIntroRead 상태 변경됨:', true);
+      }, 200); // 0.2초 지연
+
       // intro 메시지 제거 타이머
       setTimeout(() => {
         if (document.body.contains(introElement)) {
