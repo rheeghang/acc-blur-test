@@ -37,6 +37,7 @@ const Tutorial = () => {
   const [showGuide, setShowGuide] = useState(true);
   const [lastInputType, setLastInputType] = useState(null);
   const [showIntroMessage, setShowIntroMessage] = useState(false);
+  const [isAdvancing, setIsAdvancing] = useState(false);
 
   // 현재 설정 가져오기
   const currentConfig = pageConfig.tutorial[tutorialStep];
@@ -203,12 +204,20 @@ const Tutorial = () => {
   };
 
   const handleTutorialNext = () => {
+    if (isAdvancing) return; // 이미 진행 중이면 중복 실행 방지
+    setIsAdvancing(true);
+    
     if (tutorialStep < 4) {
       const nextStep = tutorialStep + 1;
       setTutorialStep(nextStep);
     } else {
       window.location.href = '/artwork/1';
     }
+    
+    // 일정 시간 후에 플래그 초기화
+    setTimeout(() => {
+      setIsAdvancing(false);
+    }, 500);
   };
 
   const handleTutorialPrev = () => {
@@ -342,8 +351,8 @@ const Tutorial = () => {
           }}
         >
           <div 
-            className={`tutorial-container p-4 ${currentConfig.bgColor} shadow-lg relative`}
-            aria-hidden={!isUnlocked}
+            className={`tutorial-container p-4 ${currentConfig.bgColor} shadow-lg relative`} 
+            aria-hidden={blurAmount !== 0}
           >
             <p className={`text-lg leading-relaxed ${currentConfig.textColor} break-keep ${tutorialStep === 4 ? 'mb-0' : 'mb-8'}`}>
               {data.tutorial.steps[`step${tutorialStep}`]}
@@ -371,11 +380,18 @@ const Tutorial = () => {
                     border: 'none',
                     padding: 0
                   }}
-                  aria-hidden={!isUnlocked}
-                  tabIndex={isUnlocked ? 0 : -1}
+                  tabIndex={blurAmount === 0 ? 0 : -1}
                   aria-label={language === 'ko' ? "다음 단계로" : "Next step"}
+                  role="button"
                 >
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                  <svg 
+                    role="img"
+                    aria-hidden="true"
+                    width="40" 
+                    height="40" 
+                    viewBox="0 0 24 24" 
+                    fill="none"
+                  >
                     <path d="M5 12H19M19 12L12 5M19 12L12 19" 
                       stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
