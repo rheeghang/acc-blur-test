@@ -62,6 +62,7 @@ export const BlurProvider = ({ children }) => {
       const alpha = event.alpha;
       setCurrentAlpha(alpha);
       
+      // 페이지 블러 처리 (isUnlocked에 의존)
       if (!isUnlockedRef.current) {
         const tolerance = 20;
         const maxBlur = 15;
@@ -93,10 +94,10 @@ export const BlurProvider = ({ children }) => {
             setBlurAmount(blur);
           }
         }
-
-        // 메뉴 블러 처리
-        updateMenuBlur(alpha);
       }
+
+      // 메뉴 블러 처리 (isUnlocked와 독립적으로 실행)
+      updateMenuBlur(alpha);
     };
 
     window.addEventListener('deviceorientation', handleOrientation);
