@@ -49,10 +49,6 @@ const Howto = ({ isOverlay = false, onClose }) => {
     localStorage.setItem('orientationMode', newMode.toString());
   };
 
-  if (!data?.howto) {
-    return <div className="h-full flex items-center justify-center">로딩 중...</div>;
-  }
-
   return (
     <div className="h-full flex flex-col">
       <div className="p-4 border-b">
@@ -80,7 +76,10 @@ const Howto = ({ isOverlay = false, onClose }) => {
           <button 
             onClick={handleModeToggle}
             className="focus:outline-none left-1/2 -translate-x-1/2"
-            aria-label={language === 'ko' ? '모드 전환' : 'Toggle mode'}
+            aria-label={language === 'ko' 
+              ? `각도 모드 ${isOrientationMode ? '켜짐' : '꺼짐'}` 
+              : `Orientation mode ${isOrientationMode ? 'on' : 'off'}`
+            }
           >
             <div className={`relative w-[72px] h-[36px] rounded-full transition-colors duration-200 ease-in-out ${
               isOrientationMode ? 'bg-black' : 'bg-gray-300'

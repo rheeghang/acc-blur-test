@@ -34,10 +34,10 @@ module.exports = {
       },
       fontWeight: {
         light: 400,
-        normal: 500,
-        medium: 500,
-        semibold: 600,
-        bold: 700,
+        normal: 600,
+        medium: 600,
+        semibold: 700,
+        bold: 800,
       },
       colors: {
         'vivid-blue': '#0072BB',
