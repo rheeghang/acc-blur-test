@@ -15,11 +15,11 @@ const MenuItemButton = memo(({
   previousPage, 
   handlePageSelect,
   language,
-  menuBlurAmount
+  isMenuVisible
 }) => {
   return (
     <button
-      onClick={() => menuBlurAmount === 0 && handlePageSelect(item.pageNumber)}
+      onClick={() => isMenuVisible && handlePageSelect(item.pageNumber)}
       className={`menu-button py-3 px-1 ${item.bgClass} ${item.textClass} mb-2 rounded-none shadow-md hover:opacity-90 transition-all duration-500 font-medium flex items-center justify-center
         ${isTransitioning ? 
           (selectedPage === item.pageNumber ? 'w-full' : 
@@ -29,11 +29,7 @@ const MenuItemButton = memo(({
         }`}
       aria-current={pageNumber === item.pageNumber ? 'page' : undefined}
       aria-label={`${item.label} ${language === 'ko' ? '페이지로 이동' : 'page'}`}
-      disabled={menuBlurAmount !== 0}
-      style={{
-        filter: menuBlurAmount > 0 ? `blur(${menuBlurAmount}px)` : 'none',
-        transition: 'filter 0.3s ease'
-      }}
+      disabled={!isMenuVisible}
     >
       <span className="text-center">{item.label}</span>
     </button>
@@ -41,17 +37,13 @@ const MenuItemButton = memo(({
 });
 
 // 네비게이션 버튼을 메모이제이션
-const NavButton = memo(({ item, menuBlurAmount }) => {
+const NavButton = memo(({ item, isMenuVisible }) => {
   return (
     <button
-      onClick={() => menuBlurAmount === 0 && item.action()}
+      onClick={() => isMenuVisible && item.action()}
       className="flex-1 h-full text-black hover:text-gray-600 transition-colors duration-200"
       aria-label={item.label}
-      disabled={menuBlurAmount !== 0}
-      style={{
-        filter: menuBlurAmount > 0 ? `blur(${menuBlurAmount}px)` : 'none',
-        transition: 'filter 0.3s ease'
-      }}
+      disabled={!isMenuVisible}
     >
       {item.label}
     </button>
@@ -86,10 +78,10 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
 
   // 메뉴 컨텐츠에만 블러 효과 적용
   const getContentBlurStyle = useMemo(() => ({
-    filter: isMenuVisible ? 'blur(0px)' : `blur(${menuBlurAmount}px)`,
+    filter: `blur(${menuBlurAmount}px)`,
     transition: 'filter 0.3s ease',
-    pointerEvents: isMenuVisible ? 'auto' : 'none',
-  }), [menuBlurAmount, isMenuVisible]);
+    pointerEvents: menuBlurAmount === 0 ? 'auto' : 'none',
+  }), [menuBlurAmount]);
 
   const handleNavigation = (path) => {
     switch(path) {
@@ -172,7 +164,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
                 previousPage={previousPage}
                 handlePageSelect={handlePageSelect}
                 language={language}
-                menuBlurAmount={menuBlurAmount}
+                isMenuVisible={menuBlurAmount === 0}
               />
             ))}
           </div>
@@ -186,7 +178,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
                   <span>|</span>
                 </div>
               )}
-              <NavButton item={item} menuBlurAmount={menuBlurAmount} />
+              <NavButton item={item} isMenuVisible={menuBlurAmount === 0} />
             </React.Fragment>
           ))}
         </div>

@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 const BlurContext = createContext();
 const MOBILE_MAX_WIDTH = 1024; // 태블릿 크기까지 허용
 const MENU_TOLERANCE = 30; // 메뉴 허용 각도 범위
+const MAX_MENU_BLUR = 10; // 최대 메뉴 블러 값
 
 export const BlurProvider = ({ children }) => {
   const [blurAmount, setBlurAmount] = useState(0);
@@ -14,13 +15,22 @@ export const BlurProvider = ({ children }) => {
   const isTutorialModeRef = useRef(false);
   const isMobileRef = useRef(window.innerWidth <= MOBILE_MAX_WIDTH);
 
-  // 현재 각도가 메뉴 허용 범위 안에 있는지 확인
+  // 현재 각도가 메뉴 허용 범위 안에 있는지 확인하고 블러 정도 계산
   const isInMenuRange = (alpha) => {
     if (!isMobileRef.current) return true;
     
     const diffFrom0 = Math.abs(alpha - 0);
     const diffFrom360 = Math.abs(alpha - 360);
-    return diffFrom0 <= MENU_TOLERANCE || diffFrom360 <= MENU_TOLERANCE;
+    const minDifference = Math.min(diffFrom0, diffFrom360);
+    
+    if (minDifference <= MENU_TOLERANCE) {
+      return true;
+    } else {
+      // 메뉴 허용 범위를 벗어날 때 점진적으로 블러 증가
+      const blur = Math.min(MAX_MENU_BLUR, (minDifference - MENU_TOLERANCE) / 3);
+      setMenuBlurAmount(blur);
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -73,9 +83,7 @@ export const BlurProvider = ({ children }) => {
         }
 
         // 메뉴 블러 처리
-        if (!isInMenuRange(alpha)) {
-          setMenuBlurAmount(10);
-        } else {
+        if (isInMenuRange(alpha)) {
           setMenuBlurAmount(0);
         }
       }
