@@ -4,11 +4,11 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { BlurProvider } from './contexts/BlurContext';
 import { GuideProvider } from './contexts/GuideContext';
 import { ModeProvider } from './contexts/ModeContext';
-import Home from './Pages/Home';
+import Home from './pages/Home';
 import Tutorial from './Tutorials/Tutorial';
-import ArtworkPage from './Pages/ArtworkPage';
-import About from './Pages/About';
-import Howto from './Pages/Howto';  
+import ArtworkPage from './pages/ArtworkPage';
+import About from './pages/About';
+import Howto from './pages/Howto';  
 
 function App() {
   return (
