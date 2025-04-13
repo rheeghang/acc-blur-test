@@ -23,13 +23,25 @@ export const BlurProvider = ({ children }) => {
     const diffFrom360 = Math.abs(alpha - 360);
     const minDifference = Math.min(diffFrom0, diffFrom360);
     
+    return minDifference <= MENU_TOLERANCE;
+  };
+
+  // 메뉴 블러 설정을 위한 별도 함수
+  const updateMenuBlur = (alpha) => {
+    if (!isMobileRef.current) {
+      setMenuBlurAmount(0);
+      return;
+    }
+
+    const diffFrom0 = Math.abs(alpha - 0);
+    const diffFrom360 = Math.abs(alpha - 360);
+    const minDifference = Math.min(diffFrom0, diffFrom360);
+    
     if (minDifference <= MENU_TOLERANCE) {
-      return true;
+      setMenuBlurAmount(0);
     } else {
-      // 메뉴 허용 범위를 벗어날 때 점진적으로 블러 증가
       const blur = Math.min(MAX_MENU_BLUR, (minDifference - MENU_TOLERANCE) / 3);
       setMenuBlurAmount(blur);
-      return false;
     }
   };
 
@@ -83,9 +95,7 @@ export const BlurProvider = ({ children }) => {
         }
 
         // 메뉴 블러 처리
-        if (isInMenuRange(alpha)) {
-          setMenuBlurAmount(0);
-        }
+        updateMenuBlur(alpha);
       }
     };
 
