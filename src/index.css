@@ -186,5 +186,94 @@ code {
   animation: rotate-phone 1.5s ease infinite;
 }
 
+@media screen and (max-width: 932px) {
+  @media (orientation: landscape) {
+    #root {
+      transform: rotate(-90deg);
+      transform-origin: left top;
+      width: 100vh;
+      height: 100vw;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      overflow: hidden;
+    }
+    
+    body {
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+    }
+
+    .tutorial-container,
+    .min-h-screen,
+    .outer-container {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .outer-container {
+      width: 120% !important;
+      height: 350vh !important;
+      margin-top: -75vh !important;
+    }
+
+    .scroll-container {
+      width: 180vh !important;
+      height: 300vh !important;
+      max-height: 250vh !important;
+      margin-top: -10vh !important;
+      top: 0 !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+    }
+
+    /* 페이지별 텍스트 컨테이너 마진 설정 */
+    [data-page="1"] .text-container {
+      margin-top: 127vh !important;
+    }
+
+    [data-page="2"] .text-container {
+      margin-top: 105vh !important;
+    }
+
+    [data-page="3"] .text-container {
+      margin-top: 135vh !important;
+    }
+
+    [data-page="4"] .text-container {
+      margin-top: 132vh !important;
+    }
+
+    [data-page="5"] .text-container {
+      margin-top: 110vh !important;
+    }
+
+    [data-page="6"] .text-container {
+      margin-top: 125vh !important;
+    }
+
+    [data-page="7"] .text-container {
+      margin-top: 135vh !important;
+    }
+
+    [data-page="8"] .text-container {
+      margin-top: 115vh !important;
+    }
+
+    .tutorial-textbox {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) rotate(var(--rotation-angle)) !important;
+      transform-origin: center center !important;
+    }
+  }
+}
+
 
 

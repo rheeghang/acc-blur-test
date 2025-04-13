@@ -155,6 +155,10 @@ const Tutorial = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.style.setProperty('--rotation-angle', `${currentConfig.rotationAngle}deg`);
+  }, [currentConfig.rotationAngle]);
+
   const handleTripleTap = (() => {
     const tapTimes = [];
     let lastTapType = null;
@@ -283,7 +287,7 @@ const Tutorial = () => {
   return (
     <Layout>
       <div 
-        className="relative min-h-screen overflow-hidden bg-[#B7B7B7]"
+        className="tutorial-container relative min-h-screen w-full overflow-hidden bg-[#B7B7B7]"
         onTouchStart={(e) => {
           // 메뉴 아이콘이나 튜토리얼 버튼 영역이면 트리플 탭 처리하지 않음
           if (!e.target.closest('.tutorial-button') && !e.target.closest('.menu-icon')) {
@@ -371,10 +375,10 @@ const Tutorial = () => {
         )}
 
         <div 
-          className="fixed left-1/2 -translate-x-1/2 z-0"
+          className="tutorial-textbox fixed left-1/2 -translate-x-1/2 z-0"
           style={{
             ...currentConfig.style,
-            transform: `translate(-50%, -50%) rotate(${currentConfig.rotationAngle}deg)`,
+            transform: `translate(-50%, -50%) rotate(var(--rotation-angle))`,
             transformOrigin: 'center center',
             filter: isUnlocked ? 'none' : `blur(${blurAmount}px)`,
             transition: 'filter 0.3s ease, transform 0.3s ease, top 0.3s ease',
@@ -383,7 +387,7 @@ const Tutorial = () => {
           }}
         >
           <button 
-            className={`tutorial-container p-4 shadow-lg relative w-full font-normal ${
+            className={`p-4 shadow-lg relative w-full font-normal ${
               tutorialStep === 4 ? 'bg-key-color text-center' : 'bg-white text-left'
             }`}
             aria-hidden={blurAmount !== 0}

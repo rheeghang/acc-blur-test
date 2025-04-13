@@ -210,11 +210,11 @@ const ArtworkPage = () => {
       setHasReadContent(true);
       
       const contentToRead = `
-        ${pageContent?.guidance?.title || ''}.
-        ${pageContent?.guidance?.artist || ''}.
-        ${pageContent?.guidance?.caption || ''}.
-        ${pageContent?.guidance?.body || ''}.
-        ${data?.pages?.next || ''}
+        ${pageContent.guidance.title}.
+        ${pageContent.guidance.artist}.
+        ${pageContent.guidance.caption}.
+        ${pageContent.guidance.body}.
+        ${data.pages.next}
       `;
 
       const contentElement = document.createElement('div');
@@ -284,7 +284,7 @@ const ArtworkPage = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-base-color fixed w-full flex items-center justify-center">
+      <div className="artwork-background min-h-screen bg-base-color fixed w-full flex items-center justify-center">
         <div className="fixed top-2 left-0 right-0 text-center z-10 flex justify-center space-x-4">
           <p className="text-xl font-bold text-white" aria-hidden="true">
             {Math.round(currentAlpha)}°
@@ -332,13 +332,14 @@ const ArtworkPage = () => {
 
         <div 
           className="outer-container absolute w-[120%] h-[150vh] flex items-center justify-center"
+          data-page={pageNumber}
           style={{
             transform: `rotate(${config.rotationAngle}deg)`,
             top: '50%',
             marginTop: '-75vh',
             filter: isOrientationMode && !isUnlocked ? `blur(${blurAmount}px)` : 'none',
             transition: 'filter 0.5s ease, transform 0.5s ease',
-            pointerEvents: isContentInteractive ? 'auto' : 'none' // 클릭 이벤트 제어
+            pointerEvents: isContentInteractive ? 'auto' : 'none'
           }}
           role="presentation"
         >
@@ -352,15 +353,15 @@ const ArtworkPage = () => {
               msOverflowStyle: 'none',
               scrollbarWidth: 'none',
             }}
-            aria-hidden={!isContentInteractive} // 스크린리더 접근 제어
+            aria-hidden={!isContentInteractive}
           >
             <div 
               className={`text-container p-6 w-[320px] ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
               ${blurAmount === 0 && !isScrolled ? 'animate-wobble' : ''}`}
-              tabIndex={isContentInteractive ? 0 : -1} // 키보드 포커스 제어
               style={{
                 marginTop: config.marginTop
               }}
+              tabIndex={isContentInteractive ? 0 : -1}
             >
               <div className="text-center mb-8 break-keep" aria-hidden={blurAmount !== 0}>
                 <h1 className="text-xl font-bold mb-4">{pageContent.title}</h1>
