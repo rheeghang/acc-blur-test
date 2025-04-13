@@ -16,7 +16,7 @@ const MenuItemButton = memo(({
   handlePageSelect,
   language,
   isMenuVisible,
-  style
+  // style  // [BLUR] 블러 스타일 prop 주석 처리
 }) => {
   return (
     <button
@@ -31,7 +31,7 @@ const MenuItemButton = memo(({
       aria-current={pageNumber === item.pageNumber ? 'page' : undefined}
       aria-label={`${item.label} ${language === 'ko' ? '페이지로 이동' : 'page'}`}
       disabled={!isMenuVisible}
-      style={style}
+      // style={style}  // [BLUR] 블러 스타일 적용 주석 처리
     >
       <span className="text-center">{item.label}</span>
     </button>
@@ -46,7 +46,7 @@ const NavButton = memo(({ item, isMenuVisible, style }) => {
       className="flex-1 h-full text-black hover:text-gray-600 transition-colors duration-200"
       aria-label={item.label}
       disabled={!isMenuVisible}
-      style={style}
+      // style={style}  // [BLUR] 블러 스타일 적용 주석 처리
     >
       {item.label}
     </button>
@@ -55,7 +55,7 @@ const NavButton = memo(({ item, isMenuVisible, style }) => {
 
 const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   const { language } = useLanguage();
-  const { menuBlurAmount, currentAlpha, isInMenuRange } = useBlur();
+  // const { menuBlurAmount, currentAlpha, isInMenuRange } = useBlur();  // [BLUR] 블러 관련 context 주석 처리
   const navigate = useNavigate();
   
   // 언어에 따른 데이터 선택
@@ -77,14 +77,15 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   const [previousPage, setPreviousPage] = useState(pageNumber);
 
   // 메뉴가 열려있을 때 현재 각도가 메뉴 범위 안에 있는지 확인
-  const isMenuVisible = isOpen ? isInMenuRange(currentAlpha) : true;
+  // const isMenuVisible = isOpen ? isInMenuRange(currentAlpha) : true;  // [BLUR] 메뉴 가시성 체크 주석 처리
+  const isMenuVisible = true;  // [BLUR] 메뉴 항상 보이도록 설정
 
   // 메뉴 컨텐츠에만 블러 효과 적용
-  const getContentBlurStyle = useMemo(() => ({
-    filter: `blur(${menuBlurAmount}px)`,
-    transition: 'filter 0.3s ease',
-    pointerEvents: menuBlurAmount === 0 ? 'auto' : 'none',
-  }), [menuBlurAmount]);
+  // const getContentBlurStyle = useMemo(() => ({  // [BLUR] 블러 스타일 계산 주석 처리
+  //   filter: `blur(${menuBlurAmount}px)`,
+  //   transition: 'filter 0.3s ease',
+  //   pointerEvents: menuBlurAmount === 0 ? 'auto' : 'none',
+  // }), [menuBlurAmount]);
 
   const handleNavigation = (path) => {
     switch(path) {
@@ -135,7 +136,8 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   return (
     <div 
       className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center text-center"
-      role="menu"
+      role="dialog"
+      aria-modal="true"
       aria-label={language === 'ko' ? '메뉴' : 'Menu'}
     >
       {/* 스크린 리더용 안내 메시지 */}
@@ -149,9 +151,17 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
 
       <div 
         className="menu-container w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold"
-        role="menu"
+        role="document"
       >
-        <div className="h-12"></div>
+        <div className="h-12 flex justify-end items-center pr-4">
+          <button
+            onClick={onClose}
+            className="text-black hover:text-gray-600 transition-colors duration-200"
+            aria-label={language === 'ko' ? '메뉴 닫기' : 'Close menu'}
+          >
+            {language === 'ko' ? '닫기' : 'Close'}
+          </button>
+        </div>
 
         <div className="flex-1 overflow-y-auto py-2 px-2">
           <div className="flex flex-col items-center">
@@ -166,8 +176,8 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
                 previousPage={previousPage}
                 handlePageSelect={handlePageSelect}
                 language={language}
-                isMenuVisible={menuBlurAmount === 0}
-                style={getContentBlurStyle}
+                isMenuVisible={true}  // [BLUR] 메뉴 항상 보이도록 설정
+                // style={getContentBlurStyle}  // [BLUR] 블러 스타일 적용 주석 처리
               />
             ))}
           </div>
@@ -183,8 +193,8 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
               )}
               <NavButton 
                 item={item} 
-                isMenuVisible={menuBlurAmount === 0}
-                style={getContentBlurStyle}
+                isMenuVisible={true}  // [BLUR] 메뉴 항상 보이도록 설정
+                // style={getContentBlurStyle}  // [BLUR] 블러 스타일 적용 주석 처리
               />
             </React.Fragment>
           ))}
