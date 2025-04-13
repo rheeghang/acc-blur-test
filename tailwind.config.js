@@ -33,7 +33,11 @@ module.exports = {
         serif: ['Noto Serif KR', 'serif'],
       },
       fontWeight: {
+        light: 400,
+        normal: 500,
+        medium: 500,
         semibold: 600,
+        bold: 700,
       },
       colors: {
         'vivid-blue': '#0072BB',

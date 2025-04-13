@@ -4,6 +4,7 @@ import { useBlur } from '../contexts/BlurContext';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
 import { useNavigate } from 'react-router-dom';
+import Howto from '../pages/Howto';
 
 // 메뉴 아이템 버튼을 메모이제이션
 const MenuItemButton = memo(({ 
@@ -57,6 +58,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   const { language } = useLanguage();
   // const { menuBlurAmount, currentAlpha, isInMenuRange } = useBlur();  // [BLUR] 블러 관련 context 주석 처리
   const navigate = useNavigate();
+  const [showHowto, setShowHowto] = useState(false);
   
   // 언어에 따른 데이터 선택
   const data = language === 'ko' ? koData : enData;
@@ -93,8 +95,8 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
         navigate('/');
         break;
       case 'howto':
-        navigate('/howto');
-        break;
+        setShowHowto(true);
+        return; // 메뉴를 닫지 않고 Howto 오버레이를 표시
       case 'about':
         navigate('/about');
         break;
@@ -134,73 +136,82 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   ];
 
   return (
-    <div 
-      className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center text-center"
-      role="dialog"
-      aria-modal="true"
-      aria-label={language === 'ko' ? '메뉴' : 'Menu'}
-    >
-      {/* 스크린 리더용 안내 메시지 */}
-      {isOpen && (
-        <div className="sr-only" aria-live="polite">
-          {language === 'ko' 
-            ? '메뉴가 열렸습니다. 닫기 버튼을 누르면 닫힙니다. 작품명을 선택해 관람하세요, 메뉴 하단에는 처음으로, 웹 사용법, 전시 설명, 버튼이 있습니다.'
-            : 'Menu is open. Press the close button to close it. Select artwork titles to view. At the bottom of the menu, there are Home, How to Use, and About buttons.'}
-        </div>
-      )}
-
+    <>
       <div 
-        className="menu-container w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold"
-        role="document"
+        className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center text-center"
+        role="dialog"
+        aria-modal="true"
+        aria-label={language === 'ko' ? '메뉴' : 'Menu'}
       >
-        <div className="h-12 flex justify-end items-center pr-4">
-          <button
-            onClick={onClose}
-            className="text-black hover:text-gray-600 transition-colors duration-200"
-            aria-label={language === 'ko' ? '메뉴 닫기' : 'Close menu'}
-          >
-            {language === 'ko' ? '닫기' : 'Close'}
-          </button>
-        </div>
+        {/* 스크린 리더용 안내 메시지 */}
+        {isOpen && (
+          <div className="sr-only" aria-live="polite">
+            {language === 'ko' 
+              ? '메뉴가 열렸습니다. 닫기 버튼을 누르면 닫힙니다. 작품명을 선택해 관람하세요, 메뉴 하단에는 처음으로, 웹 사용법, 전시 설명, 버튼이 있습니다.'
+              : 'Menu is open. Press the close button to close it. Select artwork titles to view. At the bottom of the menu, there are Home, How to Use, and About buttons.'}
+          </div>
+        )}
 
-        <div className="flex-1 overflow-y-auto py-2 px-2">
-          <div className="flex flex-col items-center">
-            {menuItems.map((item) => (
-              <MenuItemButton
-                key={item.id}
-                item={item}
-                pageNumber={pageNumber}
-                pageType={pageType}
-                isTransitioning={isTransitioning}
-                selectedPage={selectedPage}
-                previousPage={previousPage}
-                handlePageSelect={handlePageSelect}
-                language={language}
-                isMenuVisible={true}  // [BLUR] 메뉴 항상 보이도록 설정
-                // style={getContentBlurStyle}  // [BLUR] 블러 스타일 적용 주석 처리
-              />
+        <div 
+          className="menu-container w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold"
+          role="document"
+        >
+          <div className="h-12 flex justify-end items-center pr-4">
+          </div>
+
+          <div className="flex-1 overflow-y-auto py-2 px-2">
+            <div className="flex flex-col items-center">
+              {menuItems.map((item) => (
+                <MenuItemButton
+                  key={item.id}
+                  item={item}
+                  pageNumber={pageNumber}
+                  pageType={pageType}
+                  isTransitioning={isTransitioning}
+                  selectedPage={selectedPage}
+                  previousPage={previousPage}
+                  handlePageSelect={handlePageSelect}
+                  language={language}
+                  isMenuVisible={true}  // [BLUR] 메뉴 항상 보이도록 설정
+                  // style={getContentBlurStyle}  // [BLUR] 블러 스타일 적용 주석 처리
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="flex h-12" role="navigation" aria-label={language === 'ko' ? '하단 메뉴' : 'Bottom menu'}>
+            {navItems.map((item, index) => (
+              <React.Fragment key={item.id}>
+                {index > 0 && (
+                  <div className="flex items-center text-gray-300" aria-hidden="true">
+                    <span>|</span>
+                  </div>
+                )}
+                <NavButton 
+                  item={item} 
+                  isMenuVisible={true}  // [BLUR] 메뉴 항상 보이도록 설정
+                  // style={getContentBlurStyle}  // [BLUR] 블러 스타일 적용 주석 처리
+                />
+              </React.Fragment>
             ))}
           </div>
         </div>
-
-        <div className="flex h-12" role="navigation" aria-label={language === 'ko' ? '하단 메뉴' : 'Bottom menu'}>
-          {navItems.map((item, index) => (
-            <React.Fragment key={item.id}>
-              {index > 0 && (
-                <div className="flex items-center text-gray-300" aria-hidden="true">
-                  <span>|</span>
-                </div>
-              )}
-              <NavButton 
-                item={item} 
-                isMenuVisible={true}  // [BLUR] 메뉴 항상 보이도록 설정
-                // style={getContentBlurStyle}  // [BLUR] 블러 스타일 적용 주석 처리
-              />
-            </React.Fragment>
-          ))}
-        </div>
       </div>
-    </div>
+
+      {showHowto && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+          onClick={() => setShowHowto(false)}
+        >
+          <div 
+            className="w-[330px] h-[600px] bg-white rounded-lg shadow-xl overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            <Howto isOverlay={true} onClose={() => setShowHowto(false)} />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
