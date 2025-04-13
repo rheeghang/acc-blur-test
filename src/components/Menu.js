@@ -15,7 +15,8 @@ const MenuItemButton = memo(({
   previousPage, 
   handlePageSelect,
   language,
-  isMenuVisible
+  isMenuVisible,
+  style
 }) => {
   return (
     <button
@@ -30,6 +31,7 @@ const MenuItemButton = memo(({
       aria-current={pageNumber === item.pageNumber ? 'page' : undefined}
       aria-label={`${item.label} ${language === 'ko' ? '페이지로 이동' : 'page'}`}
       disabled={!isMenuVisible}
+      style={style}
     >
       <span className="text-center">{item.label}</span>
     </button>
@@ -37,13 +39,14 @@ const MenuItemButton = memo(({
 });
 
 // 네비게이션 버튼을 메모이제이션
-const NavButton = memo(({ item, isMenuVisible }) => {
+const NavButton = memo(({ item, isMenuVisible, style }) => {
   return (
     <button
       onClick={() => isMenuVisible && item.action()}
       className="flex-1 h-full text-black hover:text-gray-600 transition-colors duration-200"
       aria-label={item.label}
       disabled={!isMenuVisible}
+      style={style}
     >
       {item.label}
     </button>
@@ -147,7 +150,6 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
       <div 
         className="menu-container w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold"
         role="menu"
-        style={getContentBlurStyle}
       >
         <div className="h-12"></div>
 
@@ -165,6 +167,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
                 handlePageSelect={handlePageSelect}
                 language={language}
                 isMenuVisible={menuBlurAmount === 0}
+                style={getContentBlurStyle}
               />
             ))}
           </div>
@@ -178,7 +181,11 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
                   <span>|</span>
                 </div>
               )}
-              <NavButton item={item} isMenuVisible={menuBlurAmount === 0} />
+              <NavButton 
+                item={item} 
+                isMenuVisible={menuBlurAmount === 0}
+                style={getContentBlurStyle}
+              />
             </React.Fragment>
           ))}
         </div>

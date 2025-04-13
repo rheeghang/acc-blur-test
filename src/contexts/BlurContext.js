@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 
 const BlurContext = createContext();
 const MOBILE_MAX_WIDTH = 1024; // 태블릿 크기까지 허용
-const MENU_TOLERANCE = 30; // 메뉴 허용 각도 범위
+const MENU_TOLERANCE = 20; // 메뉴 허용 각도 범위
 const MAX_MENU_BLUR = 10; // 최대 메뉴 블러 값
 
 export const BlurProvider = ({ children }) => {
