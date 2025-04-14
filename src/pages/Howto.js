@@ -1,4 +1,3 @@
-// src/Pages/Howto.js
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useMode } from '../contexts/ModeContext';
@@ -55,7 +54,6 @@ const Howto = ({ isOverlay = false, onClose }) => {
         <div className="flex items-center justify-between">
           <h1 
             className="text-lg text-center text-black font-medium"
-            aria-live="off"
           >
             {data.howto.title}
           </h1>
