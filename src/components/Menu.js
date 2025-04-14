@@ -30,7 +30,7 @@ const MenuItemButton = memo(({
           (pageNumber === item.pageNumber && pageType === 'artwork' ? 'w-full' : 'w-[calc(100%-2rem)]')
         }`}
       aria-current={pageNumber === item.pageNumber ? 'page' : undefined}
-      aria-label={`${item.label} ${language === 'ko' ? '페이지' : 'page'}`}
+      aria-label={item.ariaLabel}
       disabled={!isMenuVisible}
       tabIndex={-1}
       // style={style}  // [BLUR] 블러 스타일 적용 주석 처리
@@ -46,7 +46,7 @@ const NavButton = memo(({ item, isMenuVisible, style }) => {
     <button
       onClick={() => isMenuVisible && item.action()}
       className="flex-1 h-full text-black hover:text-gray-600 transition-colors duration-200"
-      aria-label={item.label}
+      aria-label={item.ariaLabel}
       disabled={!isMenuVisible}
       // style={style}  // [BLUR] 블러 스타일 적용 주석 처리
     >
@@ -65,14 +65,70 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   const data = language === 'ko' ? koData : enData;
   
   const menuItems = [
-    { id: 'artwork1', label: data.page1.title, pageNumber: 1, bgClass: 'bg-page1-bg', textClass: 'text-page1-text' },
-    { id: 'artwork2', label: data.page2.title, pageNumber: 2, bgClass: 'bg-page2-bg', textClass: 'text-page2-text' },
-    { id: 'artwork3', label: data.page3.title, pageNumber: 3, bgClass: 'bg-page3-bg', textClass: 'text-page3-text' },
-    { id: 'artwork4', label: data.page4.title, pageNumber: 4, bgClass: 'bg-page4-bg', textClass: 'text-page4-text' },
-    { id: 'artwork5', label: data.page5.title, pageNumber: 5, bgClass: 'bg-page5-bg', textClass: 'text-page5-text' },
-    { id: 'artwork6', label: data.page6.title, pageNumber: 6, bgClass: 'bg-page6-bg', textClass: 'text-page6-text' },
-    { id: 'artwork7', label: data.page7.title, pageNumber: 7, bgClass: 'bg-page7-bg', textClass: 'text-page7-text' },
-    { id: 'artwork8', label: data.page8.title, pageNumber: 8, bgClass: 'bg-page8-bg', textClass: 'text-page8-text' },
+    { 
+      id: 'artwork1', 
+      label: data.page1.title, 
+      pageNumber: 1, 
+      bgClass: 'bg-page1-bg', 
+      textClass: 'text-page1-text',
+      ariaLabel: data.page1.guidance.title
+    },
+    { 
+      id: 'artwork2', 
+      label: data.page2.title, 
+      pageNumber: 2, 
+      bgClass: 'bg-page2-bg', 
+      textClass: 'text-page2-text',
+      ariaLabel: data.page2.guidance.title
+    },
+    { 
+      id: 'artwork3', 
+      label: data.page3.title, 
+      pageNumber: 3, 
+      bgClass: 'bg-page3-bg', 
+      textClass: 'text-page3-text',
+      ariaLabel: data.page3.guidance.title
+    },
+    { 
+      id: 'artwork4', 
+      label: data.page4.title, 
+      pageNumber: 4, 
+      bgClass: 'bg-page4-bg', 
+      textClass: 'text-page4-text',
+      ariaLabel: data.page4.guidance.title
+    },
+    { 
+      id: 'artwork5', 
+      label: data.page5.title, 
+      pageNumber: 5, 
+      bgClass: 'bg-page5-bg', 
+      textClass: 'text-page5-text',
+      ariaLabel: data.page5.guidance.title
+    },
+    { 
+      id: 'artwork6', 
+      label: data.page6.title, 
+      pageNumber: 6, 
+      bgClass: 'bg-page6-bg', 
+      textClass: 'text-page6-text',
+      ariaLabel: data.page6.guidance.title
+    },
+    { 
+      id: 'artwork7', 
+      label: data.page7.title, 
+      pageNumber: 7, 
+      bgClass: 'bg-page7-bg', 
+      textClass: 'text-page7-text',
+      ariaLabel: data.page7.guidance.title
+    },
+    { 
+      id: 'artwork8', 
+      label: data.page8.title, 
+      pageNumber: 8, 
+      bgClass: 'bg-page8-bg', 
+      textClass: 'text-page8-text',
+      ariaLabel: data.page8.guidance.title
+    },
   ];
 
   const [selectedPage, setSelectedPage] = useState(null);
@@ -122,17 +178,20 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
     { 
       id: 'home', 
       label: language === 'ko' ? '처음으로' : 'Home',
-      action: () => handleNavigation('home')
+      action: () => handleNavigation('home'),
+      ariaLabel: language === 'ko' ? '처음 화면으로 이동' : 'Go to home page'
     },
     { 
       id: 'howto', 
       label: language === 'ko' ? '웹 사용법' : 'How to Use',
-      action: () => handleNavigation('howto')
+      action: () => handleNavigation('howto'),
+      ariaLabel: language === 'ko' ? '웹 도슨트 사용 방법 안내' : 'How to use web docent'
     },
     { 
       id: 'about', 
       label: language === 'ko' ? '전시설명' : 'About',
-      action: () => handleNavigation('about')
+      action: () => handleNavigation('about'),
+      ariaLabel: language === 'ko' ? '전시에 대한 설명 보기' : 'View exhibition information'
     }
   ];
 
