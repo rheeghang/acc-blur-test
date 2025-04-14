@@ -356,7 +356,7 @@ const ArtworkPage = () => {
             aria-hidden={!isContentInteractive}
           >
             <div 
-              className={`text-container p-6 w-[320px] text-normal ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
+              className={`text-container p-6 w-[320px] font-medium ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
               ${blurAmount === 0 && !isScrolled ? 'animate-wobble' : ''}`}
               style={{
                 marginTop: config.marginTop

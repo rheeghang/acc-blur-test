@@ -33,7 +33,7 @@ module.exports = {
         serif: ['Noto Serif KR', 'serif'],
       },
       fontWeight: {
-        normal: 600,
+        normal: 500,
         medium: 600,
         semibold: 700,
         bold: 800,

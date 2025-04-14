@@ -84,11 +84,10 @@ const Howto = ({ isOverlay = false, onClose }) => {
 
       <div className="flex-1 overflow-y-auto p-4">
         <div className="space-y-4 break-keep text-black">
-          <div className="text-xl font-bold mb-4">{data.howto.title}</div>
           {data.howto.steps?.map((step, index) => (
-            <div className="text-base text-normal mb-2" key={index}>
+            <p key={index} className="mb-4 leading-relaxed font-normal text-base">
               {step}
-            </div>
+            </p>
           ))}
         </div>
       </div>
