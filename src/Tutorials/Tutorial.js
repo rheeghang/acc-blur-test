@@ -65,7 +65,14 @@ const Tutorial = () => {
     
     // 스텝 4일 때는 다른 메시지 출력
     if (tutorialStep === 4) {
-      // 먼저 holdStraight 메시지를 표시
+      // blurAmount가 0이면 바로 성공 메시지 표시
+      if (blurAmount === 0) {
+        setShowIntroMessage(true);
+        setHasContentAnnounced(true);
+        return;
+      }
+      
+      // blurAmount가 0이 아니면 holdStraight 메시지 표시
       const timer1 = setTimeout(() => {
         setShowIntroMessage(false);
       }, 3000);
