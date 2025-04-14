@@ -38,6 +38,7 @@ const Tutorial = () => {
   const [lastInputType, setLastInputType] = useState(null);
   const [showIntroMessage, setShowIntroMessage] = useState(true);
   const [isAdvancing, setIsAdvancing] = useState(false);
+  const [hasTutorial4Announced, setHasTutorial4Announced] = useState(false);
 
   // 현재 설정 가져오기
   const currentConfig = pageConfig.tutorial[tutorialStep];
@@ -50,6 +51,9 @@ const Tutorial = () => {
       return;
     }
     setTutorialStep(step);
+    if (step === 4) {
+      setHasTutorial4Announced(false);
+    }
   }, [stepParam]);
 
   useEffect(() => {
@@ -115,10 +119,11 @@ const Tutorial = () => {
   }, [showIntroMessage]);
 
   useEffect(() => {
-    if (blurAmount === 0 && hasIntroSpoken && !hasContentAnnounced && !isIntroMessageActive) {
+    if (tutorialStep === 4 && !hasTutorial4Announced && blurAmount === 0 && hasIntroSpoken && !isIntroMessageActive) {
+      setHasTutorial4Announced(true);
       setHasContentAnnounced(true);
     }
-  }, [blurAmount, hasIntroSpoken, hasContentAnnounced, isIntroMessageActive]);
+  }, [tutorialStep, blurAmount, hasIntroSpoken, isIntroMessageActive, hasTutorial4Announced]);
 
   useEffect(() => {
     const handleOrientation = (event) => {
@@ -309,7 +314,7 @@ const Tutorial = () => {
           </div>
         )}
 
-        {((blurAmount === 0 && hasIntroSpoken) || hasContentAnnounced) && (
+        {((blurAmount === 0 && hasIntroSpoken && !hasTutorial4Announced) || (hasContentAnnounced && tutorialStep !== 4)) && (
           <div 
             aria-live="assertive" 
             className="sr-only"
@@ -354,23 +359,7 @@ const Tutorial = () => {
             }}
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
           >
-            {showMenu ? (
-              <svg 
-                width="30" 
-                height="30" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            ) : (
-              <MenuIcon />
-            )}
+            <MenuIcon />
           </button>
         )}
 

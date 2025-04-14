@@ -353,7 +353,7 @@ const ArtworkPage = () => {
                 className="text-center mb-8 break-keep" 
                 aria-hidden={blurAmount !== 0}
                 role="text"
-                aria-label={`${pageContent.title}. ${pageContent.artist}. ${pageContent.caption}`}
+                aria-label={`${pageContent.guidance.title}. ${pageContent.guidance.artist}. ${pageContent.guidance.caption} ${pageContent.guidance.body}`}
               >
                 <h1 className="text-xl font-bold mb-4">{pageContent.title}</h1>
                 <p className="text-base font-semibold mb-2">{pageContent.artist}</p>

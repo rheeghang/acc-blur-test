@@ -212,8 +212,8 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
             style={{ position: 'absolute', top: 0, left: 0 }}
           >
             {language === 'ko' 
-              ? '메뉴가 열렸습니다. 닫기 버튼을 누르면 닫힙니다. 작품명을 선택해 참여하세요, 메뉴 하단에는 처음으로, 웹 사용법, 전시 설명, 버튼이 있습니다.'
-              : 'Menu is open. Press the close button to close it. Select artwork titles to view. At the bottom of the menu, there are Home, How to Use, and About buttons.'}
+              ? '메뉴가 열렸습니다. 화면에 작품 페이지 버튼이 나열되어있습니다. 메뉴 하단에는 처음으로, 웹 사용법, 전시 설명, 버튼이 있습니다.'
+              : 'Menu is open. Select artwork titles to view. At the bottom of the menu, there are Home, How to Use, and About buttons.'}
           </div>
         )}
 
