@@ -30,7 +30,7 @@ const Howto = ({ isOverlay = false, onClose }) => {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col" role="region" aria-label="사용 방법 안내">
       <div className="p-4 border-b">
         <div className="flex items-center justify-between">
           <h1 
