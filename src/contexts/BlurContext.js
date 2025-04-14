@@ -158,6 +158,12 @@ export const BlurProvider = ({ children }) => {
     return () => window.removeEventListener('deviceorientation', handleOrientation);
   }, [targetAlpha]);
 
+  // 페이지 변경 시 초기화
+  useEffect(() => {
+    console.log('페이지 변경 감지 - initialAlphaRef 초기화');
+    initialAlphaRef.current = null;
+  }, [targetAlpha]);
+
   const setTargetAngles = (alpha, isTutorial = false) => {
     if (!isMobileRef.current) {
       setIsUnlocked(true);
@@ -167,7 +173,6 @@ export const BlurProvider = ({ children }) => {
     setIsUnlocked(false);
     isUnlockedRef.current = false;
     isTutorialModeRef.current = isTutorial;
-    initialAlphaRef.current = null; // 기준점 초기화
   };
 
   return (
