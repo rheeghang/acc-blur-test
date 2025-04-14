@@ -96,7 +96,7 @@ export const BlurProvider = ({ children }) => {
             initialAlphaRef.current = 90; // 기준점을 90도로 설정
             console.log('보정 후 initialAlphaRef:', initialAlphaRef.current);
           } else {
-            initialAlphaRef.current = 90;
+            initialAlphaRef.current = 0;
           }
         }
 
