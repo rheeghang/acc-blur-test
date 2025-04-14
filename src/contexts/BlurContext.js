@@ -83,8 +83,10 @@ export const BlurProvider = ({ children }) => {
         alpha = (alpha - initialAlphaRef.current + 360) % 360;
         
         // 안드로이드 기기에서 90도 오프셋이 있는 경우 보정
-        if (alpha > 180) {
-          alpha = (alpha + 180) % 360;
+        if (alpha > 270) {
+          alpha = (alpha - 90) % 360;
+        } else if (alpha > 180) {
+          alpha = (alpha + 90) % 360;
         }
       }
       
