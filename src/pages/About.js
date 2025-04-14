@@ -148,7 +148,7 @@ const About = () => {
                     className="w-[90%] h-auto"
                   />
                 </div>
-                <div className="text-base text-black leading-relaxed break-keep"
+                <div className="text-base font-medium text-black leading-relaxed break-keep"
                   dangerouslySetInnerHTML={{ __html: body }}
                 />
               </div>

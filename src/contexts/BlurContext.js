@@ -5,6 +5,10 @@ const MOBILE_MAX_WIDTH = 1024; // 태블릿 크기까지 허용
 const MENU_TOLERANCE = 20; // 메뉴 허용 각도 범위
 const MAX_MENU_BLUR = 10; // 최대 메뉴 블러 값
 
+// 안드로이드 디바이스 감지 및 각도 보정 함수
+const isAndroidDevice = /Android/i.test(navigator.userAgent);
+const adjustAlphaForAndroid = (alpha) => isAndroidDevice ? (alpha + 90) % 360 : alpha;
+
 export const BlurProvider = ({ children }) => {
   const [blurAmount, setBlurAmount] = useState(0);
   const [currentAlpha, setCurrentAlpha] = useState(0);
@@ -19,8 +23,9 @@ export const BlurProvider = ({ children }) => {
   const isInMenuRange = (alpha) => {
     if (!isMobileRef.current) return true;
     
-    const diffFrom0 = Math.abs(alpha - 0);
-    const diffFrom360 = Math.abs(alpha - 360);
+    const adjustedAlpha = adjustAlphaForAndroid(alpha);
+    const diffFrom0 = Math.abs(adjustedAlpha - 0);
+    const diffFrom360 = Math.abs(adjustedAlpha - 360);
     const minDifference = Math.min(diffFrom0, diffFrom360);
     
     return minDifference <= MENU_TOLERANCE;
@@ -33,8 +38,9 @@ export const BlurProvider = ({ children }) => {
       return;
     }
 
-    const diffFrom0 = Math.abs(alpha - 0);
-    const diffFrom360 = Math.abs(alpha - 360);
+    const adjustedAlpha = adjustAlphaForAndroid(alpha);
+    const diffFrom0 = Math.abs(adjustedAlpha - 0);
+    const diffFrom360 = Math.abs(adjustedAlpha - 360);
     const minDifference = Math.min(diffFrom0, diffFrom360);
     
     if (minDifference <= MENU_TOLERANCE) {
@@ -59,7 +65,7 @@ export const BlurProvider = ({ children }) => {
       }
 
       if (event.alpha == null) return;
-      const alpha = event.alpha;
+      const alpha = adjustAlphaForAndroid(event.alpha);
       setCurrentAlpha(alpha);
       
       // 페이지 블러 처리 (isUnlocked에 의존)

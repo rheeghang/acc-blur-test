@@ -142,10 +142,11 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
         className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center text-center"
         aria-label={language === 'ko' ? '메뉴' : 'Menu'}
         aria-hidden={showHowto}
+        role="region"
       >
         {/* 스크린 리더용 안내 메시지 */}
         {isOpen && !showHowto && (
-          <div className="sr-only" aria-live="polite" aria-atomic="true" role="status">
+          <div className="sr-only" aria-live="polite" aria-atomic="true">
             {language === 'ko' 
               ? '메뉴가 열렸습니다. 닫기 버튼을 누르면 닫힙니다. 작품명을 선택해 관람하세요, 메뉴 하단에는 처음으로, 웹 사용법, 전시 설명, 버튼이 있습니다.'
               : 'Menu is open. Press the close button to close it. Select artwork titles to view. At the bottom of the menu, there are Home, How to Use, and About buttons.'}
@@ -154,7 +155,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
 
         <div 
           className="menu-container w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold"
-          role="document"
+          role="none"
         >
           <div className="h-12 flex justify-end items-center pr-4">
           </div>
