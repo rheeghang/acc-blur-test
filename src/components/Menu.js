@@ -140,10 +140,8 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
     <>
       <div 
         className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center text-center"
-        role="dialog"
-        aria-modal="true"
         aria-label={language === 'ko' ? '메뉴' : 'Menu'}
-        aria-hidden={showHowto}  // Howto가 열려있을 때 메뉴를 숨김
+        aria-hidden={showHowto}
       >
         {/* 스크린 리더용 안내 메시지 */}
         {isOpen && !showHowto && (

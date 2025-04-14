@@ -308,6 +308,8 @@ const ArtworkPage = () => {
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
             aria-expanded={showMenu}
             aria-controls="menu-overlay"
+            role="button"
+            tabIndex={0}
           >
             {showMenu ? (
               <svg 
@@ -319,13 +321,15 @@ const ArtworkPage = () => {
                 strokeWidth="2"
                 strokeLinecap="round" 
                 strokeLinejoin="round"
-                aria-label="닫기"
+                aria-hidden="true"
+                focusable="false"
+                role="img"
               >
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             ) : (
-              <MenuIcon aria-label="메뉴" />
+              <MenuIcon aria-hidden="true" focusable="false" role="img" />
             )}
           </button>
         </div>
