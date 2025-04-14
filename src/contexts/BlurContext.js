@@ -83,10 +83,8 @@ export const BlurProvider = ({ children }) => {
         // 기준점과의 차이를 계산하여 상대적 각도로 변환
         alpha = (alpha - initialAlphaRef.current + 360) % 360;
         
-        // 세로 방향을 0도로 맞추기 위한 보정
-        if (Math.abs(initialAlphaRef.current - 90) < 45) {
-          // 90도로 시작하는 기기의 경우
-          // 현재 각도에서 90도를 빼서 0도로 맞춤
+        // 90도 ±10도 범위 내의 기기인 경우 각도 보정
+        if (Math.abs(initialAlphaRef.current - 90) <= 10) {
           alpha = (alpha - 90 + 360) % 360;
         }
       }
