@@ -89,18 +89,26 @@ export const BlurProvider = ({ children }) => {
         if (isFirstEvent) {
           console.log('첫 이벤트 각도:', alpha);
           isFirstEvent = false;
-          initialAlphaRef.current = alpha;
-
+          
+          // 초기 각도가 80~100도 사이인 경우
           if (alpha >= 80 && alpha <= 100) {
-            console.log('보정 전 initialAlphaRef:', initialAlphaRef.current);
-            initialAlphaRef.current -= 90;
+            console.log('보정 전 initialAlphaRef:', alpha);
+            initialAlphaRef.current = 90; // 기준점을 90도로 설정
             console.log('보정 후 initialAlphaRef:', initialAlphaRef.current);
+          } else {
+            initialAlphaRef.current = alpha;
           }
         }
 
         console.log('현재 각도:', alpha);
         console.log('기준 각도:', initialAlphaRef.current);
-        alpha = (alpha - initialAlphaRef.current + 360) % 360;
+        
+        // 기준점이 90도인 경우, 현재 각도에서 90도를 빼서 0도로 맞춤
+        if (initialAlphaRef.current === 90) {
+          alpha = (alpha - 90 + 360) % 360;
+        } else {
+          alpha = (alpha - initialAlphaRef.current + 360) % 360;
+        }
         console.log('계산된 각도:', alpha);
       }
       
