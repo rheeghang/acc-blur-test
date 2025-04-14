@@ -56,6 +56,10 @@ export const BlurProvider = ({ children }) => {
   }, [isUnlocked]);
 
   useEffect(() => {
+    console.log('BlurContext useEffect 실행');
+    console.log('안드로이드 기기인가?', navigator.userAgent.toLowerCase().includes('android'));
+    console.log('userAgent:', navigator.userAgent);
+    
     // 새로고침 시 초기화
     setCurrentAlpha(0);
     initialAlphaRef.current = null;
@@ -63,17 +67,25 @@ export const BlurProvider = ({ children }) => {
     let isFirstEvent = true;
     
     const handleOrientation = (event) => {
+      console.log('deviceorientation 이벤트 발생');
+      console.log('event.alpha:', event.alpha);
+      
       if (!isMobileRef.current) {
+        console.log('모바일 기기가 아님');
         setBlurAmount(0);
         setMenuBlurAmount(0);
         setIsUnlocked(true);
         return;
       }
 
-      if (event.alpha == null) return;
+      if (event.alpha == null) {
+        console.log('event.alpha가 null');
+        return;
+      }
       
       let alpha = event.alpha;
       if (navigator.userAgent.toLowerCase().includes('android')) {
+        console.log('안드로이드 기기 처리 시작');
         if (isFirstEvent) {
           console.log('첫 이벤트 각도:', alpha);
           isFirstEvent = false;
