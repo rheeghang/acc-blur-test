@@ -84,24 +84,22 @@ export const BlurProvider = ({ children }) => {
       }
       
       let alpha = event.alpha;
+      // alpha 값을 -180 ~ 180 범위로 정규화
+      if (alpha > 180) {
+        alpha = alpha - 360;
+      }
+      
       if (navigator.userAgent.toLowerCase().includes('android')) {
-        console.log('안드로이드 기기 처리 시작');
         if (isFirstEvent) {
-          console.log('첫 이벤트 각도:', alpha);
           isFirstEvent = false;
           
           // 초기 각도가 80~100도 사이인 경우
           if (alpha >= 80 && alpha <= 100) {
-            console.log('보정 전 initialAlphaRef:', alpha);
             initialAlphaRef.current = 90; // 기준점을 90도로 설정
-            console.log('보정 후 initialAlphaRef:', initialAlphaRef.current);
           } else {
             initialAlphaRef.current = 0;
           }
         }
-
-        console.log('현재 각도:', alpha);
-        console.log('기준 각도:', initialAlphaRef.current);
         
         // 기준점이 90도인 경우, 현재 각도에서 90도를 빼서 0도로 맞춤
         if (initialAlphaRef.current === 90) {
@@ -109,7 +107,6 @@ export const BlurProvider = ({ children }) => {
         } else {
           alpha = (alpha - initialAlphaRef.current + 360) % 360;
         }
-        console.log('계산된 각도:', alpha);
       }
       
       setCurrentAlpha(alpha);

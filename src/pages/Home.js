@@ -146,7 +146,6 @@ const LanguageSelector = ({ language, onLanguageChange, className }) => {
 };
 
 const Home = () => {
-  const [alpha, setAlpha] = useState(0);
   const [gamma, setGamma] = useState(0);
   const [permissionGranted, setPermissionGranted] = useState(false);
   const [showModal, setShowModal] = useState(true);
@@ -162,12 +161,6 @@ const Home = () => {
   const { currentAlpha } = useBlur();
 
   const handleOrientation = (event) => {
-    // alpha 값을 -180 ~ 180 범위로 정규화
-    let normalizedAlpha = event.alpha || 0;
-    if (normalizedAlpha > 180) {
-      normalizedAlpha = normalizedAlpha - 360;
-    }
-    setAlpha(normalizedAlpha);
     setGamma(event.gamma || 0);
   };
 
@@ -230,7 +223,7 @@ const Home = () => {
     localStorage.setItem('language', lang);
   };
 
-  const oppositeAlpha = (alpha + 180) % 360;
+  const oppositeAlpha = (gamma + 180) % 360;
 
   return (
     <Layout>
@@ -288,7 +281,7 @@ const Home = () => {
 
         <div className="fixed bottom-[23vh] left-2 right-0 flex flex-col items-center space-y-2 text-center z-10">
           <div className="items-center space-y-2 text-center font-bold text-black">
-            <p className="angle-text text-xl font-lg text-black" aria-hidden="true">{Math.round(alpha)}°</p>
+            <p className="angle-text text-xl font-lg text-black" aria-hidden="true">{Math.round(gamma)}°</p>
           </div>
         </div>
 
