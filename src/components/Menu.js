@@ -30,8 +30,9 @@ const MenuItemButton = memo(({
           (pageNumber === item.pageNumber && pageType === 'artwork' ? 'w-full' : 'w-[calc(100%-2rem)]')
         }`}
       aria-current={pageNumber === item.pageNumber ? 'page' : undefined}
-      aria-label={`${item.label} ${language === 'ko' ? '페이지로 이동' : 'page'}`}
+      aria-label={`${item.label} ${language === 'ko' ? '페이지' : 'page'}`}
       disabled={!isMenuVisible}
+      tabIndex={-1}
       // style={style}  // [BLUR] 블러 스타일 적용 주석 처리
     >
       <span className="text-center">{item.label}</span>
@@ -142,10 +143,11 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
         role="dialog"
         aria-modal="true"
         aria-label={language === 'ko' ? '메뉴' : 'Menu'}
+        aria-hidden={showHowto}  // Howto가 열려있을 때 메뉴를 숨김
       >
         {/* 스크린 리더용 안내 메시지 */}
-        {isOpen && (
-          <div className="sr-only" aria-live="polite">
+        {isOpen && !showHowto && (
+          <div className="sr-only" aria-live="polite" aria-atomic="true" role="status">
             {language === 'ko' 
               ? '메뉴가 열렸습니다. 닫기 버튼을 누르면 닫힙니다. 작품명을 선택해 관람하세요, 메뉴 하단에는 처음으로, 웹 사용법, 전시 설명, 버튼이 있습니다.'
               : 'Menu is open. Press the close button to close it. Select artwork titles to view. At the bottom of the menu, there are Home, How to Use, and About buttons.'}
@@ -202,6 +204,9 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
         <div 
           className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
           onClick={() => setShowHowto(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={language === 'ko' ? '웹 도슨트를 사용하는 방법' : 'How to Use'}
         >
           <div 
             className="w-[330px] h-[600px] bg-white rounded-lg shadow-xl overflow-hidden"
