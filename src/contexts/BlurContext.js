@@ -56,6 +56,9 @@ export const BlurProvider = ({ children }) => {
   }, [isUnlocked]);
 
   useEffect(() => {
+    // 새로고침 시 initialAlphaRef 초기화
+    initialAlphaRef.current = null;
+    
     let isFirstEvent = true;
     
     const handleOrientation = (event) => {
@@ -71,11 +74,18 @@ export const BlurProvider = ({ children }) => {
       let alpha = event.alpha;
       if (navigator.userAgent.toLowerCase().includes('android')) {
         if (isFirstEvent) {
-          initialAlphaRef.current = alpha;
+          // 안드로이드 기기의 초기 각도를 0도로 보정
+          const initialOffset = alpha;
+          initialAlphaRef.current = initialOffset;
           isFirstEvent = false;
         }
         // 초기 각도와의 차이를 계산하여 상대적 각도로 변환
         alpha = (alpha - initialAlphaRef.current + 360) % 360;
+        
+        // 안드로이드 기기에서 90도 오프셋이 있는 경우 보정
+        if (alpha > 180) {
+          alpha = (alpha + 180) % 360;
+        }
       }
       
       setCurrentAlpha(alpha);
