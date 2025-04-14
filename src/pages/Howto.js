@@ -7,7 +7,6 @@ import enData from '../i18n/en.json';
 const Howto = ({ isOverlay = false, onClose }) => {
   const { language } = useLanguage();
   const { isOrientationMode, setIsOrientationMode } = useMode();
-  const [hasTitleAnnounced, setHasTitleAnnounced] = useState(false);
   const [data, setData] = useState(language === 'ko' ? koData : enData);
   
   // 언어 변경 시 데이터 업데이트
@@ -23,24 +22,6 @@ const Howto = ({ isOverlay = false, onClose }) => {
     }
   }, []);
 
-  // 페이지 로드 시 제목 읽기
-  useEffect(() => {
-    if (!hasTitleAnnounced && data?.howto?.title) {
-      const titleElement = document.createElement('div');
-      titleElement.setAttribute('aria-live', 'assertive');
-      titleElement.className = 'sr-only';
-      titleElement.textContent = data.howto.title;
-      document.body.appendChild(titleElement);
-      
-      setHasTitleAnnounced(true);
-      
-      // 일정 시간 후 제거
-      setTimeout(() => {
-        document.body.removeChild(titleElement);
-      }, 1000);
-    }
-  }, [language, hasTitleAnnounced, data?.howto?.title]);
-
   // 모드 토글 핸들러
   const handleModeToggle = () => {
     const newMode = !isOrientationMode;
@@ -54,7 +35,6 @@ const Howto = ({ isOverlay = false, onClose }) => {
         <div className="flex items-center justify-between">
           <h1 
             className="text-lg text-center text-black font-medium"
-            aria-label={data.howto.title}
           >
             {data.howto.title}
           </h1>
