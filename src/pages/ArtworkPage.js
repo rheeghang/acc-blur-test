@@ -210,11 +210,11 @@ const ArtworkPage = () => {
       setHasReadContent(true);
       
       const contentToRead = `
-        ${pageContent.guidance.title}.
-        ${pageContent.guidance.artist}.
-        ${pageContent.guidance.caption}.
-        ${pageContent.guidance.body}.
-        ${data.pages.next}
+        ${pageContent?.guidance?.title || ''}.
+        ${pageContent?.guidance?.artist || ''}.
+        ${pageContent?.guidance?.caption || ''}.
+        ${pageContent?.guidance?.body || ''}.
+        ${data?.pages?.next || ''}
       `;
 
       const contentElement = document.createElement('div');
@@ -284,7 +284,7 @@ const ArtworkPage = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-base-color fixed w-full flex items-center justify-center">
+      <div className="artwork-background min-h-screen bg-base-color fixed w-full flex items-center justify-center">
         <div className="fixed top-2 left-0 right-0 text-center z-10 flex justify-center space-x-4">
           <p className="text-xl font-bold text-white" aria-hidden="true">
             {Math.round(currentAlpha)}°
@@ -300,42 +300,32 @@ const ArtworkPage = () => {
           <button 
             onClick={() => setShowMenu(!showMenu)} 
             className={`menu-icon rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 hover:bg-gray-800 transition-all z-100 
-              ${scrollRatio >= 0.9 && !showMenu ? 'animate-pulse-scale' : ''}`}
+              ${scrollRatio >= 0.9 && !showMenu ? 'animate-pulse-scale' : ''}
+              ${showMenu ? 'hidden' : ''}`}
             style={{ 
               backgroundColor: menuIconColor,
               transition: 'all 0.3s ease'
             }}
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
+            aria-expanded={showMenu}
+            aria-controls="menu-overlay"
+            role="button"
+            tabIndex={0}
           >
-            {showMenu ? (
-              <svg 
-                width="30" 
-                height="30" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            ) : (
-              <MenuIcon />
-            )}
+            <MenuIcon aria-hidden="true" focusable="false" role="img" />
           </button>
         </div>
 
         <div 
           className="outer-container absolute w-[120%] h-[150vh] flex items-center justify-center"
+          data-page={pageNumber}
           style={{
             transform: `rotate(${config.rotationAngle}deg)`,
             top: '50%',
             marginTop: '-75vh',
             filter: isOrientationMode && !isUnlocked ? `blur(${blurAmount}px)` : 'none',
             transition: 'filter 0.5s ease, transform 0.5s ease',
-            pointerEvents: isContentInteractive ? 'auto' : 'none' // 클릭 이벤트 제어
+            pointerEvents: isContentInteractive ? 'auto' : 'none'
           }}
           role="presentation"
         >
@@ -349,19 +339,24 @@ const ArtworkPage = () => {
               msOverflowStyle: 'none',
               scrollbarWidth: 'none',
             }}
-            aria-hidden={!isContentInteractive} // 스크린리더 접근 제어
+            aria-hidden={!isContentInteractive}
           >
             <div 
-              className={`text-container p-6 w-[320px] ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
+              className={`text-container p-6 w-[320px] font-medium ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
               ${blurAmount === 0 && !isScrolled ? 'animate-wobble' : ''}`}
-              tabIndex={isContentInteractive ? 0 : -1} // 키보드 포커스 제어
               style={{
                 marginTop: config.marginTop
               }}
+              tabIndex={isContentInteractive ? 0 : -1}
             >
-              <div className="text-center mb-8 break-keep" aria-hidden={blurAmount !== 0}>
+              <div 
+                className="text-center mb-8 break-keep" 
+                aria-hidden={blurAmount !== 0}
+                role="text"
+                aria-label={`${pageContent.guidance.title}. ${pageContent.guidance.artist}. ${pageContent.guidance.caption} ${pageContent.guidance.body}`}
+              >
                 <h1 className="text-xl font-bold mb-4">{pageContent.title}</h1>
-                <p className="text-base mb-2">{pageContent.artist}</p>
+                <p className="text-base font-semibold mb-2">{pageContent.artist}</p>
                 <p className="text-xs" dangerouslySetInnerHTML={{ __html: pageContent.caption }} />
               </div>
               

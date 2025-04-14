@@ -51,53 +51,113 @@
         "period2": "2025. 7. 23. - 8. 22. Modu Art Space"
     },
     "page1": {
+        "guidance": {
+            "intro": "You are on the Invisible Sculptures: Air Sculpture page. Rotate your device to find the artwork description.",
+            "title": "Invisible Sculptures: Air Sculpture",
+            "artist": "SONG Yeseul",
+            "caption": "2018, Installation; Ultrasound Waves, custom software, dimensions variable.<br>&nbsp;<br>Reproduction Support by the National Asian Culture Center, Courtesy of the artist.",
+            "body": "Entering the lobby, you will find a pedestal. You might have expected to find a sculpture, but the pedestal has nothing visible on it. Song Yeseul's Invisible Sculptures: Air Sculpture is an invisible sensory sculpture and an artistic experiment. Those who wish to see the floating sculpture are invited to place a hand above the pedestal and feel the vibrating air particles between their fingers. The shape—or sensation—of the sculpture can slightly vary depending on the person's tactile sensitivity. The sculpture is invisible, but we can clearly sense its presence at our fingertips. Using ultrasonic waves and custom software, the artist has designed a certain form and texture of air for visitors to experience for themselves. This work asks us, \"Is 'seeing' really the only way to appreciate art? What does this sculpture at your fingertips make you think about?"
+        },
         "title": "Invisible Sculptures: Air Sculpture",
         "artist": "SONG Yeseul",
         "caption": "2018, Installation; Ultrasound Waves, custom software, dimensions variable.<br>&nbsp;<br>Reproduction Support by the National Asian Culture Center, Courtesy of the artist.",
         "body": "Entering the lobby, you will find a pedestal. You might have expected to find a sculpture, but the pedestal has nothing visible on it. Song Yeseul's Invisible Sculptures: Air Sculpture is an invisible sensory sculpture and an artistic experiment. Those who wish to \"see\" the floating sculpture are invited to place a hand above the pedestal and feel the vibrating air particles between their fingers. The shape—or sensation—of the sculpture can slightly vary depending on the person's tactile sensitivity. The sculpture is invisible, but we can clearly sense its presence at our fingertips. Using ultrasonic waves and custom software, the artist has designed a certain form and texture of air for visitors to experience for themselves. This work asks us, \"Is 'seeing' really the only way to appreciate art?\" \"What does this sculpture at your fingertips make you think about?\""
     },
     "page2": {
+        "guidance": {
+            "intro": "You are on the Elephant Without Trunk no.2 page. Rotate your device to find the artwork description.",
+            "title": "Elephant Without Trunk no.2",
+            "artist": "OUM Jeongsoon",
+            "caption": "2024-2025, Installation; high-density styrofoam, recycled plastic flake, metal, 230(h)X150(W)280(D)cm.<br>&nbsp;<br>Commissioned by the National Asian Culture Center. Courtesy of the artist.",
+            "body": "This installation titled Elephant Without Trunk no.2 is by Oum Jeongsoon, and it's more than just an animal sculpture. The large-scale installation measures 230 centimeters in height, 150 centimeters in width, and 280 centimeters in length. The round and plump body is as big as that of a live elephant, and the stumpy legs are planted firmly on the ground. But, of course, something central to the body is missing—the trunk. So, why is it missing its trunk? The artist presents this elephant as a symbol of a \"stranger,\" an \"other,\" or the \"invisible.\" When we see this trunkless elephant, we notice that it's different from our familiar image of an elephant. This naturally makes us ask ourselves, \"Is an elephant without a trunk not an elephant?\" \"Just because something is invisible, does it mean that it doesn't exist?\" \"Is there really just one familiar image of an elephant in your mind?\""
+        },
         "title": "Elephant Without Trunk no.2",
         "artist": "OUM Jeongsoon",
         "caption": "2024-2025, Installation; high-density styrofoam, recycled plastic flake, metal, 230(h)X150(W)280(D)cm.<br>&nbsp;<br>Commissioned by the National Asian Culture Center. Courtesy of the artist.",
         "body": "This installation titled Elephant Without Trunk no.2 is by Oum Jeongsoon, and it's more than just an animal sculpture. The large-scale installation measures 230 centimeters in height, 150 centimeters in width, and 280 centimeters in length. The round and plump body is as big as that of a live elephant, and the stumpy legs are planted firmly on the ground. But, of course, something central to the body is missing—the trunk. So, why is it missing its trunk? The artist presents this elephant as a symbol of a \"stranger,\" an \"other,\" or the \"invisible.\" When we see this trunkless elephant, we notice that it's different from our familiar image of an elephant. This naturally makes us ask ourselves, \"Is an elephant without a trunk not an elephant?\" \"Just because something is invisible, does it mean that it doesn't exist?\" \"Is there really just one familiar image of an elephant in your mind?\""
     },
     "page3": {
+        "guidance": {
+            "intro": "You are on the Hidden Whisper page. Rotate your device to find the artwork description.",
+            "title": "Hidden Whisper",
+            "artist": "OUM Jeongsoon",
+            "caption": "2023 2025, Drawing; mixed media on paper, 39 pieces, each 70×50cm.<br>&nbsp;<br>Commissioned by the National Asian Culture Center. Courtesy of the artist.",
+            "body": "Thirty-nine drawings are lined up across the gallery wall. This series is titled Hidden Whisper, and it depicts the back view of a walking elephant and a bird flapping its wings in soft lines and colors using charcoal, pastel, and crayon. The drawings seem to be in faint motion, almost as if blown in the wind. Where is the elephant headed? If you could touch the blurred lines and smudged colors, what would they feel like? What exactly is it that you're \"looking at\" as opposed to \"feeling?\""
+        },
         "title": "Hidden Whisper",
         "artist": "OUM Jeongsoon",
         "caption": "2023–2025, Drawing; mixed media on paper, 39 pieces, each 70×50cm.<br>&nbsp;<br>Commissioned by the National Asian Culture Center. Courtesy of the artist.",
         "body": "Thirty-nine drawings are lined up across the gallery wall. This series is titled Hidden Whisper, and it depicts the back view of a walking elephant and a bird flapping its wings in soft lines and colors using charcoal, pastel, and crayon. The drawings seem to be in faint motion, almost as if blown in the wind. Where is the elephant headed? If you could touch the blurred lines and smudged colors, what would they feel like? What exactly is it that you're \"looking at\" as opposed to \"feeling?\""
     },
     "page4": {
+        "guidance": {
+            "intro": "You are on the Orbit (Tautophonology #4) page. Rotate your device to find the artwork description.",
+            "title": "Orbit (Tautophonology #4)",
+            "artist": "Rémi KLEMENSIEWICZ",
+            "caption": "2025, Sound installation; speakers, motors, sound, dimensions variable. Commissioned by the National Asian Culture Center. Courtesy of the artist.",
+            "body": "Four round, black speakers are installed in a row at regular intervals on a white wall. The speakers, measuring 45 centimeters in diameter, read like the Korean consonant ㅇ (ieung)with shapes around them that resemble the Korean vowels ㅏ (a), ㅗ(o), ㅓ (eo), and ㅜ (u). The vowels slowly rotate on a motor, while the sounds of their pronunciations are played on each speaker. The different pitches and rhythms fill the space as they both offset and deflect from one another. Take a moment and listen to the sounds. What are you currently looking at? Can you be sure that what you see relies purely on your eyes? Or are you perhaps seeing with your ears?"
+        },
         "title": "Orbit (Tautophonology #4)",
         "artist": "Rémi KLEMENSIEWICZ",
         "caption": "2025, Sound installation; speakers, motors, sound, dimensions variable.<br>&nbsp;<br>Commissioned by the National Asian Culture Center. Courtesy of the artist.",
         "body": "Four round, black speakers are installed in a row at regular intervals on a white wall. The speakers, measuring 45 centimeters in diameter, read like the Korean consonant ㅇ (ieung)with shapes around them that resemble the Korean vowels ㅏ (a), ㅗ(o), ㅓ (eo), and ㅜ (u). The vowels slowly rotate on a motor, while the sounds of their pronunciations are played on each speaker. The different pitches and rhythms fill the space as they both offset and deflect from one another. Take a moment and listen to the sounds. What are you currently looking at? Can you be sure that what you see relies purely on your eyes? Or are you perhaps seeing with your ears?"
     },
     "page5": {
+        "guidance": {
+            "intro": "You are on the Melting Point page. Rotate your device to find the artwork description.",
+            "title": "Melting Point",
+            "artist": "Aya MOMOSE",
+            "caption": "2025, Participatory installation; dimensions variable. Commissioned by the National Asian Culture Center. Courtesy of the artist. Premiered at the Atami Art Grant in 2023.",
+            "body": "The space you've entered is set up like a small bar. A long, sturdy countertop runs along the wall, and three stools are placed evenly apart in front of it, with space for one more seat reserved for wheelchair users. The countertop, stools, and wall all take on a soft, warm apricot color reminiscent of sun-kissed skin, which happens to be the same color as the artist's skin. Here at the bar, a performer in a black shirt hands you a glass of warm water. The water is heated to match the precise temperature of the artist's real-time body temperature. The performer checks the real-time data using a tablet and meticulously controls the temperature of the water with an electric kettle and a cooking thermometer. The artist is not present on site, but she is transmitting her body temperature in real-time. Now, you're about to have the experience of drinking fluid that's the temperature of someone else's body. How does the lukewarm water feel on your lips? Does it feel warm or strange?"
+        },
         "title": "Melting Point",
         "artist": "Aya MOMOSE",
         "caption": "2025, Participatory installation; dimensions variable.<br>&nbsp;<br>Commissioned by the National Asian Culture Center. Courtesy of the artist.<br>Premiered at the Atami Art Grant in 2023.",
         "body": "The space you've entered is set up like a small bar. A long, sturdy countertop runs along the wall, and three stools are placed evenly apart in front of it, with space for one more seat reserved for wheelchair users. The countertop, stools, and wall all take on a soft, warm apricot color reminiscent of sun-kissed skin, which happens to be the same color as the artist's skin. Here at the bar, a performer in a black shirt hands you a glass of warm water. The water is heated to match the precise temperature of the artist's real-time body temperature. The performer checks the real-time data using a tablet and meticulously controls the temperature of the water with an electric kettle and a cooking thermometer. The artist is not present on site, but she is transmitting her body temperature in real-time. Now, you're about to have the experience of drinking fluid that's the temperature of someone else's body. How does the lukewarm water feel on your lips? Does it feel warm or strange?"
     },
     "page6": {
+        "guidance": {
+            "intro": "You are on the Social Dance page. Rotate your device to find the artwork description.",
+            "title": "Social Dance",
+            "artist": "Aya MOMOSE",
+            "caption": "2019, Single-channel video; color, sound, 10min. 33sec. Collection of Nakanoshima Museum of Art, Osaka.Reproduction Support by the National Asian Culture Center, Courtesy of the artist.Translation: KWON Sanghae, Curator at the Museum of Contemporary Art Tokyo<br>Audio Commentary: SEO Sooyeon, Korea Content Accessibility Research Centre",  
+            "body": "Inside the exhibition space is a bench where you can sit, facing the wall. Screened on the wall is a video: Social Dance by Aya Momose. Audio commentary is provided for those with low vision or those who wish to experience the video through the commentary, and headphones are prepared on the wall to the right of the bench. Throughout this 10-minute-and-33-second video, the camera focuses on the two figures' bodies. The woman in the video is non-hearing and the man can hear. The woman uses sign language to communicate her memories and feelings. Her impression of the man's words and actions during a past trip and hurtful memories of rejection are articulated at the tip of her hands, which halt from time to time in hesitance. The man reaches out and holds her hands. Is this a comforting gesture, or a plea for silence? Here, the artist pays attention to hands as a linguistic and emotional tool. They speak, feel, and express, but they also silence."
+        },
         "title": "Social Dance",
         "artist": "Aya MOMOSE",
         "caption": "2019, Single-channel video; color, sound, 10min. 33sec.<br>&nbsp;<br>Collection of Nakanoshima Museum of Art, Osaka.<br>Reproduction Support by the National Asian Culture Center, Courtesy of the artist.<br>Translation: KWON Sanghae, Curator at the Museum of Contemporary Art Tokyo<br>Audio Commentary: SEO Sooyeon, Korea Content Accessibility Research Centre",
         "body": "Inside the exhibition space is a bench where you can sit, facing the wall. Screened on the wall is a video: Social Dance by Aya Momose. Audio commentary is provided for those with low vision or those who wish to experience the video through the commentary, and headphones are prepared on the wall to the right of the bench. Throughout this 10-minute-and-33-second video, the camera focuses on the two figures' bodies. The woman in the video is non-hearing and the man can hear. The woman uses sign language to communicate her memories and feelings. Her impression of the man's words and actions during a past trip and hurtful memories of rejection are articulated at the tip of her hands, which halt from time to time in hesitance. The man reaches out and holds her hands. Is this a comforting gesture, or a plea for silence? Here, the artist pays attention to hands as a linguistic and emotional tool. They speak, feel, and express, but they also silence."
     },
     "page7": {
+        "guidance": {
+            "intro": "You are on the Balancing Act page. Rotate your device to find the artwork description.",
+            "title": "Balancing Act",
+            "artist": "SONG Yeseul",
+            "caption": "2025, Interactive installation; dimensions variable.<br>&nbsp;<br>Commissioned by the National Asian Culture Center. Courtesy of the artist.",
+            "body": "Two long platforms are placed side by side in the space in front of you. Each platform is six meters long and 1.2 meters wide—one is a linear structure with gradual uphill and downhill slopes, while the other takes the structure of a wave with a series of steeper slopes. This work by Song Yeseul, titled Balancing Act, is designed to awaken your sensory perception and rediscover your body language. Designed for two participants to experience at the same time, each participant steps onto one of the two platforms and holds either end of a long illuminating pole with their hands. Now, they walk side by side in the same direction. When the pole is horizontally level, the pole softly illuminates and emits harmonious sounds. In order to keep the light on and continue the chorus, the two participants must work together. If you were to participate, how would you stay in balance with your partner?"
+        },
         "title": "Balancing Act",
         "artist": "SONG Yeseul",
         "caption": "2025, Interactive installation; dimensions variable.<br>&nbsp;<br>Commissioned by the National Asian Culture Center. Courtesy of the artist.",
         "body": "Two long platforms are placed side by side in the space in front of you. Each platform is six meters long and 1.2 meters wide—one is a linear structure with gradual uphill and downhill slopes, while the other takes the structure of a wave with a series of steeper slopes. This work by Song Yeseul, titled Balancing Act, is designed to awaken your sensory perception and rediscover your body language. Designed for two participants to experience at the same time, each participant steps onto one of the two platforms and holds either end of a long illuminating pole with their hands. Now, they walk side by side in the same direction. When the pole is horizontally level, the pole softly illuminates and emits harmonious sounds. In order to keep the light on and continue the chorus, the two participants must work together. If you were to participate, how would you stay in balance with your partner?"
     },
     "page8": {
+        "guidance": {
+            "intro": "You are on the Merrily Tangling page. Rotate your device to find the artwork description.",
+            "title": "Merrily Tangling",
+            "artist": "KIM Wonyoung·SON Naye·YEO Hyejin·LEE Jeeyang·HA Eunbeen",
+            "caption": "2025, Workshop, Live performance, installation; 3-channel video, 7-channel sound, dimensions variable.<br>&nbsp;<br>Commissioned by the National Asian Culture Center. Courtesy of the artists.",
+            "body": "You are now facing a stage. The floor is carpeted, and there are cushions around the room for you to use to comfortably sit or lie down as you please. As you look up at the ceiling, sitting or lying on the floor, a large moving image unfolds. The movements created by the rolling, leaning, and connected bodies in the image almost resemble constellations. This work was originally a workshop of the same name held at the ACC in February. Various sounds and voices are played from five five-meter-tall speakers placed around the stage. How are you inclined to move in this space? Do you want to sit, lie down, or roll around? How does your body react when a stranger's body approaches? When do the sounds become independent or entangled? Do the voices comfort you, or are they mere resonances? Whose bodily gesture are you focusing on at the moment?"
+        },
         "title": "Merrily Tangling",
         "artist": "KIM Wonyoung·SON Naye·YEO Hyejin·LEE Jeeyang·HA Eunbeen",
         "caption": "2025, Workshop, Live performance, installation; 3-channel video, 7-channel sound, dimensions variable.<br>&nbsp;<br>Commissioned by the National Asian Culture Center. Courtesy of the artists.",
         "body": "You are now facing a stage. The floor is carpeted, and there are cushions around the room for you to use to comfortably sit or lie down as you please. As you look up at the ceiling, sitting or lying on the floor, a large moving image unfolds. The movements created by the rolling, leaning, and connected bodies in the image almost resemble constellations. This work was originally a workshop of the same name held at the ACC in February. Various sounds and voices are played from five five-meter-tall speakers placed around the stage. How are you inclined to move in this space? Do you want to sit, lie down, or roll around? How does your body react when a stranger's body approaches? When do the sounds become independent or entangled? Do the voices comfort you, or are they mere resonances? Whose bodily gesture are you focusing on at the moment?"
     },
+    "pages": {
+        "next": "There is a menu icon in the top right."
+    },
+
     "about":{
         "title": "Crossing the Line:\n Our Bodies, Embedded with Others",
         "subtitle": "2025 ACC Contact",

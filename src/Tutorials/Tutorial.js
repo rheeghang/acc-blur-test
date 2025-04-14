@@ -155,72 +155,9 @@ const Tutorial = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleTripleTap = (() => {
-    const tapTimes = [];
-    let lastTapType = null;
-    
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    console.log("🔧 초기 상태:", {
-      디바이스: isMobile ? "모바일" : "PC"
-    });
-
-    return (e) => {
-      const eventType = e.type;
-
-      // 👇 같은 클릭이 touch → click 두 번 감지될 경우 무시
-      if (lastInputType === 'touchstart' && eventType === 'click') {
-        console.log("⚠️ touch → click 중복 감지, click 무시");
-        return;
-      }
-      
-      setLastInputType(eventType);
-      
-      const now = Date.now();
-      
-      // 1초 이상 된 탭 제거
-      while (tapTimes.length > 0 && now - tapTimes[0] > 1000) {
-        console.log("⏰ 오래된 탭 제거됨");
-        tapTimes.shift();
-      }
-      
-      tapTimes.push(now);
-      console.log("👆 탭/클릭 감지됨:", {
-        횟수: tapTimes.length,
-        이벤트: e.type,
-        시간: new Date().toLocaleTimeString()
-      });
-      
-      if (tapTimes.length === 3 && tapTimes[2] - tapTimes[0] <= 1000) {
-        console.log("✨ 트리플 탭 감지!", {
-          총소요시간: `${tapTimes[2] - tapTimes[0]}ms`,
-          탭간격: [
-            `1-2: ${tapTimes[1] - tapTimes[0]}ms`,
-            `2-3: ${tapTimes[2] - tapTimes[1]}ms`
-          ]
-        });
-        
-        if (tutorialStep === 4) {
-          setShowMenu((prev) => !prev);
-        } else {
-          handleTutorialNext();
-        }
-        tapTimes.length = 0;
-        
-        if (window.navigator.vibrate) {
-          window.navigator.vibrate(200);
-        }
-      }
-    };
-  })();
-
-  const handleOpenMenu = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    setTimeout(() => {
-      setShowMenu(true);
-    }, 100);
-  };
+  useEffect(() => {
+    document.documentElement.style.setProperty('--rotation-angle', `${currentConfig.rotationAngle}deg`);
+  }, [currentConfig.rotationAngle]);
 
   const handleTutorialNext = () => {
     if (isAdvancing) return; // 이미 진행 중이면 중복 실행 방지
@@ -283,19 +220,7 @@ const Tutorial = () => {
   return (
     <Layout>
       <div 
-        className="relative min-h-screen overflow-hidden bg-[#B7B7B7]"
-        onTouchStart={(e) => {
-          // 메뉴 아이콘이나 튜토리얼 버튼 영역이면 트리플 탭 처리하지 않음
-          if (!e.target.closest('.tutorial-button') && !e.target.closest('.menu-icon')) {
-            handleTripleTap(e);
-          }
-        }}
-        onClick={(e) => {
-          // 메뉴 아이콘이나 튜토리얼 버튼 영역이면 트리플 탭 처리하지 않음
-          if (!e.target.closest('.tutorial-button') && !e.target.closest('.menu-icon')) {
-            handleTripleTap(e);
-          }
-        }}
+        className="tutorial-container relative min-h-screen w-full overflow-hidden bg-[#B7B7B7]"
         style={{ WebkitTapHighlightColor: 'transparent' }}
       >
        
@@ -330,19 +255,19 @@ const Tutorial = () => {
           )}
         </div>
 
-        {tutorialStep === 4 && (
+        {tutorialStep === 4 && !showMenu && (
           <button
-            className={`menu-icon fixed top-3 right-3 cursor-pointer rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 transition-all z-50 bg-black ${
+            className={`menu-icon fixed top-5 right-5 cursor-pointer rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 transition-all z-50 bg-black ${
               isUnlocked && !showMenu ? 'animate-pulse-scale' : ''
             }`}
             onClick={(e) => {
               e.stopPropagation();
-              if (isUnlocked || showMenu) {
+              if (blurAmount === 0 || showMenu) {
                 setShowMenu(!showMenu);
               }
             }}
             style={{ 
-              pointerEvents: isUnlocked || showMenu ? 'auto' : 'none',
+              pointerEvents: blurAmount === 0 || showMenu ? 'auto' : 'none',
               border: 'none',
               padding: 0,
               transition: 'all 0.3s ease',
@@ -350,31 +275,15 @@ const Tutorial = () => {
             }}
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
           >
-            {showMenu ? (
-              <svg 
-                width="30" 
-                height="30" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            ) : (
-              <MenuIcon />
-            )}
+            <MenuIcon />
           </button>
         )}
 
         <div 
-          className="fixed left-1/2 -translate-x-1/2 z-0"
+          className="tutorial-textbox font-medium fixed left-1/2 -translate-x-1/2 z-0"
           style={{
             ...currentConfig.style,
-            transform: `translate(-50%, -50%) rotate(${currentConfig.rotationAngle}deg)`,
+            transform: `translate(-50%, -50%) rotate(var(--rotation-angle))`,
             transformOrigin: 'center center',
             filter: isUnlocked ? 'none' : `blur(${blurAmount}px)`,
             transition: 'filter 0.3s ease, transform 0.3s ease, top 0.3s ease',
@@ -383,7 +292,7 @@ const Tutorial = () => {
           }}
         >
           <button 
-            className={`tutorial-container p-4 shadow-lg relative w-full ${
+            className={`p-4 shadow-lg relative w-full font-normal ${
               tutorialStep === 4 ? 'bg-key-color text-center' : 'bg-white text-left'
             }`}
             aria-hidden={blurAmount !== 0}
