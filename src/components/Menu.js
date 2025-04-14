@@ -179,19 +179,19 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
       id: 'home', 
       label: language === 'ko' ? '처음으로' : 'Home',
       action: () => handleNavigation('home'),
-      ariaLabel: language === 'ko' ? '처음 화면으로 이동' : 'Go to home page'
+      ariaLabel: language === 'ko' ? '처음 화면으로' : 'home'
     },
     { 
       id: 'howto', 
       label: language === 'ko' ? '웹 사용법' : 'How to Use',
       action: () => handleNavigation('howto'),
-      ariaLabel: language === 'ko' ? '웹 도슨트 사용 방법 안내' : 'How to use web docent'
+      ariaLabel: language === 'ko' ? '웹 사용법' : 'How to use'
     },
     { 
       id: 'about', 
       label: language === 'ko' ? '전시설명' : 'About',
       action: () => handleNavigation('about'),
-      ariaLabel: language === 'ko' ? '전시에 대한 설명 보기' : 'View exhibition information'
+      ariaLabel: language === 'ko' ? '전시 설명' : 'about'
     }
   ];
 

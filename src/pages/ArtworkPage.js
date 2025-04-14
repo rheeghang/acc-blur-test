@@ -349,7 +349,12 @@ const ArtworkPage = () => {
               }}
               tabIndex={isContentInteractive ? 0 : -1}
             >
-              <div className="text-center mb-8 break-keep" aria-hidden={blurAmount !== 0}>
+              <div 
+                className="text-center mb-8 break-keep" 
+                aria-hidden={blurAmount !== 0}
+                role="text"
+                aria-label={`${pageContent.title}. ${pageContent.artist}. ${pageContent.caption}`}
+              >
                 <h1 className="text-xl font-bold mb-4">{pageContent.title}</h1>
                 <p className="text-base font-semibold mb-2">{pageContent.artist}</p>
                 <p className="text-xs" dangerouslySetInnerHTML={{ __html: pageContent.caption }} />
