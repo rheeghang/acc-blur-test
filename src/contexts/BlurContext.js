@@ -75,18 +75,17 @@ export const BlurProvider = ({ children }) => {
       let alpha = event.alpha;
       if (navigator.userAgent.toLowerCase().includes('android')) {
         if (isFirstEvent) {
-          // 첫 이벤트의 각도를 기준점으로 저장
-          initialAlphaRef.current = alpha;
           isFirstEvent = false;
+          initialAlphaRef.current = alpha;
+
+          // 기준 보정이 필요한 경우 저장해둠
+          if (alpha >= 80 && alpha <= 100) {
+            // Android의 portrait 모드 기준값이 90도인 경우
+            initialAlphaRef.current -= 90; // 0으로 맞춰줌
+          }
         }
-        
-        // 기준점과의 차이를 계산하여 상대적 각도로 변환
+
         alpha = (alpha - initialAlphaRef.current + 360) % 360;
-        
-        // 초기 각도가 80도에서 100도 사이인 경우 각도 보정
-        if (initialAlphaRef.current >= 80 && initialAlphaRef.current <= 100) {
-          alpha = (alpha - 90 + 360) % 360;
-        }
       }
       
       setCurrentAlpha(alpha);
