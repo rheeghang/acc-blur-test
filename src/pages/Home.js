@@ -120,7 +120,7 @@ const LanguageSelector = ({ language, onLanguageChange, className }) => {
 
   return (
     <div className="fixed bottom-[15vh] left-0 right-0 flex justify-center">
-    <div className="text-xl font-bold text-black">
+    <div className="language-selector text-xl font-bold text-black">
       <button 
         onClick={(e) => handleLanguageSelect('ko', e)}
         onTouchStart={(e) => handleLanguageSelect('ko', e)}
@@ -128,7 +128,7 @@ const LanguageSelector = ({ language, onLanguageChange, className }) => {
         style={{ WebkitTapHighlightColor: 'transparent' }}
         aria-label={language === 'ko' ? "한국어 선택됨" : "한국어로 변경"}
       >
-        Ko
+        Kr
       </button>
       <span className="mx-2" aria-hidden="true">|</span>
       <button 
