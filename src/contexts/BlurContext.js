@@ -86,7 +86,8 @@ export const BlurProvider = ({ children }) => {
         // 세로 방향을 0도로 맞추기 위한 보정
         if (Math.abs(initialAlphaRef.current - 90) < 45) {
           // 90도로 시작하는 기기의 경우
-          alpha = (alpha + 270) % 360;
+          // 현재 각도에서 90도를 빼서 0도로 맞춤
+          alpha = (alpha - 90 + 360) % 360;
         }
       }
       
@@ -115,9 +116,7 @@ export const BlurProvider = ({ children }) => {
         } else {
           // 일반 케이스
           const alphaDifference = Math.min(
-            Math.abs(alpha - targetAlpha),
-            Math.abs(alpha - (targetAlpha - 360)),
-            Math.abs(alpha - (targetAlpha + 360))
+            Math.abs(alpha - targetAlpha)
           );
           
           if (alphaDifference <= tolerance) {
