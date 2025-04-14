@@ -7,7 +7,11 @@ const MAX_MENU_BLUR = 10; // 최대 메뉴 블러 값
 
 // 안드로이드 디바이스 감지 및 각도 보정 함수
 const isAndroidDevice = /Android/i.test(navigator.userAgent);
-const adjustAlphaForAndroid = (alpha) => isAndroidDevice ? (alpha + 90) % 360 : alpha;
+const adjustAlphaForAndroid = (alpha) => {
+  if (!isAndroidDevice) return alpha;
+  // 안드로이드 디바이스의 경우 180도 회전하여 보정
+  return (alpha + 180) % 360;
+};
 
 export const BlurProvider = ({ children }) => {
   const [blurAmount, setBlurAmount] = useState(0);
