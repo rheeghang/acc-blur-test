@@ -68,12 +68,7 @@ export const BlurProvider = ({ children }) => {
       // 안드로이드 기기의 각도 보정
       let alpha = event.alpha;
       if (navigator.userAgent.toLowerCase().includes('android')) {
-        // 2번과 5번 작품의 특수 케이스 (300-315도)
-        if (targetAlpha === 315 || targetAlpha === 300) {
-          alpha = (alpha) % 360;
-        } else {
-          alpha = (alpha - 90) % 360;
-        }
+        alpha = (alpha - 90) % 360;
       }
       
       setCurrentAlpha(alpha);
