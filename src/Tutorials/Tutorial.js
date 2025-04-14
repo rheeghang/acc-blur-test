@@ -65,11 +65,23 @@ const Tutorial = () => {
     
     // 스텝 4일 때는 다른 메시지 출력
     if (tutorialStep === 4) {
-      const timer = setTimeout(() => {
+      // 먼저 holdStraight 메시지를 표시
+      const timer1 = setTimeout(() => {
         setShowIntroMessage(false);
-      }, 5000); // 메시지가 완전히 읽힐 때까지 충분한 시간 확보
+      }, 3000);
       
-      return () => clearTimeout(timer);
+      // 그 다음에 성공 메시지를 표시 (타임아웃 + blurAmount === 0 조건)
+      const timer2 = setTimeout(() => {
+        if (blurAmount === 0) {
+          setShowIntroMessage(true);
+          setHasContentAnnounced(true);
+        }
+      }, 3500);
+      
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
     } else {
       const timer = setTimeout(() => {
         setShowIntroMessage(false);
@@ -77,7 +89,7 @@ const Tutorial = () => {
       
       return () => clearTimeout(timer);
     }
-  }, [tutorialStep]);
+  }, [tutorialStep, blurAmount]);
 
   // 컴포넌트 마운트 시 전체 상태 확인
   useEffect(() => {
@@ -101,7 +113,7 @@ const Tutorial = () => {
       setIsIntroMessageActive(true);
       const timer = setTimeout(() => {
         setIsIntroMessageActive(false);
-      }, 5000); // 메시지가 완전히 읽힐 때까지 충분한 시간 확보
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
