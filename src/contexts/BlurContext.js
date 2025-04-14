@@ -74,20 +74,26 @@ export const BlurProvider = ({ children }) => {
       let alpha = event.alpha;
       if (navigator.userAgent.toLowerCase().includes('android')) {
         if (isFirstEvent) {
-          // 안드로이드 기기의 초기 각도를 0도로 보정
-          const initialOffset = alpha;
-          initialAlphaRef.current = initialOffset;
+          // Android 기기의 초기 각도를 저장
+          initialAlphaRef.current = alpha;
           isFirstEvent = false;
         }
-        // 초기 각도와의 차이를 계산하여 상대적 각도로 변환
-        alpha = (alpha - initialAlphaRef.current + 360) % 360;
         
-        // 안드로이드 기기에서 90도 오프셋이 있는 경우 보정
-        if (alpha > 270) {
-          alpha = (alpha - 90) % 360;
-        } else if (alpha > 180) {
-          alpha = (alpha + 90) % 360;
+        // Android 기기의 각도 계산
+        let relativeAlpha = (alpha - initialAlphaRef.current + 360) % 360;
+        
+        // 세로 모드(90도)를 기준으로 각도 변환
+        if (relativeAlpha >= 0 && relativeAlpha < 90) {
+          relativeAlpha = 90 - relativeAlpha;
+        } else if (relativeAlpha >= 90 && relativeAlpha < 180) {
+          relativeAlpha = 450 - relativeAlpha;
+        } else if (relativeAlpha >= 180 && relativeAlpha < 270) {
+          relativeAlpha = 450 - relativeAlpha;
+        } else {
+          relativeAlpha = 450 - relativeAlpha;
         }
+        
+        alpha = relativeAlpha % 360;
       }
       
       setCurrentAlpha(alpha);
