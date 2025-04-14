@@ -14,6 +14,7 @@ export const BlurProvider = ({ children }) => {
   const isUnlockedRef = useRef(isUnlocked);
   const isTutorialModeRef = useRef(false);
   const isMobileRef = useRef(window.innerWidth <= MOBILE_MAX_WIDTH);
+  const initialAlphaRef = useRef(null);
 
   // 페이지 로드 시 currentAlpha 초기화
   useEffect(() => {
@@ -68,7 +69,11 @@ export const BlurProvider = ({ children }) => {
       // 안드로이드 기기의 각도 보정
       let alpha = event.alpha;
       if (navigator.userAgent.toLowerCase().includes('android')) {
-        alpha = (alpha - 90 + 360) % 360; // 음수가 되지 않도록 360을 더함
+        if (initialAlphaRef.current === null) {
+          initialAlphaRef.current = alpha;
+        }
+        // 초기 각도와의 차이를 계산하여 상대적 각도로 변환
+        alpha = (alpha - initialAlphaRef.current + 360) % 360;
       }
       
       setCurrentAlpha(alpha);
@@ -124,6 +129,7 @@ export const BlurProvider = ({ children }) => {
     setIsUnlocked(false);
     isUnlockedRef.current = false;
     isTutorialModeRef.current = isTutorial;
+    initialAlphaRef.current = null; // 기준점 초기화
   };
 
   return (
