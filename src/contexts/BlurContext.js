@@ -68,7 +68,7 @@ export const BlurProvider = ({ children }) => {
       // 안드로이드 기기의 각도 보정
       let alpha = event.alpha;
       if (navigator.userAgent.toLowerCase().includes('android')) {
-        alpha = (alpha) % 360; // 180도 차이를 보정
+        alpha = (alpha-90) % 360; // 180도 차이를 보정
       }
       
       setCurrentAlpha(alpha);
