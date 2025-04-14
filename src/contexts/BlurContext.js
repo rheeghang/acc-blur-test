@@ -18,6 +18,25 @@ export const BlurProvider = ({ children }) => {
   const isUnlockedRef = useRef(isUnlocked);
   const isTutorialModeRef = useRef(false);
   const isMobileRef = useRef(window.innerWidth <= MOBILE_MAX_WIDTH);
+  const initialOrientationSet = useRef(false);
+
+  // 안드로이드 디바이스의 초기 각도 설정
+  useEffect(() => {
+    if (isAndroidDevice && !initialOrientationSet.current) {
+      // 디바이스의 현재 방향을 가져와서 초기 각도 설정
+      const handleInitialOrientation = (event) => {
+        if (event.alpha != null) {
+          const initialAlpha = adjustAlphaForAndroid(event.alpha);
+          setCurrentAlpha(initialAlpha);
+          initialOrientationSet.current = true;
+          window.removeEventListener('deviceorientation', handleInitialOrientation);
+        }
+      };
+
+      window.addEventListener('deviceorientation', handleInitialOrientation);
+      return () => window.removeEventListener('deviceorientation', handleInitialOrientation);
+    }
+  }, []);
 
   // 현재 각도가 메뉴 허용 범위 안에 있는지 확인하고 블러 정도 계산
   const isInMenuRange = (alpha) => {

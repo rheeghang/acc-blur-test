@@ -139,7 +139,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   return (
     <>
       <div 
-        className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center text-center"
+        className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center text-center font-medium"
         aria-label={language === 'ko' ? '메뉴' : 'Menu'}
         aria-hidden={showHowto}
         role="region"
