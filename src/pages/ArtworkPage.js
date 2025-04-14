@@ -312,7 +312,7 @@ const ArtworkPage = () => {
               >
                 <h1 className="text-xl font-bold mb-4">{pageContent.title}</h1>
                 <p className="text-base font-semibold mb-2">{pageContent.artist}</p>
-                <p className="text-xs" dangerouslySetInnerHTML={{ __html: pageContent.caption }} />
+                <p className="text-[14px]" dangerouslySetInnerHTML={{ __html: pageContent.caption }} />
               </div>
               
               <div 

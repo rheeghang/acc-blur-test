@@ -65,18 +65,11 @@ const Tutorial = () => {
     
     // 스텝 4일 때는 다른 메시지 출력
     if (tutorialStep === 4) {
-      const timer1 = setTimeout(() => {
+      const timer = setTimeout(() => {
         setShowIntroMessage(false);
-      }, 2500);
+      }, 5000); // 메시지가 완전히 읽힐 때까지 충분한 시간 확보
       
-      const timer2 = setTimeout(() => {
-        setShowIntroMessage(true);
-      }, 3000);
-      
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-      };
+      return () => clearTimeout(timer);
     } else {
       const timer = setTimeout(() => {
         setShowIntroMessage(false);
@@ -108,7 +101,7 @@ const Tutorial = () => {
       setIsIntroMessageActive(true);
       const timer = setTimeout(() => {
         setIsIntroMessageActive(false);
-      }, 2500); // 인트로 메시지가 완전히 읽힌 후에 상태를 변경
+      }, 5000); // 메시지가 완전히 읽힐 때까지 충분한 시간 확보
 
       return () => clearTimeout(timer);
     }
