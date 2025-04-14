@@ -70,7 +70,7 @@ export const BlurProvider = ({ children }) => {
       if (navigator.userAgent.toLowerCase().includes('android')) {
         // 2번과 5번 작품의 특수 케이스 (300-315도)
         if (targetAlpha === 315 || targetAlpha === 300) {
-          alpha = (alpha + 180) % 360;
+          alpha = (alpha + 90) % 360;
         } else {
           alpha = (alpha - 90) % 360;
         }
