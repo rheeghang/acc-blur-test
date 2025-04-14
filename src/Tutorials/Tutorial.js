@@ -292,7 +292,7 @@ const Tutorial = () => {
           }}
         >
           <button 
-            className={`p-4 shadow-lg relative w-full font-normal ${
+            className={`p-4 shadow-lg relative w-full font-medium ${
               tutorialStep === 4 ? 'bg-key-color text-center' : 'bg-white text-left'
             }`}
             aria-hidden={blurAmount !== 0}

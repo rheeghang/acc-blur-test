@@ -22,7 +22,7 @@ const MenuItemButton = memo(({
   return (
     <button
       onClick={() => isMenuVisible && handlePageSelect(item.pageNumber)}
-      className={`menu-button py-3 px-1 ${item.bgClass} ${item.textClass} mb-2 rounded-none shadow-md hover:opacity-90 transition-all duration-500 font-medium flex items-center justify-center
+      className={`menu-button py-4 px-1 ${item.bgClass} ${item.textClass} mb-2 rounded-none shadow-md hover:opacity-90 transition-all duration-500 font-medium flex items-center justify-center
         ${isTransitioning ? 
           (selectedPage === item.pageNumber ? 'w-full' : 
            previousPage === item.pageNumber && pageType === 'artwork' ? 'w-[calc(100%-2rem)]' : 
@@ -45,7 +45,7 @@ const NavButton = memo(({ item, isMenuVisible, style }) => {
   return (
     <button
       onClick={() => isMenuVisible && item.action()}
-      className="flex-1 h-full text-black hover:text-gray-600 transition-colors duration-200"
+      className="flex-1 h-full text-gray-800 hover:text-gray-600 transition-colors duration-200"
       aria-label={item.ariaLabel}
       disabled={!isMenuVisible}
       // style={style}  // [BLUR] 블러 스타일 적용 주석 처리
@@ -245,7 +245,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
           role="none"
         >
           <div className="flex-1 overflow-y-auto py-2 px-2">
-            <div className="flex mt-10 flex-col items-center">
+            <div className="flex mt-8 flex-col items-center">
               {menuItems.map((item) => (
                 <MenuItemButton
                   key={item.id}
@@ -264,7 +264,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
             </div>
           </div>
 
-          <div className="flex h-12" role="navigation" aria-label={language === 'ko' ? '하단 메뉴' : 'Bottom menu'}>
+          <div className="flex h-12 text-gray-800" role="navigation" aria-label={language === 'ko' ? '하단 메뉴' : 'Bottom menu'}>
             {navItems.map((item, index) => (
               <React.Fragment key={item.id}>
                 {index > 0 && (
@@ -292,7 +292,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
           aria-label={language === 'ko' ? '웹 도슨트를 사용하는 방법' : 'How to Use'}
         >
           <div 
-            className="w-[330px] h-[600px] bg-white rounded-lg shadow-xl overflow-hidden"
+            className="howto-overlay w-[330px] h-[600px] bg-white rounded-lg shadow-xl overflow-hidden"
             onClick={e => e.stopPropagation()}
           >
             <Howto isOverlay={true} onClose={() => setShowHowto(false)} />

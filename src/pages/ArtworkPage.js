@@ -158,12 +158,6 @@ const ArtworkPage = () => {
 
   // 페이지 로드 시 intro 메시지 읽기
   useEffect(() => {
-    console.log('🔊 인트로 메시지 상태:', {
-      isIntroRead,
-      pageNumber,
-      introMessage: pageContent?.guidance?.intro
-    });
-
     if (!isIntroRead && pageContent?.guidance?.intro) {
       // intro 메시지 읽기
       const introElement = document.createElement('div');
@@ -172,19 +166,15 @@ const ArtworkPage = () => {
       introElement.textContent = pageContent.guidance.intro;
       document.body.appendChild(introElement);
       
-      console.log('🔊 인트로 메시지 추가됨:', pageContent.guidance.intro);
-      
       // 페이지 시작 후 0.2초 후에 isIntroRead를 true로 설정
       setTimeout(() => {
         setIsIntroRead(true);
-        console.log('🔊 isIntroRead 상태 변경됨:', true);
-      }, 200); // 0.2초 지연
+      }, 200);
 
       // intro 메시지 제거 타이머
       setTimeout(() => {
         if (document.body.contains(introElement)) {
           document.body.removeChild(introElement);
-          console.log('🔊 인트로 메시지 제거됨');
         }
       }, 2000);
     }
@@ -192,21 +182,7 @@ const ArtworkPage = () => {
 
   // blur 상태에 따른 콘텐츠 읽기
   useEffect(() => {
-    console.log('🔍 콘텐츠 재생 조건 확인:', {
-      blurAmount,
-      hasReadContent,
-      isIntroRead,
-      시간: new Date().toLocaleTimeString()
-    });
-
     if (blurAmount === 0 && !hasReadContent && isIntroRead) {
-      console.log('✨ 콘텐츠 재생 시작', {
-        blurAmount,
-        hasReadContent,
-        isIntroRead,
-        시간: new Date().toLocaleTimeString()
-      });
-
       setHasReadContent(true);
       
       const contentToRead = `
@@ -225,12 +201,10 @@ const ArtworkPage = () => {
       contentElement.textContent = contentToRead;
       
       document.body.appendChild(contentElement);
-      console.log('📢 콘텐츠 요소 추가됨:', contentToRead);
 
       setTimeout(() => {
         if (document.body.contains(contentElement)) {
           document.body.removeChild(contentElement);
-          console.log('🗑 콘텐츠 요소 제거됨');
         }
       }, 10000);
     }
@@ -238,31 +212,12 @@ const ArtworkPage = () => {
 
   // 페이지 변경 시 상태 초기화
   useEffect(() => {
-    console.log('🔄 페이지 변경 감지:', {
-      pageNumber,
-      이전_hasReadContent: hasReadContent,
-      이전_isIntroRead: isIntroRead,
-      현재_blurAmount: blurAmount
-    });
-    
     setHasReadContent(false);
     setIsIntroRead(false);
-    
-    console.log('🔄 상태 초기화 완료:', {
-      hasReadContent: false,
-      isIntroRead: false
-    });
   }, [pageNumber]);
 
   // blurAmount 변경 감지
   useEffect(() => {
-    console.log('🔍 Blur 상태 변경:', {
-      현재_blur: blurAmount,
-      isUnlocked,
-      isOrientationMode,
-      hasReadContent,
-      isIntroRead
-    });
   }, [blurAmount]);
 
   const handlePageChange = (newPage) => {
@@ -353,7 +308,7 @@ const ArtworkPage = () => {
                 className="text-center mb-8 break-keep" 
                 aria-hidden={blurAmount !== 0}
                 role="text"
-                aria-label={`${pageContent.guidance.title}. ${pageContent.guidance.artist}. ${pageContent.guidance.caption}. ${pageContent.guidance.body}. 우측 상단에 메뉴 아이콘이 있습니다.`}
+                aria-label={`${pageContent.guidance.title}. ${pageContent.guidance.artist}. ${pageContent.guidance.caption}. ${pageContent.guidance.body}. ${data?.pages?.next}`}
               >
                 <h1 className="text-xl font-bold mb-4">{pageContent.title}</h1>
                 <p className="text-base font-semibold mb-2">{pageContent.artist}</p>

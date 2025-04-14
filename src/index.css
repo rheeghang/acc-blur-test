@@ -153,6 +153,13 @@ code {
     padding-right: 10px;
   }
 
+  .howto-overlay {
+    width: 400px;
+    height: 800px;
+    padding: 20px;
+
+  }
+
 
   .tutorial-container {
     width: 400px;
