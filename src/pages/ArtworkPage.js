@@ -210,11 +210,11 @@ const ArtworkPage = () => {
       setHasReadContent(true);
       
       const contentToRead = `
-        ${pageContent.guidance.title}.
-        ${pageContent.guidance.artist}.
-        ${pageContent.guidance.caption}.
-        ${pageContent.guidance.body}.
-        ${data.pages.next}
+        ${pageContent?.guidance?.title || ''}.
+        ${pageContent?.guidance?.artist || ''}.
+        ${pageContent?.guidance?.caption || ''}.
+        ${pageContent?.guidance?.body || ''}.
+        ${data?.pages?.next || ''}
       `;
 
       const contentElement = document.createElement('div');

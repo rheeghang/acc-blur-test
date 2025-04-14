@@ -52,12 +52,34 @@ const Howto = ({ isOverlay = false, onClose }) => {
   return (
     <div className="h-full flex flex-col">
       <div className="p-4 border-b">
-        <h1 
-          className="text-lg text-center text-black font-medium"
-          aria-live="off"
-        >
-          {data.howto.title}
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 
+            className="text-lg text-center text-black font-medium"
+            aria-live="off"
+          >
+            {data.howto.title}
+          </h1>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 focus:outline-none"
+            aria-label={language === 'ko' ? '닫기' : 'Close'}
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4">
