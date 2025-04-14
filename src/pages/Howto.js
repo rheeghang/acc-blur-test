@@ -54,6 +54,7 @@ const Howto = ({ isOverlay = false, onClose }) => {
         <div className="flex items-center justify-between">
           <h1 
             className="text-lg text-center text-black font-medium"
+            aria-label={data.howto.title}
           >
             {data.howto.title}
           </h1>
