@@ -38,7 +38,6 @@ const Tutorial = () => {
   const [lastInputType, setLastInputType] = useState(null);
   const [showIntroMessage, setShowIntroMessage] = useState(true);
   const [isAdvancing, setIsAdvancing] = useState(false);
-  const [hasTutorial4Announced, setHasTutorial4Announced] = useState(false);
 
   // 현재 설정 가져오기
   const currentConfig = pageConfig.tutorial[tutorialStep];
@@ -51,9 +50,6 @@ const Tutorial = () => {
       return;
     }
     setTutorialStep(step);
-    if (step === 4) {
-      setHasTutorial4Announced(false);
-    }
   }, [stepParam]);
 
   useEffect(() => {
@@ -119,11 +115,10 @@ const Tutorial = () => {
   }, [showIntroMessage]);
 
   useEffect(() => {
-    if (tutorialStep === 4 && !hasTutorial4Announced && blurAmount === 0 && hasIntroSpoken && !isIntroMessageActive) {
-      setHasTutorial4Announced(true);
+    if (blurAmount === 0 && hasIntroSpoken && !hasContentAnnounced && !isIntroMessageActive) {
       setHasContentAnnounced(true);
     }
-  }, [tutorialStep, blurAmount, hasIntroSpoken, isIntroMessageActive, hasTutorial4Announced]);
+  }, [blurAmount, hasIntroSpoken, hasContentAnnounced, isIntroMessageActive]);
 
   useEffect(() => {
     const handleOrientation = (event) => {
@@ -314,7 +309,7 @@ const Tutorial = () => {
           </div>
         )}
 
-        {((blurAmount === 0 && hasIntroSpoken && !hasTutorial4Announced) || (hasContentAnnounced && tutorialStep !== 4)) && (
+        {((blurAmount === 0 && hasIntroSpoken) || hasContentAnnounced) && (
           <div 
             aria-live="assertive" 
             className="sr-only"
