@@ -353,7 +353,7 @@ const ArtworkPage = () => {
                 className="text-center mb-8 break-keep" 
                 aria-hidden={blurAmount !== 0}
                 role="text"
-                aria-label={`${pageContent.guidance.title}. ${pageContent.guidance.artist}. ${pageContent.guidance.caption} ${pageContent.guidance.body}`}
+                aria-label={`${pageContent.guidance.title}. ${pageContent.guidance.artist}. ${pageContent.guidance.caption}. ${pageContent.guidance.body}. 우측 상단에 메뉴 아이콘이 있습니다.`}
               >
                 <h1 className="text-xl font-bold mb-4">{pageContent.title}</h1>
                 <p className="text-base font-semibold mb-2">{pageContent.artist}</p>
