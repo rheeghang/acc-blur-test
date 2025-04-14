@@ -356,7 +356,7 @@ const ArtworkPage = () => {
             aria-hidden={!isContentInteractive}
           >
             <div 
-              className={`text-container p-6 w-[320px] ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
+              className={`text-container p-6 w-[320px] text-normal ${config.className} shadow-xl mt-[50vh] mb-[80vh] 
               ${blurAmount === 0 && !isScrolled ? 'animate-wobble' : ''}`}
               style={{
                 marginTop: config.marginTop
@@ -365,7 +365,7 @@ const ArtworkPage = () => {
             >
               <div className="text-center mb-8 break-keep" aria-hidden={blurAmount !== 0}>
                 <h1 className="text-xl font-bold mb-4">{pageContent.title}</h1>
-                <p className="text-base mb-2">{pageContent.artist}</p>
+                <p className="text-base font-semibold mb-2">{pageContent.artist}</p>
                 <p className="text-xs" dangerouslySetInnerHTML={{ __html: pageContent.caption }} />
               </div>
               
