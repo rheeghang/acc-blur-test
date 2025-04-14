@@ -64,7 +64,13 @@ export const BlurProvider = ({ children }) => {
       }
 
       if (event.alpha == null) return;
-      const alpha = event.alpha;
+      
+      // 안드로이드 기기의 초기 각도 조정
+      let alpha = event.alpha;
+      if (navigator.userAgent.toLowerCase().includes('android')) {
+        alpha = (alpha + 200) % 360; // 160도 차이를 보정
+      }
+      
       setCurrentAlpha(alpha);
       
       // 페이지 블러 처리 (isUnlocked에 의존)
