@@ -146,22 +146,47 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
       >
         {/* 스크린 리더용 안내 메시지 */}
         {isOpen && !showHowto && (
-          <div className="sr-only" aria-live="polite" aria-atomic="true">
+          <div 
+            className="sr-only" 
+            aria-live="assertive" 
+            aria-atomic="true"
+            style={{ position: 'absolute', top: 0, left: 0 }}
+          >
             {language === 'ko' 
-              ? '메뉴가 열렸습니다. 닫기 버튼을 누르면 닫힙니다. 작품명을 선택해 관람하세요, 메뉴 하단에는 처음으로, 웹 사용법, 전시 설명, 버튼이 있습니다.'
+              ? '메뉴가 열렸습니다. 닫기 버튼을 누르면 닫힙니다. 작품명을 선택해 참여하세요, 메뉴 하단에는 처음으로, 웹 사용법, 전시 설명, 버튼이 있습니다.'
               : 'Menu is open. Press the close button to close it. Select artwork titles to view. At the bottom of the menu, there are Home, How to Use, and About buttons.'}
           </div>
         )}
+
+        <div className="fixed top-5 right-5 z-50">
+          <button
+            onClick={onClose}
+            className="menu-icon rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 bg-black transition-all"
+            aria-label={language === 'ko' ? '메뉴 닫기' : 'Close menu'}
+          >
+            <svg 
+              width="30" 
+              height="30" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
 
         <div 
           className="menu-container w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold"
           role="none"
         >
-          <div className="h-12 flex justify-end items-center pr-4">
-          </div>
-
           <div className="flex-1 overflow-y-auto py-2 px-2">
-            <div className="flex flex-col items-center">
+            <div className="flex mt-10 flex-col items-center">
               {menuItems.map((item) => (
                 <MenuItemButton
                   key={item.id}

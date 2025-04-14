@@ -300,7 +300,8 @@ const ArtworkPage = () => {
           <button 
             onClick={() => setShowMenu(!showMenu)} 
             className={`menu-icon rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 hover:bg-gray-800 transition-all z-100 
-              ${scrollRatio >= 0.9 && !showMenu ? 'animate-pulse-scale' : ''}`}
+              ${scrollRatio >= 0.9 && !showMenu ? 'animate-pulse-scale' : ''}
+              ${showMenu ? 'hidden' : ''}`}
             style={{ 
               backgroundColor: menuIconColor,
               transition: 'all 0.3s ease'
@@ -311,26 +312,7 @@ const ArtworkPage = () => {
             role="button"
             tabIndex={0}
           >
-            {showMenu ? (
-              <svg 
-                width="30" 
-                height="30" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-                aria-hidden="true"
-                focusable="false"
-                role="img"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            ) : (
-              <MenuIcon aria-hidden="true" focusable="false" role="img" />
-            )}
+            <MenuIcon aria-hidden="true" focusable="false" role="img" />
           </button>
         </div>
 
