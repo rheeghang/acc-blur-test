@@ -115,7 +115,11 @@ export const BlurProvider = ({ children }) => {
           }
         } else {
           // 일반 케이스
-          const alphaDifference = Math.abs(alpha - targetAlpha);
+          const alphaDifference = Math.min(
+            Math.abs(alpha - targetAlpha),
+            Math.abs(alpha - (targetAlpha - 360)),
+            Math.abs(alpha - (targetAlpha + 360))
+          );
           
           if (alphaDifference <= tolerance) {
             setBlurAmount(0);
