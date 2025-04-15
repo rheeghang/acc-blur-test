@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 
 const BlurContext = createContext();
 const MOBILE_MAX_WIDTH = 1024; // 태블릿 크기까지 허용
+const INITIAL_EVENTS_COUNT = 5; // 처음 5개의 이벤트를 관찰
 
 export const BlurProvider = ({ children }) => {
   const [blurAmount, setBlurAmount] = useState(0);
@@ -13,6 +14,7 @@ export const BlurProvider = ({ children }) => {
   const isMobileRef = useRef(window.innerWidth <= MOBILE_MAX_WIDTH);
   const initialAlphaRef = useRef(null);
   const isFirstEventRef = useRef(true);
+  const eventCountRef = useRef(0);
 
   // 페이지 로드 시 currentAlpha 초기화
   useEffect(() => {
@@ -27,6 +29,7 @@ export const BlurProvider = ({ children }) => {
     // 새로고침 시 초기화
     setCurrentAlpha(0);
     initialAlphaRef.current = null;
+    eventCountRef.current = 0;
     
     const handleOrientation = (event) => {
       if (!isMobileRef.current) {
@@ -49,27 +52,33 @@ export const BlurProvider = ({ children }) => {
         console.log("📱 Android Alpha Debug:", {
           originalAlpha: event.alpha,
           normalizedAlpha: alpha,
+          eventCount: eventCountRef.current,
           isFirstEvent: isFirstEventRef.current,
           initialAlphaRef: initialAlphaRef.current
         });
 
-        if (isFirstEventRef.current) {
-          isFirstEventRef.current = false;
+        // 처음 INITIAL_EVENTS_COUNT개의 이벤트 동안 초기값 설정 가능
+        if (eventCountRef.current < INITIAL_EVENTS_COUNT) {
+          eventCountRef.current++;
           
-          // 초기 각도가 80~100도 사이인 경우
+          // 80~100도 사이의 값이 들어오면 90도로 보정
           if (alpha >= 80 && alpha <= 100) {
-            initialAlphaRef.current = 90; // 기준점을 90도로 설정
-          } else {
+            console.log("📱 Found 90 degree initial position");
+            initialAlphaRef.current = 90;
+            isFirstEventRef.current = false;
+          } else if (isFirstEventRef.current) {
+            // 첫 이벤트이고 90도가 아닌 경우
             initialAlphaRef.current = 0;
+            isFirstEventRef.current = false;
           }
 
           console.log("📱 Android Initial Alpha Set:", {
             alpha,
+            eventCount: eventCountRef.current,
             initialAlphaRef: initialAlphaRef.current
           });
         }
         
-        // 기준점이 90도인 경우, 현재 각도에서 90도를 빼서 0도로 맞춤
         let correctedAlpha = alpha;
         if (initialAlphaRef.current === 90) {
           correctedAlpha = alpha - 90;
@@ -97,8 +106,23 @@ export const BlurProvider = ({ children }) => {
       
       // 페이지 블러 처리 (isUnlocked에 의존)
       if (!isUnlockedRef.current) {
+
+        if (isNaN(alpha)) {
+          return;
+        }
+        
+        if (isUnlockedRef.current && !isNaN(blurAmount)) {
+          setBlurAmount(0);
+          return;
+        }
+
         const tolerance = 20;
         const maxBlur = 15;
+
+        if (isNaN(alpha)) {
+          setBlurAmount(0);
+          return;
+        }
         
         // 일반 케이스
         const alphaDifference = Math.min(
@@ -128,6 +152,7 @@ export const BlurProvider = ({ children }) => {
     
     initialAlphaRef.current = null;
     isFirstEventRef.current = true;
+    eventCountRef.current = 0;
   }, [targetAlpha]);
 
   const setTargetAngles = (alpha, isTutorial = false) => {
