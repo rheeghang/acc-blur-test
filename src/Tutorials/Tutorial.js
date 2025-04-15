@@ -307,18 +307,6 @@ const Tutorial = () => {
                 setShowMenu(!showMenu);
               }
             }}
-            onTouchStart={(e) => {
-              console.log('🧪 메뉴 아이콘 조건', {
-                tutorialStep,
-                blurAmount,
-                isUnlocked,
-                showMenu,
-              });
-              e.stopPropagation();
-              if (safeBlurAmount === 0 || showMenu) {
-                setShowMenu(!showMenu);
-              }
-            }}
             style={{ 
               pointerEvents: safeBlurAmount === 0 || showMenu ? 'auto' : 'none',
               border: 'none',
@@ -350,12 +338,6 @@ const Tutorial = () => {
             }`}
             aria-hidden={blurAmount !== 0}
             onClick={(e) => {
-              e.stopPropagation();
-              if (blurAmount === 0 && !isAdvancing && tutorialStep !== 4) {
-                handleTutorialNext();
-              }
-            }}
-            onTouchStart={(e) => {
               e.stopPropagation();
               if (blurAmount === 0 && !isAdvancing && tutorialStep !== 4) {
                 handleTutorialNext();
