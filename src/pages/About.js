@@ -16,6 +16,7 @@ const About = () => {
   const data = language === 'ko' ? koData : enData;
   const { title, subtitle, body } = data.about;
   const [hasTitleAnnounced, setHasTitleAnnounced] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const handlePageChange = (newPage) => {
     setShowMenu(false);
@@ -63,6 +64,12 @@ const About = () => {
         setMenuIconColor('#333333');
       } else {
         setMenuIconColor('#000000');
+      }
+
+      if (ratio >= 0.9) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
       }
     };
 
@@ -124,6 +131,7 @@ const About = () => {
           {/* 스크롤 컨테이너 */}
           <div 
             className="scroll-container h-[150vh] w-full overflow-y-auto overflow-x-hidden flex flex-col items-center"
+            role="none"
             style={{
               transform: 'translateZ(0)',
               maxHeight: '140vh',
@@ -132,10 +140,9 @@ const About = () => {
               msOverflowStyle: 'none',
               scrollbarWidth: 'none',
             }}
-            aria-hidden="true"
           >
             {/* 텍스트 컨테이너 */}
-            <div className="text-container w-[320px] shadow-xl mt-[50vh] mb-[80vh]"
+            <div className={`text-container w-[320px] shadow-xl mt-[50vh] mb-[80vh] ${!isScrolled ? 'animate-wobble' : ''}`}
               style={{
                 background: 'linear-gradient(to left, #FFEA7B, #FACFB9)',
               }}
