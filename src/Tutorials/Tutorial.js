@@ -324,7 +324,9 @@ const Tutorial = () => {
               border: 'none',
               padding: 0,
               transition: 'all 0.3s ease',
-              WebkitTapHighlightColor: 'transparent'
+              WebkitTapHighlightColor: 'transparent',
+              zIndex: 9999,
+              position: 'relative'
             }}
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
           >
