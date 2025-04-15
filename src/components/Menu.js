@@ -22,7 +22,7 @@ const MenuItemButton = memo(({
   return (
     <button
       onClick={() => isMenuVisible && handlePageSelect(item.pageNumber)}
-      className={`menu-button py-4 px-1 ${item.bgClass} ${item.textClass} mb-2 rounded-none shadow-md hover:opacity-90 transition-all duration-500 font-semibold flex items-center justify-center
+      className={`menu-button py-4 px-1 ${item.bgClass} ${item.textClass} mb-2 rounded-none shadow-lg hover:opacity-90 transition-all duration-500 font-semibold flex items-center justify-center
         ${isTransitioning ? 
           (selectedPage === item.pageNumber ? 'w-full' : 
            previousPage === item.pageNumber && pageType === 'artwork' ? 'w-[calc(100%-2rem)]' : 

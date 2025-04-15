@@ -294,7 +294,7 @@ const ArtworkPage = () => {
               scrollbarWidth: 'none',
             }}
             role="none"
-            aria-hidden={!isContentInteractive}
+            aria-hidden="true"
           >
             <div 
               className={`text-container p-6 w-[320px] font-medium ${config.className} shadow-xl mt-[50vh] mb-[80vh] 

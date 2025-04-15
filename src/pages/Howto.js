@@ -70,7 +70,7 @@ const Howto = ({ isOverlay = false, onClose }) => {
           {data.howto.steps?.map((step, index) => (
             <p 
               key={index} 
-              className="mb-3 leading-relaxed font-normal text-base"
+              className="mb-3 leading-relaxed font-medium text-base"
             >
               {step}
             </p>

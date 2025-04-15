@@ -7,7 +7,7 @@
       "targetGamma2": -60,
       "targetAlpha": 105,
       "rotationAngle": 105,
-      "className": "bg-page1-bg text-page1-text text-stroke-white-thin",
+      "className": "bg-page1-bg text-page1-text",
       "marginTop": "63vh"
     },
     "2": {
@@ -17,7 +17,7 @@
       "targetGamma2": 39,
       "targetAlpha": -45,
       "rotationAngle": 315,
-      "className": "bg-page2-bg text-page2-text text-stroke-white-thin",
+      "className": "bg-page2-bg text-page2-text",
       "marginTop": "65vh"
     },
     "3": {
@@ -27,7 +27,7 @@
       "targetGamma2": -30,
       "targetAlpha": 45,
       "rotationAngle": 45,
-      "className": "bg-page3-bg text-page3-text text-stroke-thin",
+      "className": "bg-page3-bg text-page3-text",
       "marginTop": "65vh"
     },
     "4": {
@@ -37,7 +37,7 @@
       "targetGamma2": -50,
       "targetAlpha": -115,
       "rotationAngle": 245,
-      "className": "bg-page4-bg text-page4-text text-stroke-thin",
+      "className": "bg-page4-bg text-page4-text",
       "marginTop": "65vh"
     },
     "5": {
@@ -47,7 +47,7 @@
       "targetGamma2": 64,
       "targetAlpha": -60,
       "rotationAngle": 300,
-      "className": "bg-page5-bg text-page5-text text-stroke-thin",
+      "className": "bg-page5-bg text-page5-text",
       "marginTop": "65vh"
     },
     "6": {
@@ -57,7 +57,7 @@
       "targetGamma2": 22,
       "targetAlpha": -160,
       "rotationAngle": 190,
-      "className": "bg-page6-bg text-page6-text text-stroke-thin",
+      "className": "bg-page6-bg text-page6-text",
       "marginTop": "65vh"
     },
     "7": {
@@ -67,7 +67,7 @@
       "targetGamma2": -23,
       "targetAlpha": -80,
       "rotationAngle": 280,
-      "className": "bg-page7-bg text-page7-text text-stroke-white-thin",
+      "className": "bg-page7-bg text-page7-text",
       "marginTop": "75vh"
     },
     "8": {
@@ -77,7 +77,7 @@
       "targetGamma2": 39,
       "targetAlpha": 60,
       "rotationAngle": 60,
-      "className": "bg-page8-bg text-page8-text text-stroke-white-thin",
+      "className": "bg-page8-bg text-page8-text",
       "marginTop": "70vh"
     }
   },

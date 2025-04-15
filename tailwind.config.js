@@ -29,14 +29,13 @@ module.exports = {
         '15': '15deg',
       },
       fontFamily: {
-        sans: ['Noto Sans KR', 'sans-serif'],
-        serif: ['Noto Serif KR', 'serif'],
+        sans: ['Koddi', 'sans-serif'],
+        'koddi': ['Koddi', 'sans-serif'],
       },
       fontWeight: {
-        normal: 500,
-        medium: 600,
-        semibold: 700,
-        bold: 800,
+        normal: 450,
+        medium: 510,
+        semibold: 650,
       },
       colors: {
         'vivid-blue': '#0072BB',
@@ -45,29 +44,29 @@ module.exports = {
           bg: '#FFFFFF',
           text: '#000000',
         },
-        'page1-bg': '#6BFFA2',
-        'page1-text': '#FF38A7',
+        'page1-bg': '#95FFBC',
+        'page1-text': '#9B40CC',
 
-        'page2-bg': '#FFF100',
-        'page2-text': '#0072BB',  
+        'page2-bg': '#FFF454',
+        'page2-text': '#3B69B9',  
 
         'page3-bg': '#26277D',
-        'page3-text': '#00EA67', 
+        'page3-text': '#00E5FF', 
 
-        'page4-bg': '#FF5526',
-        'page4-text': '#CAFEFF',
+        'page4-bg': '#CAFEFF',
+        'page4-text': '#782814',
 
-        'page5-bg': '#534546',
-        'page5-text': '#FF93F5',
+        'page5-bg': '#360E00',
+        'page5-text': '#FF89F5',
 
-        'page6-bg': '#A079DA',
+        'page6-bg': '#511EAA',
         'page6-text': '#CCFF66',
 
-        'page7-bg': '#4CFFF3',
-        'page7-text': '#832ECA',
+        'page7-bg': '#FF7728',
+        'page7-text': '#15004A',
 
-        'page8-bg': '#FFCAE6',
-        'page8-text': '#044E00',
+        'page8-bg': '#FFD2EA',
+        'page8-text': '#006508',
 
         'base-color': '#E4E4E4',
         'key-color': '#FF5218',
@@ -110,7 +109,7 @@ module.exports = {
       boxShadow: {
         'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.3)',
         'xl': '5px 15px 15px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.4)',
-        '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+        '2xl': '0 50px 50px -8px rgba(0, 0, 0, 0.7)',
         '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.6)',
         '4xl': '0 45px 70px -18px rgba(0, 0, 0, 0.7)',
       },
