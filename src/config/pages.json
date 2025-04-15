@@ -35,8 +35,8 @@
       "targetGamma1": -15,
       "targetBeta2": 0,
       "targetGamma2": -50,
-      "targetAlpha": 115,
-      "rotationAngle": 115,
+      "targetAlpha": -115,
+      "rotationAngle": 245,
       "className": "bg-page4-bg text-page4-text text-stroke-thin",
       "marginTop": "65vh"
     },
@@ -65,8 +65,8 @@
       "targetGamma1": -13,
       "targetBeta2": -33,
       "targetGamma2": -23,
-      "targetAlpha": 135,
-      "rotationAngle": 135,
+      "targetAlpha": -80,
+      "rotationAngle": 280,
       "className": "bg-page7-bg text-page7-text text-stroke-white-thin",
       "marginTop": "75vh"
     },
