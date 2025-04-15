@@ -294,5 +294,19 @@ code {
   }
 }
 
+/* 데스크탑 미디어 쿼리 */
+@media screen and (min-width: 1025px) {
+
+  /* 데스크탑 전용 스타일 */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .title-image {
+    width: 700px;
+  }
+}
+
 
 
