@@ -293,7 +293,7 @@ const ArtworkPage = () => {
               msOverflowStyle: 'none',
               scrollbarWidth: 'none',
             }}
-            role="region"
+            role="none"
             aria-hidden={!isContentInteractive}
           >
             <div 

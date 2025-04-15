@@ -230,7 +230,7 @@ const Home = () => {
         style={{
           background: `linear-gradient(to left, #FFEA7B ${gradientRatio - 15}%, #FACFB9 ${gradientRatio + 15}%)`
         }}
-        role="region"
+        role="none"
       >
       <div className="min-h-screen p-4 relative flex flex-col">
         {/* 초기 enter 메시지 */}

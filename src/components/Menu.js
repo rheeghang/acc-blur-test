@@ -252,7 +252,7 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
         >
           <div 
             className="flex-1 overflow-y-auto py-2 px-2"
-            role="region"
+            role="none"
           >
             <div className="flex mt-8 flex-col items-center">
               {menuItems.map((item) => (
