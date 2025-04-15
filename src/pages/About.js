@@ -59,17 +59,16 @@ const About = () => {
       const ratio = scrollPosition / maxScroll;
       setScrollRatio(ratio);
       
+      // 스크롤이 시작되면 바로 isScrolled를 true로 설정
+      if (scrollPosition > 0) {
+        setIsScrolled(true);
+      }
+      
       // 스크롤이 90% 이상일 때 짙은 회색으로 변경
       if (ratio >= 0.9 && !showMenu) {
         setMenuIconColor('#333333');
       } else {
         setMenuIconColor('#000000');
-      }
-
-      if (ratio >= 0.9) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
       }
     };
 
