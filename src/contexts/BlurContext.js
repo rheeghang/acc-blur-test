@@ -46,6 +46,13 @@ export const BlurProvider = ({ children }) => {
       }
       
       if (navigator.userAgent.toLowerCase().includes('android')) {
+        console.log("📱 Android Alpha Debug:", {
+          originalAlpha: event.alpha,
+          normalizedAlpha: alpha,
+          isFirstEvent: isFirstEventRef.current,
+          initialAlphaRef: initialAlphaRef.current
+        });
+
         if (isFirstEventRef.current) {
           isFirstEventRef.current = false;
           
@@ -55,21 +62,35 @@ export const BlurProvider = ({ children }) => {
           } else {
             initialAlphaRef.current = 0;
           }
+
+          console.log("📱 Android Initial Alpha Set:", {
+            alpha,
+            initialAlphaRef: initialAlphaRef.current
+          });
         }
         
         // 기준점이 90도인 경우, 현재 각도에서 90도를 빼서 0도로 맞춤
+        let correctedAlpha = alpha;
         if (initialAlphaRef.current === 90) {
-          alpha = alpha - 90;
+          correctedAlpha = alpha - 90;
         } else {
-          alpha = alpha - initialAlphaRef.current;
+          correctedAlpha = alpha - initialAlphaRef.current;
         }
         
         // 결과값을 -180 ~ 180 범위로 정규화
-        if (alpha > 180) {
-          alpha = alpha - 360;
-        } else if (alpha < -180) {
-          alpha = alpha + 360;
+        if (correctedAlpha > 180) {
+          correctedAlpha = correctedAlpha - 360;
+        } else if (correctedAlpha < -180) {
+          correctedAlpha = correctedAlpha + 360;
         }
+
+        console.log("📱 Android Alpha Correction:", {
+          beforeCorrection: alpha,
+          afterCorrection: correctedAlpha,
+          initialAlphaRef: initialAlphaRef.current
+        });
+
+        alpha = correctedAlpha;
       }
       
       setCurrentAlpha(alpha);
