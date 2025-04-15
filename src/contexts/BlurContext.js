@@ -18,9 +18,22 @@ export const BlurProvider = ({ children }) => {
 
   // 컴포넌트 마운트 시 강제 초기화
   useEffect(() => {
+    console.log("📱 컴포넌트 마운트 - 초기화");
     initialAlphaRef.current = null;
     isFirstEventRef.current = true;
     eventCountRef.current = 0;
+    
+    // 안드로이드에서 이벤트가 늦게 발생할 수 있으므로 타임아웃 추가
+    const timeoutId = setTimeout(() => {
+      if (initialAlphaRef.current === null && navigator.userAgent.toLowerCase().includes('android')) {
+        console.log("📱 안드로이드 - 강제 초기화");
+        initialAlphaRef.current = 0;
+        isFirstEventRef.current = false;
+        eventCountRef.current = 0;
+      }
+    }, 1000); // 1초 후에 체크
+    
+    return () => clearTimeout(timeoutId);
   }, []); // 빈 의존성 배열로 마운트 시에만 실행
 
   // 페이지 로드 시 currentAlpha 초기화
@@ -34,8 +47,10 @@ export const BlurProvider = ({ children }) => {
 
   useEffect(() => {
     // 새로고침 시 초기화
+    console.log("📱 targetAlpha 변경 - 초기화");
     initialAlphaRef.current = null;
     eventCountRef.current = 0;
+    isFirstEventRef.current = true;
     
     const handleOrientation = (event) => {
       if (!isMobileRef.current) {
@@ -129,7 +144,21 @@ export const BlurProvider = ({ children }) => {
     };
 
     window.addEventListener('deviceorientation', handleOrientation);
-    return () => window.removeEventListener('deviceorientation', handleOrientation);
+    
+    // 안드로이드에서 이벤트가 늦게 발생할 수 있으므로 타임아웃 추가
+    const timeoutId = setTimeout(() => {
+      if (initialAlphaRef.current === null && navigator.userAgent.toLowerCase().includes('android')) {
+        console.log("📱 안드로이드 - 강제 초기화 (targetAlpha 변경)");
+        initialAlphaRef.current = 0;
+        isFirstEventRef.current = false;
+        eventCountRef.current = 0;
+      }
+    }, 1000); // 1초 후에 체크
+    
+    return () => {
+      window.removeEventListener('deviceorientation', handleOrientation);
+      clearTimeout(timeoutId);
+    };
   }, [targetAlpha]);
 
   // 페이지 변경 시 초기화
