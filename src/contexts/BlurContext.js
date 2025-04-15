@@ -27,7 +27,6 @@ export const BlurProvider = ({ children }) => {
 
   useEffect(() => {
     // 새로고침 시 초기화
-    setCurrentAlpha(0);
     initialAlphaRef.current = null;
     eventCountRef.current = 0;
     
