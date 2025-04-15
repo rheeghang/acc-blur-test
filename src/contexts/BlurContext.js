@@ -15,6 +15,7 @@ export const BlurProvider = ({ children }) => {
   const isTutorialModeRef = useRef(false);
   const isMobileRef = useRef(window.innerWidth <= MOBILE_MAX_WIDTH);
   const initialAlphaRef = useRef(null);
+  const isFirstEventRef = useRef(true);
 
   // 페이지 로드 시 currentAlpha 초기화
   useEffect(() => {
@@ -56,15 +57,11 @@ export const BlurProvider = ({ children }) => {
   }, [isUnlocked]);
 
   useEffect(() => {
-    
     // 새로고침 시 초기화
     setCurrentAlpha(0);
     initialAlphaRef.current = null;
     
-    let isFirstEvent = true;
-    
     const handleOrientation = (event) => {
-      
       if (!isMobileRef.current) {
         setBlurAmount(0);
         setMenuBlurAmount(0);
@@ -83,8 +80,8 @@ export const BlurProvider = ({ children }) => {
       }
       
       if (navigator.userAgent.toLowerCase().includes('android')) {
-        if (isFirstEvent) {
-          isFirstEvent = false;
+        if (isFirstEventRef.current) {
+          isFirstEventRef.current = false;
           
           // 초기 각도가 80~100도 사이인 경우
           if (alpha >= 80 && alpha <= 100) {
@@ -146,7 +143,7 @@ export const BlurProvider = ({ children }) => {
     }
     
     initialAlphaRef.current = null;
-    isFirstEvent = true;
+    isFirstEventRef.current = true;
   }, [targetAlpha]);
 
   const setTargetAngles = (alpha, isTutorial = false) => {
