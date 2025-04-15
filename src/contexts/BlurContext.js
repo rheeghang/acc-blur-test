@@ -153,7 +153,7 @@ export const BlurProvider = ({ children }) => {
         isFirstEventRef.current = false;
         eventCountRef.current = 0;
       }
-    }, 1000); // 1초 후에 체크
+    }, 1500); // 1초 후에 체크
     
     return () => {
       window.removeEventListener('deviceorientation', handleOrientation);
