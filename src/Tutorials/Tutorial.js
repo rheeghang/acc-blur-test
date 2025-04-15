@@ -236,6 +236,19 @@ const Tutorial = () => {
     setShowIntroMessage(true);
   }, []);
 
+  // 블러 NaN 상태 보정
+  useEffect(() => {
+    if (isNaN(blurAmount)) {
+      console.warn("🚨 blurAmount가 NaN → 0으로 보정");
+      setTimeout(() => {
+        setIsUnlocked(false);
+      }, 50);
+      setTimeout(() => {
+        setIsUnlocked(true);
+      }, 100);
+    }
+  }, [blurAmount]);
+
   return (
     <Layout>
       {true && (
