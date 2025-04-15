@@ -65,11 +65,7 @@ export const BlurProvider = ({ children }) => {
             isFirstEventRef.current = false;
           }
 
-          console.log("📱 Android Initial Alpha Set:", {
-            alpha,
-            eventCount: eventCountRef.current,
-            initialAlphaRef: initialAlphaRef.current
-          });
+
         }
         
         let correctedAlpha = alpha;
@@ -85,12 +81,6 @@ export const BlurProvider = ({ children }) => {
         } else if (correctedAlpha < -180) {
           correctedAlpha = correctedAlpha + 360;
         }
-
-        console.log("📱 Android Alpha Correction:", {
-          beforeCorrection: alpha,
-          afterCorrection: correctedAlpha,
-          initialAlphaRef: initialAlphaRef.current
-        });
 
         alpha = correctedAlpha;
       }
