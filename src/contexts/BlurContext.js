@@ -70,7 +70,6 @@ export const BlurProvider = ({ children }) => {
       }
       
       if (navigator.userAgent.toLowerCase().includes('android')) {
-
         // 처음 INITIAL_EVENTS_COUNT개의 이벤트 동안 초기값 설정 가능
         if (eventCountRef.current < INITIAL_EVENTS_COUNT) {
           eventCountRef.current++;
@@ -82,25 +81,23 @@ export const BlurProvider = ({ children }) => {
             isFirstEventRef.current = false;
           } else if (isFirstEventRef.current) {
             // 첫 이벤트이고 90도가 아닌 경우
-            initialAlphaRef.current = 0;
+            console.log("📱 First event, setting initial alpha:", alpha);
+            initialAlphaRef.current = alpha;  // 0 대신 현재 alpha값을 사용
             isFirstEventRef.current = false;
           }
-
-
         }
-        
+
         let correctedAlpha = alpha;
-        if (initialAlphaRef.current === 90) {
-          correctedAlpha = alpha - 90;
-        } else {
+        // 초기값이 설정된 경우에만 보정 적용
+        if (initialAlphaRef.current !== null) {
           correctedAlpha = alpha - initialAlphaRef.current;
-        }
-        
-        // 결과값을 -180 ~ 180 범위로 정규화
-        if (correctedAlpha > 180) {
-          correctedAlpha = correctedAlpha - 360;
-        } else if (correctedAlpha < -180) {
-          correctedAlpha = correctedAlpha + 360;
+          
+          // 결과값을 -180 ~ 180 범위로 정규화
+          if (correctedAlpha > 180) {
+            correctedAlpha = correctedAlpha - 360;
+          } else if (correctedAlpha < -180) {
+            correctedAlpha = correctedAlpha + 360;
+          }
         }
 
         alpha = correctedAlpha;
