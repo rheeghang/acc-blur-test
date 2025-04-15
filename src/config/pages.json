@@ -15,7 +15,7 @@
       "targetGamma1": 24,
       "targetBeta2": 33,
       "targetGamma2": 39,
-      "targetAlpha": 315,
+      "targetAlpha": -45,
       "rotationAngle": 315,
       "className": "bg-page2-bg text-page2-text text-stroke-white-thin",
       "marginTop": "65vh"
@@ -45,7 +45,7 @@
       "targetGamma1": 35,
       "targetBeta2": -4,
       "targetGamma2": 64,
-      "targetAlpha": 300,
+      "targetAlpha": -60,
       "rotationAngle": 300,
       "className": "bg-page5-bg text-page5-text text-stroke-thin",
       "marginTop": "65vh"
@@ -55,7 +55,7 @@
       "targetGamma1": -1,
       "targetBeta2": -48,
       "targetGamma2": 22,
-      "targetAlpha": 190,
+      "targetAlpha": -10,
       "rotationAngle": 190,
       "className": "bg-page6-bg text-page6-text text-stroke-thin",
       "marginTop": "65vh"
@@ -119,7 +119,7 @@
       "targetGamma1": -15,
       "targetBeta2": -44,
       "targetGamma2": -25,
-      "targetAlpha": 250,
+      "targetAlpha": -140,
       "rotationAngle": 250,
       "bgColor": "bg-white",
       "textColor": "text-gray-800",

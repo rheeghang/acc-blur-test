@@ -103,9 +103,9 @@ export const BlurProvider = ({ children }) => {
         
         // 기준점이 90도인 경우, 현재 각도에서 90도를 빼서 0도로 맞춤
         if (initialAlphaRef.current === 90) {
-          alpha = (alpha - 90 + 360) % 360;
+          alpha = ((alpha - 90 + 540) % 360) - 180;
         } else {
-          alpha = (alpha - initialAlphaRef.current + 360) % 360;
+          alpha = (alpha - initialAlphaRef.current + 540) % 360;
         }
       }
       
