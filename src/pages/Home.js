@@ -281,7 +281,7 @@ const Home = () => {
 
         <div className="fixed bottom-[23vh] left-2 right-0 flex flex-col items-center space-y-2 text-center z-10">
           <div className="items-center space-y-2 text-center font-bold text-black">
-            <p className="angle-text text-xl font-lg text-black" aria-hidden="true">{Math.round(gamma)}°</p>
+            <p className="angle-text text-xl font-lg text-black" aria-hidden="true">{Math.round(currentAlpha)}°</p>
           </div>
         </div>
 
