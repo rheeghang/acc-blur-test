@@ -287,7 +287,7 @@ const Home = () => {
           <img 
             src="/title.png" 
             alt="우리의 몸에는 타인이 깃든다." 
-            className="title-image w-[80vw] md:w-auto h-auto"
+            className="title-image w-[80vw] h-auto"
           />
         </div>
 

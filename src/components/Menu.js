@@ -164,6 +164,12 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   };
 
   const handlePageSelect = (pageNum) => {
+    // 현재 페이지와 동일한 버튼을 클릭했을 때 새로고침
+    if (pageNumber === pageNum && pageType === 'artwork') {
+      window.location.reload();
+      return;
+    }
+
     setPreviousPage(pageNumber);
     setSelectedPage(pageNum);
     setIsTransitioning(true);
