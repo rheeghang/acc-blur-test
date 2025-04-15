@@ -41,6 +41,16 @@ const Tutorial = () => {
   // 현재 설정 가져오기
   const currentConfig = pageConfig.tutorial[tutorialStep];
 
+  // Debugging useEffect
+  useEffect(() => {
+    console.log('🧭 튜토리얼 상태 확인', {
+      tutorialStep,
+      showMenu,
+      blurAmount,
+      isUnlocked,
+    });
+  }, [tutorialStep, showMenu, blurAmount, isUnlocked]);
+
   // 모든 useEffect를 조건문 밖으로 이동
   useEffect(() => {
     const step = Number(stepParam);
@@ -228,6 +238,14 @@ const Tutorial = () => {
 
   return (
     <Layout>
+      {true && (
+        <button
+          style={{ position: 'fixed', top: 20, left: 20, zIndex: 9999 }}
+          onClick={() => console.log("🖱 확인용 버튼 클릭됨")}
+        >
+          확인 버튼
+        </button>
+      )}
       <div 
         className="tutorial-container relative min-h-screen w-full overflow-hidden bg-[#B7B7B7]"
         style={{ WebkitTapHighlightColor: 'transparent' }}
