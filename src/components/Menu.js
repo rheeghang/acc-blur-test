@@ -250,7 +250,10 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
           className="menu-container w-[90%] h-[90%] bg-white bg-opacity-90 shadow-lg mx-6 my-6 flex flex-col relative text-bold"
           role="none"
         >
-          <div className="flex-1 overflow-y-auto py-2 px-2">
+          <div 
+            className="flex-1 overflow-y-auto py-2 px-2"
+            role="region"
+          >
             <div className="flex mt-8 flex-col items-center">
               {menuItems.map((item) => (
                 <MenuItemButton

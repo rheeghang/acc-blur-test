@@ -122,15 +122,9 @@ const About = () => {
           }}
         >
           {/* 스크롤 컨테이너 */}
-          <div className="scroll-container h-[150vh] w-full overflow-y-auto overflow-x-hidden flex flex-col items-center"
-            style={{
-              transform: 'translateZ(0)',
-              maxHeight: '140vh',
-              overflowY: 'auto',
-              WebkitScrollbar: 'none',
-              msOverflowStyle: 'none',
-              scrollbarWidth: 'none',
-            }}
+          <div 
+            className="scroll-container h-[150vh] w-full overflow-y-auto overflow-x-hidden flex flex-col items-center"
+            role="region"
           >
             {/* 텍스트 컨테이너 */}
             <div className="text-container w-[320px] shadow-xl mt-[50vh] mb-[80vh]"

@@ -297,8 +297,8 @@ const Tutorial = () => {
           
         {tutorialStep === 4 && !showMenu && (
           <button
-            className={`menu-icon fixed top-5 right-5 cursor-pointer rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 transition-all z-50 bg-black ${
-              isUnlocked && !showMenu ? 'animate-pulse-scale' : ''
+            className={`menu-icon fixed top-5 right-5 cursor-pointer rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 transition-all z-50 ${
+              isUnlocked && !showMenu ? 'animate-pulse-scale bg-key-color' : 'bg-black'
             }`}
             onClick={(e) => {
               console.log('🧪 메뉴 아이콘 조건', {

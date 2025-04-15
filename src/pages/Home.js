@@ -229,7 +229,9 @@ const Home = () => {
         className="home-container h-full overflow-y-auto overflow-x-hidden flex flex-col p-10 text-black leading-relaxed z-10"
         style={{
           background: `linear-gradient(to left, #FFEA7B ${gradientRatio - 15}%, #FACFB9 ${gradientRatio + 15}%)`
-        }}>
+        }}
+        role="region"
+      >
       <div className="min-h-screen p-4 relative flex flex-col">
         {/* 초기 enter 메시지 */}
         {!initialEnterSpoken && (

@@ -61,25 +61,32 @@ const Howto = ({ isOverlay = false, onClose }) => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
-        <div className="space-y-4 break-keep text-black">
+      <div 
+        className="flex-1 overflow-y-auto p-4"
+        role="region"
+        aria-label={language === 'ko' ? '사용 방법 내용' : 'How to use content'}
+      >
+        <div className="space-y-3 break-keep text-black">
           {data.howto.steps?.map((step, index) => (
-            <p key={index} className="mb-4 leading-relaxed font-normal text-base">
+            <p 
+              key={index} 
+              className="mb-3 leading-relaxed font-normal text-base"
+            >
               {step}
             </p>
           ))}
         </div>
       </div>
       
-      <div className="p-4 border-t">
-        <div className="flex items-center justify-center space-x-2">
-          <span className="font-medium">{data.menu?.orientationMode}</span>
+      <div className="p-4 pt-2 border-t">
+        <div className="flex flex-col items-center gap-2">
+          <span className="font-medium text-black">{data.menu?.orientationMode}</span>
           <button 
             onClick={handleModeToggle}
-            className="focus:outline-none left-1/2 -translate-x-1/2"
+            className="focus:outline-none"
             aria-label={language === 'ko' 
-              ? `각도 모드 ${isOrientationMode ? '켜짐' : '꺼짐'}` 
-              : `Orientation mode ${isOrientationMode ? 'on' : 'off'}`
+              ? `흐림 모드 ${isOrientationMode ? '켜짐' : '꺼짐'}` 
+              : `Blur mode ${isOrientationMode ? 'on' : 'off'}`
             }
           >
             <div className={`relative w-[72px] h-[36px] rounded-full transition-colors duration-200 ease-in-out ${

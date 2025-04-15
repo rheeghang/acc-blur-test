@@ -255,10 +255,9 @@ const ArtworkPage = () => {
           <button 
             onClick={() => setShowMenu(!showMenu)} 
             className={`menu-icon rounded-full p-2 shadow-lg flex items-center justify-center w-12 h-12 hover:bg-gray-800 transition-all z-100 
-              ${scrollRatio >= 0.9 && !showMenu ? 'animate-pulse-scale' : ''}
+              ${scrollRatio >= 0.9 && !showMenu ? 'animate-pulse-scale bg-key-color' : 'bg-black'}
               ${showMenu ? 'hidden' : ''}`}
             style={{ 
-              backgroundColor: menuIconColor,
               transition: 'all 0.3s ease'
             }}
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
@@ -294,6 +293,7 @@ const ArtworkPage = () => {
               msOverflowStyle: 'none',
               scrollbarWidth: 'none',
             }}
+            role="region"
             aria-hidden={!isContentInteractive}
           >
             <div 
