@@ -24,13 +24,12 @@ const Tutorial = () => {
   const [hasIntroSpoken, setHasIntroSpoken] = useState(false);
   const [hasContentAnnounced, setHasContentAnnounced] = useState(false);
   const [alphaInit, setAlphaInit] = useState(null);
-  const [currentAlpha, setCurrentAlpha] = useState(0);
   const [currentBeta, setCurrentBeta] = useState(0);
   const [currentGamma, setCurrentGamma] = useState(0);
   const [outOfRangeStartTime, setOutOfRangeStartTime] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
   const [isIntroMessageActive, setIsIntroMessageActive] = useState(false);
-  const { blurAmount, setTargetAngles, isUnlocked, setIsUnlocked } = useBlur();
+  const { blurAmount, setTargetAngles, isUnlocked, setIsUnlocked, currentAlpha } = useBlur();
   const { showGuideMessage } = useGuide();
   const { language } = useLanguage();
   const data = language === 'ko' ? koData : enData;
@@ -134,16 +133,14 @@ const Tutorial = () => {
 
   useEffect(() => {
     const handleOrientation = (event) => {
-      const alpha = event.alpha ?? 0;
       const beta = event.beta ?? 0;
       const gamma = event.gamma ?? 0;
 
-      setCurrentAlpha(alpha);
       setCurrentBeta(beta);
       setCurrentGamma(gamma);
 
       if (alphaInit === null) {
-        setAlphaInit(alpha);
+        setAlphaInit(event.alpha ?? 0);
       }
     };
 
