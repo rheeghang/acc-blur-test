@@ -303,7 +303,7 @@ const Tutorial = () => {
                 showMenu,
               });
               e.stopPropagation();
-              if (blurAmount === 0 || showMenu) {
+              if (safeBlurAmount === 0 || showMenu) {
                 setShowMenu(!showMenu);
               }
             }}
@@ -315,7 +315,7 @@ const Tutorial = () => {
                 showMenu,
               });
               e.stopPropagation();
-              if (blurAmount === 0 || showMenu) {
+              if (safeBlurAmount === 0 || showMenu) {
                 setShowMenu(!showMenu);
               }
             }}
@@ -324,9 +324,7 @@ const Tutorial = () => {
               border: 'none',
               padding: 0,
               transition: 'all 0.3s ease',
-              WebkitTapHighlightColor: 'transparent',
-              zIndex: 9999,
-              position: 'relative'
+              WebkitTapHighlightColor: 'transparent'
             }}
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
           >
