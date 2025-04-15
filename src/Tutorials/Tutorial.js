@@ -63,11 +63,13 @@ const Tutorial = () => {
 
   useEffect(() => {
     if (currentConfig) {
-      setTargetAngles(currentConfig.targetAlpha, true);
-      
-      // 스텝 4로 진입할 때 isUnlocked를 false로 설정
+      // 스텝 4의 경우 특별 처리
       if (tutorialStep === 4) {
         setIsUnlocked(false);
+        // 스텝 4에서는 targetAlpha를 0으로 설정
+        setTargetAngles(0, true);
+      } else {
+        setTargetAngles(currentConfig.targetAlpha, true);
       }
     }
   }, [tutorialStep, currentConfig]);

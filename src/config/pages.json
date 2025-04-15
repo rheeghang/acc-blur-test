@@ -135,7 +135,7 @@
       "targetGamma1": -15,
       "targetBeta2": -44,
       "targetGamma2": -25,
-      "targetAlpha": [0,360],
+      "targetAlpha": 0,
       "rotationAngle": 0,
       "bgColor": "bg-key-color",
       "textColor": "text-white",

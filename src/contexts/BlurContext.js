@@ -16,6 +16,13 @@ export const BlurProvider = ({ children }) => {
   const isFirstEventRef = useRef(true);
   const eventCountRef = useRef(0);
 
+  // 컴포넌트 마운트 시 강제 초기화
+  useEffect(() => {
+    initialAlphaRef.current = null;
+    isFirstEventRef.current = true;
+    eventCountRef.current = 0;
+  }, []); // 빈 의존성 배열로 마운트 시에만 실행
+
   // 페이지 로드 시 currentAlpha 초기화
   useEffect(() => {
     setCurrentAlpha(0);
