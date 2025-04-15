@@ -49,13 +49,6 @@ export const BlurProvider = ({ children }) => {
       }
       
       if (navigator.userAgent.toLowerCase().includes('android')) {
-        console.log("📱 Android Alpha Debug:", {
-          originalAlpha: event.alpha,
-          normalizedAlpha: alpha,
-          eventCount: eventCountRef.current,
-          isFirstEvent: isFirstEventRef.current,
-          initialAlphaRef: initialAlphaRef.current
-        });
 
         // 처음 INITIAL_EVENTS_COUNT개의 이벤트 동안 초기값 설정 가능
         if (eventCountRef.current < INITIAL_EVENTS_COUNT) {
