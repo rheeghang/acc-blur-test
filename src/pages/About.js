@@ -137,6 +137,7 @@ const About = () => {
               style={{
                 background: 'linear-gradient(to left, #FFEA7B, #FACFB9)',
               }}
+              aria-label={data.about.body}
             >
               <div className="p-10">
                 {/* 타이틀 이미지를 텍스트 컨테이너 상단에 배치 */}

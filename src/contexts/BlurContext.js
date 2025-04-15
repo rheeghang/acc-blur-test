@@ -48,9 +48,14 @@ export const BlurProvider = ({ children }) => {
   useEffect(() => {
     // 새로고침 시 초기화
     console.log("📱 targetAlpha 변경 - 초기화");
-    initialAlphaRef.current = null;
-    eventCountRef.current = 0;
-    isFirstEventRef.current = true;
+    
+    // 튜토리얼 모드가 아닐 때만 초기화
+    if (!isTutorialModeRef.current) {
+      initialAlphaRef.current = null;
+      eventCountRef.current = 0;
+      isFirstEventRef.current = true;
+      setCurrentAlpha(0);
+    }
     
     const handleOrientation = (event) => {
       if (!isMobileRef.current) {
@@ -144,13 +149,16 @@ export const BlurProvider = ({ children }) => {
     
     // 안드로이드에서 이벤트가 늦게 발생할 수 있으므로 타임아웃 추가
     const timeoutId = setTimeout(() => {
-      if (initialAlphaRef.current === null && navigator.userAgent.toLowerCase().includes('android')) {
+      if (initialAlphaRef.current === null && 
+          navigator.userAgent.toLowerCase().includes('android') && 
+          !isTutorialModeRef.current) {  // 튜토리얼 모드가 아닐 때만 실행
         console.log("📱 안드로이드 - 강제 초기화 (targetAlpha 변경)");
         initialAlphaRef.current = 0;
         isFirstEventRef.current = false;
         eventCountRef.current = 0;
+        setCurrentAlpha(0);
       }
-    }, 1500); // 1초 후에 체크
+    }, 1500);
     
     return () => {
       window.removeEventListener('deviceorientation', handleOrientation);
@@ -168,6 +176,7 @@ export const BlurProvider = ({ children }) => {
     initialAlphaRef.current = null;
     isFirstEventRef.current = true;
     eventCountRef.current = 0;
+    setCurrentAlpha(0);  // currentAlpha도 함께 초기화
   }, [targetAlpha]);
 
   const setTargetAngles = (alpha, isTutorial = false) => {

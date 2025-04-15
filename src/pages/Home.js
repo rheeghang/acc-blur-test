@@ -58,11 +58,9 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
 
   const handlePermissionRequest = async (e) => {
     try {
-      console.log("📱 권한 요청 시작");
       
       // iOS 기기에서 DeviceOrientationEvent.requestPermission 함수가 있는지 확인
       if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
-        console.log("📱 iOS 13+ 기기 감지");
         
         // 직접 권한 요청 실행
         DeviceOrientationEvent.requestPermission()
@@ -228,7 +226,7 @@ const Home = () => {
   return (
     <Layout>
       <div 
-        className="container h-full overflow-y-auto overflow-x-hidden flex flex-col p-10 text-black leading-relaxed z-10"
+        className="home-container h-full overflow-y-auto overflow-x-hidden flex flex-col p-10 text-black leading-relaxed z-10"
         style={{
           background: `linear-gradient(to left, #FFEA7B ${gradientRatio - 15}%, #FACFB9 ${gradientRatio + 15}%)`
         }}>
@@ -289,7 +287,7 @@ const Home = () => {
           <img 
             src="/title.png" 
             alt="우리의 몸에는 타인이 깃든다." 
-            className="title-image w-[80vw] h-auto"
+            className="title-image w-[80vw] md:w-auto h-auto"
           />
         </div>
 
@@ -319,7 +317,10 @@ const Home = () => {
 
         <div className="bottom-content fixed bottom-3 left-0 right-0 flex flex-col items-center space-y-3">
           <button 
-            onTouchStart={handleStart}
+            onClick={(e) => {
+              e.preventDefault();
+              handleStart();
+            }}
             className="start-button rounded-full w-48 bg-black px-6 py-4 text-xl font-bold text-white shadow-2xl"
             style={{ 
               WebkitTapHighlightColor: 'transparent',
@@ -327,6 +328,9 @@ const Home = () => {
               transition: 'opacity 2s ease-in',
               pointerEvents: startButtonOpacity === 1 ? 'auto' : 'none'
             }}
+            role="button"
+            aria-label={data.home1.startButton}
+            tabIndex={startButtonOpacity === 1 ? 0 : -1}
           >
             {data.home1.startButton}
           </button>

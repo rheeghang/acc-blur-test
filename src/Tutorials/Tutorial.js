@@ -310,18 +310,20 @@ const Tutorial = () => {
                 showMenu,
               });
               e.stopPropagation();
-              if (safeBlurAmount === 0 || showMenu) {
+              if (blurAmount === 0 || showMenu) {
                 setShowMenu(!showMenu);
               }
             }}
             style={{ 
-              pointerEvents: safeBlurAmount === 0 || showMenu ? 'auto' : 'none',
+              pointerEvents: blurAmount === 0 || showMenu ? 'auto' : 'none',
+              opacity: blurAmount === 0 || showMenu ? 1 : 0.5,
               border: 'none',
               padding: 0,
               transition: 'all 0.3s ease',
               WebkitTapHighlightColor: 'transparent'
             }}
             aria-label={showMenu ? "메뉴 닫기" : "메뉴 열기"}
+            disabled={!(blurAmount === 0 || showMenu)}
           >
             <MenuIcon />
           </button>
@@ -353,7 +355,8 @@ const Tutorial = () => {
             style={{
               border: 'none',
               cursor: blurAmount === 0 && tutorialStep !== 4 ? 'pointer' : 'default',
-              pointerEvents: blurAmount === 0 ? 'auto' : 'none'
+              pointerEvents: blurAmount === 0 ? 'auto' : 'none',
+              opacity: blurAmount === 0 ? 1 : 0.8
             }}
             disabled={blurAmount !== 0 || tutorialStep === 4}
             tabIndex={blurAmount === 0 ? 0 : -1}
@@ -394,16 +397,25 @@ const Tutorial = () => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
+              if (blurAmount === 0) {
+                setShowMenu(false);
+              }
             }}
             onTouchStart={(e) => {
               e.preventDefault();
               e.stopPropagation();
+              if (blurAmount === 0) {
+                setShowMenu(false);
+              }
+            }}
+            style={{
+              pointerEvents: blurAmount === 0 ? 'auto' : 'none'
             }}
           >
             <Menu
               isOpen={showMenu}
-              onClose={() => setShowMenu(false)}
-              onPageSelect={handlePageChange}
+              onClose={() => blurAmount === 0 && setShowMenu(false)}
+              onPageSelect={(page) => blurAmount === 0 && handlePageChange(page)}
               pageNumber={tutorialStep}
               pageType="tutorial"
             />
