@@ -55,7 +55,7 @@
       "targetGamma1": -1,
       "targetBeta2": -48,
       "targetGamma2": 22,
-      "targetAlpha": -10,
+      "targetAlpha": -160,
       "rotationAngle": 190,
       "className": "bg-page6-bg text-page6-text text-stroke-thin",
       "marginTop": "65vh"
