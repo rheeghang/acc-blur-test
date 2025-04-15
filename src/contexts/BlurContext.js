@@ -56,9 +56,6 @@ export const BlurProvider = ({ children }) => {
   }, [isUnlocked]);
 
   useEffect(() => {
-    console.log('BlurContext useEffect 실행');
-    console.log('안드로이드 기기인가?', navigator.userAgent.toLowerCase().includes('android'));
-    console.log('userAgent:', navigator.userAgent);
     
     // 새로고침 시 초기화
     setCurrentAlpha(0);
@@ -67,11 +64,8 @@ export const BlurProvider = ({ children }) => {
     let isFirstEvent = true;
     
     const handleOrientation = (event) => {
-      console.log('deviceorientation 이벤트 발생');
-      console.log('event.alpha:', event.alpha);
       
       if (!isMobileRef.current) {
-        console.log('모바일 기기가 아님');
         setBlurAmount(0);
         setMenuBlurAmount(0);
         setIsUnlocked(true);
@@ -79,7 +73,6 @@ export const BlurProvider = ({ children }) => {
       }
 
       if (event.alpha == null) {
-        console.log('event.alpha가 null');
         return;
       }
       
@@ -123,34 +116,17 @@ export const BlurProvider = ({ children }) => {
         const tolerance = 20;
         const maxBlur = 15;
         
-        // 튜토리얼 4 특수 케이스: 0도 또는 360도 처리
-        if (Array.isArray(targetAlpha)) {
-          // alpha값이 0도 근처이거나 360도 근처일 때
-          const diffFrom0 = Math.abs(alpha - 0);
-          const diffFrom360 = Math.abs(alpha - 360);
-          
-          if (diffFrom0 <= tolerance || diffFrom360 <= tolerance) {
-            setBlurAmount(0);
-            setIsUnlocked(true);
-          } else {
-            // 가장 가까운 목표 각도와의 차이를 기준으로 블러 계산
-            const minDifference = Math.min(diffFrom0, diffFrom360);
-            const blur = Math.min(maxBlur, (minDifference - tolerance) / 3);
-            setBlurAmount(blur);
-          }
+        // 일반 케이스
+        const alphaDifference = Math.min(
+          Math.abs(alpha - targetAlpha)
+        );
+        
+        if (alphaDifference <= tolerance) {
+          setBlurAmount(0);
+          setIsUnlocked(true);
         } else {
-          // 일반 케이스
-          const alphaDifference = Math.min(
-            Math.abs(alpha - targetAlpha)
-          );
-          
-          if (alphaDifference <= tolerance) {
-            setBlurAmount(0);
-            setIsUnlocked(true);
-          } else {
-            const blur = Math.min(maxBlur, (alphaDifference - tolerance) / 3);
-            setBlurAmount(blur);
-          }
+          const blur = Math.min(maxBlur, (alphaDifference - tolerance) / 3);
+          setBlurAmount(blur);
         }
       }
 
@@ -164,8 +140,13 @@ export const BlurProvider = ({ children }) => {
 
   // 페이지 변경 시 초기화
   useEffect(() => {
-    console.log('페이지 변경 감지 - initialAlphaRef 초기화');
+    // 안드로이드이고 튜토리얼 모드일 때는 초기화하지 않음
+    if (navigator.userAgent.toLowerCase().includes('android') && isTutorialModeRef.current) {
+      return;
+    }
+    
     initialAlphaRef.current = null;
+    isFirstEvent = true;
   }, [targetAlpha]);
 
   const setTargetAngles = (alpha, isTutorial = false) => {
