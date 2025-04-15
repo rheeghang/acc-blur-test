@@ -249,16 +249,10 @@ const Tutorial = () => {
     }
   }, [blurAmount]);
 
+  const safeBlurAmount = isNaN(blurAmount) ? 0 : blurAmount;
+
   return (
     <Layout>
-      {true && (
-        <button
-          style={{ position: 'fixed', top: 20, left: 20, zIndex: 9999 }}
-          onClick={() => console.log("🖱 확인용 버튼 클릭됨")}
-        >
-          확인 버튼
-        </button>
-      )}
       <div 
         className="tutorial-container relative min-h-screen w-full overflow-hidden bg-[#B7B7B7]"
         style={{ WebkitTapHighlightColor: 'transparent' }}
@@ -326,7 +320,7 @@ const Tutorial = () => {
               }
             }}
             style={{ 
-              pointerEvents: blurAmount === 0 || showMenu ? 'auto' : 'none',
+              pointerEvents: safeBlurAmount === 0 || showMenu ? 'auto' : 'none',
               border: 'none',
               padding: 0,
               transition: 'all 0.3s ease',
