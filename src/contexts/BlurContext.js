@@ -74,7 +74,7 @@ export const BlurProvider = ({ children }) => {
         alpha = alpha - 360;
       }
       
-      if (navigator.userAgent.toLowerCase().includes('android')) {
+      
         // 처음 INITIAL_EVENTS_COUNT개의 이벤트 동안 초기값 설정 가능
         if (eventCountRef.current < INITIAL_EVENTS_COUNT) {
           eventCountRef.current++;
@@ -103,7 +103,7 @@ export const BlurProvider = ({ children }) => {
           } else if (correctedAlpha < -180) {
             correctedAlpha = correctedAlpha + 360;
           }
-        }
+        
 
         alpha = correctedAlpha;
       }
