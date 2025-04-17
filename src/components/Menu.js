@@ -173,10 +173,11 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
 
   const handlePageSelect = (pageNum) => {
     // GA 이벤트 전송
+    const selectedArtwork = menuItems.find(item => item.pageNumber === pageNum);
     ReactGA.event({
       category: 'Artwork',
       action: 'Select Artwork',
-      label: `Page ${pageNum}`
+      label: selectedArtwork ? selectedArtwork.label : `Page ${pageNum}`
     });
 
     // 현재 페이지와 동일한 버튼을 클릭했을 때 새로고침
