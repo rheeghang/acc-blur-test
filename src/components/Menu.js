@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useBlur } from '../contexts/BlurContext';
+import ReactGA from 'react-ga4';
 import koData from '../i18n/ko.json';
 import enData from '../i18n/en.json';
 import { useNavigate } from 'react-router-dom';
@@ -147,6 +148,13 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   // }), [menuBlurAmount]);
 
   const handleNavigation = (path) => {
+    // GA 이벤트 전송
+    ReactGA.event({
+      category: 'Navigation',
+      action: 'Click Menu Button',
+      label: path
+    });
+
     switch(path) {
       case 'home':
         navigate('/');
@@ -164,6 +172,13 @@ const Menu = ({ isOpen, onClose, onPageSelect, pageNumber, pageType }) => {
   };
 
   const handlePageSelect = (pageNum) => {
+    // GA 이벤트 전송
+    ReactGA.event({
+      category: 'Artwork',
+      action: 'Select Artwork',
+      label: `Page ${pageNum}`
+    });
+
     // 현재 페이지와 동일한 버튼을 클릭했을 때 새로고침
     if (pageNumber === pageNum && pageType === 'artwork') {
       window.location.reload();

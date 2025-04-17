@@ -13,7 +13,7 @@ import About from './pages/About';
 import Howto from './pages/Howto';  
 
 // GA 초기화
-ReactGA.initialize('YOUR-MEASUREMENT-ID'); // GA4 측정 ID로 교체해주세요
+ReactGA.initialize('G-Q3GHGSPQ89'); // GA4 측정 ID로 교체해주세요
 
 const App = () => {
   useEffect(() => {
