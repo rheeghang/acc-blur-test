@@ -91,7 +91,7 @@ const Modal = ({ isOpen, onClose, onConfirm, className }) => {
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
       <div className="fixed inset-0 bg-black/50 transition-opacity pointer-events-none" />
       <div className="relative z-[101] w-80 rounded-lg bg-white p-6 shadow-xl">
-        <h3 className="mb-4 text-xl font-bold text-gray-900 select-none" aria-hidden="true">
+        <h3 className="mb-4 text-lg font-bold text-gray-900 select-none text-center" aria-hidden="true">
           센서 접근 권한을 허용해 주세요
         </h3>
         <p className="mb-6 text-gray-600 select-none">
